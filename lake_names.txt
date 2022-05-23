@@ -1,0 +1,590 @@
+
+BATTLE GROUND LK (CLAR)
+Clark - Region 5
+CASES PD (PACI)
+Pacific - Region 6
+CRESCENT LK (PIER) T17
+Pierce - Region 6
+FLOWING LK (SNOH)
+Snohomish - Region 4
+HICKS LK (THUR)
+Thurston - Region 6
+LONG LK (THUR)
+Thurston - Region 6
+MILL PD (PACI)
+Pacific - Region 6
+OLD FISHING HOLE PD (KING)
+King - Region 4
+PATTISON LK (THUR)
+Thurston - Region 6
+BLACK LK (THUR)
+Thurston - Region 6
+DEEP LK (THUR)
+Thurston - Region 6
+HOOD PARK PD (WALL)
+Walla Walla - Region 1
+LOST LK (YAKI)
+Yakima - Region 3
+LOST LK (YAKI)
+Yakima - Region 3
+MATTOON LK (KITT)
+Kittitas - Region 3
+RAPJOHN LK (PIER)
+Pierce - Region 6
+SARGE HUBBARD PD (YAKI)
+Yakima - Region 3
+SUMMIT LK (THUR)
+Thurston - Region 6
+BALLINGER LK (SNOH)
+Snohomish - Region 4
+BENNINGTON LK (WALL)
+Walla Walla - Region 1
+CHAIN LK (SNOH)
+Snohomish - Region 4
+FIO RITO LK-N (KITT)
+Kittitas - Region 3
+FIO RITO LK-N (KITT)
+Kittitas - Region 3
+JEFFERSON PRK PD (WALL)
+Walla Walla - Region 1
+LK ALICE (KING)
+King - Region 4
+LK GOODWIN (SNOH)
+Snohomish - Region 4
+LK ROESIGER (SNOH)
+Snohomish - Region 4
+SPRING LK (COLU)
+Columbia - Region 1
+TIMS PD (YAKI)
+Yakima - Region 3
+AMERICAN LK (PIER)
+Pierce - Region 6
+BEEHIVE RES (CHEL)
+Chelan - Region 2
+BLUE LK (COLU)
+Columbia - Region 1
+FISH LK (CHEL)
+Chelan - Region 2
+HORSESHOE LK (COWL)
+Cowlitz - Region 5
+HORSESHOE LK (COWL)
+Cowlitz - Region 5
+HORSESHOE LK (COWL)
+Cowlitz - Region 5
+NOEL COLE PD 23.0882
+Lewis - Region 5
+NOEL COLE PD 23.0882
+Lewis - Region 5
+RAINBOW LK (COLU)
+Columbia - Region 1
+SILVER LK (SNOH) T28
+Snohomish - Region 4
+SILVER LK (SNOH) T28
+Snohomish - Region 4
+W EVANS PD (ASOT)
+Asotin - Region 1
+WATSON LK (COLU)
+Columbia - Region 1
+AKL PD (KING)
+King - Region 4
+CLEAR LK (PIER)
+Pierce - Region 6
+FERRY LK (FERR)
+Ferry - Region 1
+FISH LK (FERR)
+Ferry - Region 1
+LEWIS CO PRK PD-S (LEWI)
+Lewis - Region 5
+PUTTERS PD (DOUG)
+Douglas - Region 2
+PUTTERS PD (DOUG)
+Douglas - Region 2
+BEEHIVE RES (CHEL)
+Chelan - Region 2
+FRANKS POND (CHEL)
+Chelan - Region 2
+FRANKS POND (CHEL)
+Chelan - Region 2
+HERITAGE LK (STEV)
+Stevens - Region 1
+HORSETHIEF LK (KLIC)
+Klickitat - Region 5
+LK LEO (PEND/STEV)
+Pend Oreille - Region 1
+LK SAWYER (KING)
+King - Region 4
+LK SAWYER (KING)
+King - Region 4
+LTL KLICKITAT30.0067
+Klickitat - Region 5
+SPEARFISH LK (KLIC)
+Klickitat - Region 5
+BALLINGER LK (SNOH)
+Snohomish - Region 4
+BEEHIVE RES (CHEL)
+Chelan - Region 2
+BEEHIVE RES (CHEL)
+Chelan - Region 2
+BLACK LK (THUR)
+Thurston - Region 6
+BLACK LK (THUR)
+Thurston - Region 6
+FIRING CENTER PD (YAKI)
+Yakima - Region 3
+FLOWING LK (SNOH)
+Snohomish - Region 4
+HATCHERY CR  41.1199
+Grant - Region 2
+HICKS LK (THUR)
+Thurston - Region 6
+LK ABERDEEN (GRAY)
+Grays Harbor - Region 6
+LK BOREN (KING)
+King - Region 4
+MISSION LK (KITS)
+Kitsap - Region 6
+NANEUM PD (KITT)
+Kittitas - Region 3
+NANEUM PD (KITT)
+Kittitas - Region 3
+WILDCAT LK (KITS)
+Kitsap - Region 6
+BATTLE GROUND LK (CLAR)
+Clark - Region 5
+BAY LK (PIER)
+Pierce - Region 6
+BEAR LK (SPOK)
+Spokane - Region 1
+BEEHIVE RES (CHEL)
+Chelan - Region 2
+BENNINGTON LK (WALL)
+Walla Walla - Region 1
+BLACK LK (PACI)
+Pacific - Region 6
+BUCK LK (KITS)
+Kitsap - Region 6
+CLEAR LK (THUR)
+Thurston - Region 6
+COOKS LK (PEND)
+Pend Oreille - Region 1
+DAYTON JV PD (COLU)
+Columbia - Region 1
+DAYTON JV PD (COLU)
+Columbia - Region 1
+EASTON PD (3) (KITT)
+Kittitas - Region 3
+GISSBURG PD (SNOH)
+Snohomish - Region 4
+GRANDY LK (SKAG)
+Skagit - Region 4
+KIWANAS PD (KITT)
+Kittitas - Region 3
+KLINELINE PD (CLAR)
+Clark - Region 5
+LK ABERDEEN (GRAY)
+Grays Harbor - Region 6
+LK KILLARNEY (KING)
+King - Region 4
+LONG LK (THUR)
+Thurston - Region 6
+LOOMIS LK (PACI)
+Pacific - Region 6
+MCINTOSH LK (THUR)
+Thurston - Region 6
+RAINBOW LK (COLU)
+Columbia - Region 1
+SNAG LK (PACI)
+Pacific - Region 6
+STAR LK (KING)
+King - Region 4
+WARD LK (THUR)
+Thurston - Region 6
+WESTERN LK (PACI)
+Pacific - Region 6
+GRAYS HRBR KIDS EVNT (GRAY)
+Grays Harbor - Region 6
+CLEAR LK (SPOK)
+Spokane - Region 1
+CLEAR LK (SPOK)
+Spokane - Region 1
+DUCK LK       (22)
+Grays Harbor - Region 6
+GOLF COURSE PD (ASOT)
+Asotin - Region 1
+JENNINGS PRK PD (SNOH)
+Snohomish - Region 4
+JENNINGS PRK PD (SNOH)
+Snohomish - Region 4
+LIONS PARK PD (WALL)
+Walla Walla - Region 1
+LIONS PARK PD (WALL)
+Walla Walla - Region 1
+MILL PD (KING)
+King - Region 4
+NORTHERN STATE PD (SKAG)
+Skagit - Region 4
+NORTHERN STATE PD (SKAG)
+Skagit - Region 4
+STEEL LK (KING)
+King - Region 4
+WHATCOM CR   01.0566
+Whatcom - Region 4
+WHATCOM CR   01.0566
+Whatcom - Region 4
+ALDRICH LK (MASO)
+Mason - Region 6
+CLARA LK (MASO)
+Mason - Region 6
+CLEAR LK (YAKI)
+Yakima - Region 3
+HOOD PARK PD (WALL)
+Walla Walla - Region 1
+HOOD PARK PD (WALL)
+Walla Walla - Region 1
+HOWELL LK (MASO)
+Mason - Region 6
+LK MAGGIE (MASO)
+Mason - Region 6
+MAYFIELD RES (LEWI)
+Lewis - Region 5
+ROBBINS LK (MASO)
+Mason - Region 6
+AMERICAN LK (PIER)
+Pierce - Region 6
+BATTLE GROUND LK (CLAR)
+Clark - Region 5
+BEEHIVE RES (CHEL)
+Chelan - Region 2
+BENNINGTON LK (WALL)
+Walla Walla - Region 1
+CLEAR LK (CHEL)
+Chelan - Region 2
+CLEAR LK (CHEL)
+Chelan - Region 2
+COOKS LK (PEND)
+Pend Oreille - Region 1
+DUCK LK       (22)
+Grays Harbor - Region 6
+DUCK LK       (22)
+Grays Harbor - Region 6
+HORSESHOE LK (KITS)
+Kitsap - Region 6
+JEFFERSON PRK PD (WALL)
+Walla Walla - Region 1
+LELAND LK (JEFF)
+Jefferson - Region 6
+LK CAMPBELL (SKAG)
+Skagit - Region 4
+SNOQUALMIE POLICE PDS (KING)
+King - Region 4
+SYLVIA LK (GRAY)
+Grays Harbor - Region 6
+TIGER LK (MASO)
+Mason - Region 6
+VANCE CR ADLT PD 22.0478
+Grays Harbor - Region 6
+VANCE CR JV PD 22.0478
+Grays Harbor - Region 6
+BEEHIVE RES (CHEL)
+Chelan - Region 2
+BENSON LK (MASO)
+Mason - Region 6
+FAILOR LK (GRAY)
+Grays Harbor - Region 6
+FAILOR LK (GRAY)
+Grays Harbor - Region 6
+KRESS LK (COWL)
+Cowlitz - Region 5
+LK ST CLAIR (THUR)
+Thurston - Region 6
+LK WOOTEN (MASO)
+Mason - Region 6
+LOST LK (YAKI)
+Yakima - Region 3
+PANTHER LK (KITS)
+Kitsap - Region 6
+PHILLIPS LK (MASO)
+Mason - Region 6
+SANDY SHORE LK (JEFF)
+Jefferson - Region 6
+BLACK LK (THUR)
+Thurston - Region 6
+BLACKMANS LK (SNOH)
+Snohomish - Region 4
+HATCHERY CR  41.1199
+Grant - Region 2
+LK ABERDEEN (GRAY)
+Grays Harbor - Region 6
+LK ABERDEEN (GRAY)
+Grays Harbor - Region 6
+LK LOMA (SNOH)
+Snohomish - Region 4
+LK SWANO      (22)
+Grays Harbor - Region 6
+LOST LK (MASO)
+Mason - Region 6
+MARTHA LK (WB) (SNOH)
+Snohomish - Region 4
+NAHWATZEL LK (MASO)
+Mason - Region 6
+NAHWATZEL LK (MASO)
+Mason - Region 6
+NAHWATZEL LK (MASO)
+Mason - Region 6
+QUARRY PD (WALL)
+Walla Walla - Region 1
+SHADOW LK (KING)
+King - Region 4
+SPENCER LK (MASO)
+Mason - Region 6
+TIMS PD (YAKI)
+Yakima - Region 3
+TYE LK (SNOH)
+Snohomish - Region 4
+GRAYS HRBR KIDS EVNT (GRAY)
+Grays Harbor - Region 6
+BAINBRIDGE ISL PD (KITS)
+Kitsap - Region 6
+BAINBRIDGE ISL PD (KITS)
+Kitsap - Region 6
+CAMPBELL LK (OKAN)
+Okanogan - Region 2
+GOLF COURSE PD (ASOT)
+Asotin - Region 1
+LILY LK (CHEL)
+Chelan - Region 2
+LILY LK (CHEL)
+Chelan - Region 2
+LK DOLLOFF (KING)
+King - Region 4
+LK SACAJAWEA (COWL)
+Cowlitz - Region 5
+LK SACAJAWEA (COWL)
+Cowlitz - Region 5
+LK SACAJAWEA (COWL)
+Cowlitz - Region 5
+TANWAX LK (PIER)
+Pierce - Region 6
+TANWAX LK (PIER)
+Pierce - Region 6
+W EVANS PD (ASOT)
+Asotin - Region 1
+FISH LK (KING)
+King - Region 4
+GARFIELD PD (WHIT)
+Whitman - Region 1
+GARFIELD PD (WHIT)
+Whitman - Region 1
+GILCREST PD (WHIT)
+Whitman - Region 1
+HOLM LK (KING)
+King - Region 4
+LILY LK (CHEL)
+Chelan - Region 2
+LK FENWICK (KING)
+King - Region 4
+MAYFIELD RES (LEWI)
+Lewis - Region 5
+RAINBOW LK (COLU)
+Columbia - Region 1
+CARTER LK (PIER)
+Pierce - Region 6
+CARTER LK (PIER)
+Pierce - Region 6
+CLEAR LK (CHEL)
+Chelan - Region 2
+CLEAR LK (YAKI)
+Yakima - Region 3
+DEEP LK (KING)
+King - Region 4
+FIVEMILE LK (KING)
+King - Region 4
+GOLF COURSE PD (ASOT)
+Asotin - Region 1
+GREEN LK (KING)
+King - Region 4
+LINCOLN PRK PD (CLAL)
+Clallam - Region 6
+LINCOLN PRK PD (CLAL)
+Clallam - Region 6
+SPECTACLE LK (OKAN)
+Okanogan - Region 2
+UNCLE JOHNS PD (PIER)
+Pierce - Region 6
+W EVANS PD (ASOT)
+Asotin - Region 1
+WENTWORTH LK (CLAL)
+Clallam - Region 6
+WENTWORTH LK (CLAL)
+Clallam - Region 6
+AMERICAN LK (PIER)
+Pierce - Region 6
+BITTER LK (KING)
+King - Region 4
+BLUE LK (COLU)
+Columbia - Region 1
+ECHO 99 LK (KING)
+King - Region 4
+FLORENCE LK (PIER)
+Pierce - Region 6
+HALLER LK (KING)
+King - Region 4
+MILK PD (KITT)
+Kittitas - Region 3
+NANEUM PD (KITT)
+Kittitas - Region 3
+NANEUM PD (KITT)
+Kittitas - Region 3
+LK ST CLAIR (THUR)
+Thurston - Region 6
+LONGS PD (THUR)
+Thurston - Region 6
+MCCABE POND (KITT)
+Kittitas - Region 3
+ROTARY LK (YAKI)
+Yakima - Region 3
+SPRING LK (KING)
+King - Region 4
+TROUT LK (KING) T21
+King - Region 4
+BENNINGTON LK (WALL)
+Walla Walla - Region 1
+FORTSON PDS (2) (SNOH)
+Snohomish - Region 4
+FORTSON PDS (2) (SNOH)
+Snohomish - Region 4
+FRATER LK (PEND)
+Pend Oreille - Region 1
+LK ABERDEEN (GRAY)
+Grays Harbor - Region 6
+LOST LK (MASO)
+Mason - Region 6
+NAHWATZEL LK (MASO)
+Mason - Region 6
+STARVATION LK (STEV)
+Stevens - Region 1
+SYLVIA LK (GRAY)
+Grays Harbor - Region 6
+TYE LK (SNOH)
+Snohomish - Region 4
+TYE LK (SNOH)
+Snohomish - Region 4
+VANCE CR ADLT PD 22.0478
+Grays Harbor - Region 6
+VANCE CR JV PD 22.0478
+Grays Harbor - Region 6
+CARRIE BLAKE PRK PD (CLAL)
+Clallam - Region 6
+CARRIE BLAKE PRK PD (CLAL)
+Clallam - Region 6
+CARRIE BLAKE PRK PD (CLAL)
+Clallam - Region 6
+CLEAR LK (THUR)
+Thurston - Region 6
+CLEAR LK (THUR)
+Thurston - Region 6
+COLUMBIA PARK PD (BENT)
+Benton - Region 3
+DAYTON JV PD (COLU)
+Columbia - Region 1
+DAYTON JV PD (COLU)
+Columbia - Region 1
+FAILOR LK (GRAY)
+Grays Harbor - Region 6
+GORST PD (KITS)
+Kitsap - Region 6
+GORST PD (KITS)
+Kitsap - Region 6
+GRAYS HRBR KIDS EVNT (GRAY)
+Grays Harbor - Region 6
+LK ABERDEEN (GRAY)
+Grays Harbor - Region 6
+PAMPA PD (WHIT)
+Whitman - Region 1
+RAPJOHN LK (PIER)
+Pierce - Region 6
+SPENCER LK (MASO)
+Mason - Region 6
+SWOFFORD PD (LEWI)
+Lewis - Region 5
+TANWAX LK (PIER)
+Pierce - Region 6
+BAY LK (PIER)
+Pierce - Region 6
+BLACK LK (PACI)
+Pacific - Region 6
+CASCADE LK (SAN)
+San Juan - Region 4
+CASES PD (PACI)
+Pacific - Region 6
+CASES PD (PACI)
+Pacific - Region 6
+COLUMBIA PARK PD (BENT)
+Benton - Region 3
+COLUMBIA PARK PD (BENT)
+Benton - Region 3
+CRABAPPLE LK (SNOH)
+Snohomish - Region 4
+CRABAPPLE LK (SNOH)
+Snohomish - Region 4
+FAILOR LK (GRAY)
+Grays Harbor - Region 6
+FAILOR LK (GRAY)
+Grays Harbor - Region 6
+GRANGER PD (YAKI)
+Yakima - Region 3
+HEART LK (SKAG) T35
+Skagit - Region 4
+HEART LK (SKAG) T35
+Skagit - Region 4
+HEART LK (SKAG) T35
+Skagit - Region 4
+JEFFERSON PRK PD (WALL)
+Walla Walla - Region 1
+LK ABERDEEN (GRAY)
+Grays Harbor - Region 6
+LK HOWARD (SNOH)
+Snohomish - Region 4
+LK HOWARD (SNOH)
+Snohomish - Region 4
+LK SACAJAWEA (COWL)
+Cowlitz - Region 5
+LK WOOTEN (MASO)
+Mason - Region 6
+LONG LK (THUR)
+Thurston - Region 6
+LTL KLICKITAT30.0067
+Klickitat - Region 5
+MCINTOSH LK (THUR)
+Thurston - Region 6
+MILL PD (KING)
+King - Region 4
+MINERAL LK (LEWI)
+Lewis - Region 5
+NORTH LK (KING)
+King - Region 4
+OLD FISHING HOLE PD (KING)
+King - Region 4
+PATTISON LK (THUR)
+Thurston - Region 6
+QUARRY PD (WALL)
+Walla Walla - Region 1
+QUARRY PD (WALL)
+Walla Walla - Region 1
+SNAG LK (PACI)
+Pacific - Region 6
+SUMMIT LK (THUR)
+Thurston - Region 6
+SWIFT POWER CANAL (SKAM)
+Skamania - Region 5
+TIGER LK (MASO)
+Mason - Region 6
+WAGNER LK (SNOH)
+Snohomish - Region 4
+WAGNER LK (SNOH)
+Snohomish - Region 4
+WAGNER LK (SNOH)
+Snohomish - Region 4
+WESTERN LK (PACI)
+Pacific - Region 6
+
