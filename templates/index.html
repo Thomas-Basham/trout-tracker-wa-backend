@@ -5,12 +5,26 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+
+    <title>Wa Stocked Trout Finder</title>
+    <link rel="stylesheet" types="text/css" href="{{ url_for('static',filename='/styles/index.css') }}"/>
+
+
 </head>
 <body>
+<h1>Stocked Trout Lakes in Washington</h1>
+<div class="container">
+    {{ folium_map | safe }}
+</div>
 
-{% block body %}
-    {% include "map.html" %}
-{% endblock %}
+<p style="text-align: center; padding-top: 15vh">Data from <a
+        href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
+</p>
+<div class="container">
+    <h2>Derby Lakes</h2>
+    {% for lake in derby_lakes %}
+        <p>{{ lake }}</p>
+    {% endfor %}
+</div>
 </body>
 </html>

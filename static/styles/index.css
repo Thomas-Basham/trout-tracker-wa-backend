@@ -1,0 +1,17 @@
+.folium-map{
+    text-align: center;
+}
+html{
+    background-color: beige;
+}
+h1 {
+    text-align: center;
+    color: cadetblue;
+}
+
+.container {
+    text-align: center;
+    margin: 0 auto;
+    width: 60vw;
+    height: 40vh;
+}
