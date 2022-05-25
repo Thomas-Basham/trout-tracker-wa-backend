@@ -29,7 +29,7 @@ def make_map(df):
     for i, r in df.iterrows():
         html = f'''
         <h3 >{r["Lake"].capitalize()}<h3/>
-        <a style="color:blue" href="{r["Directions"]}">Directions via Googlemaps <a/>
+        <a style="color:blue" href="{r["Directions"]}" target="_blank">Directions via Googlemaps <a/>
         <p style="color:green">Stocked Amount: {r["Stocked Fish"]}<p/>
         <p style="color:red">Date Stocked: {r["dates"]}</p>'''
 

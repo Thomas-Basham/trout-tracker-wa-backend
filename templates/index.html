@@ -17,10 +17,10 @@
     {{ folium_map | safe }}
 </div>
 
-<p style="text-align: center; padding-top: 15vh">Data from <a
+<p style="text-align: center; padding-top: 30vh">Data from <a
         href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
 </p>
-<div class="container">
+<div style="padding-top: 2vh; color: cadetblue" class="container">
     <h2>Derby Lakes</h2>
     {% for lake in derby_lakes %}
         <p>{{ lake }}</p>
