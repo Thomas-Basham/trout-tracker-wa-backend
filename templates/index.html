@@ -17,14 +17,16 @@
     {{ folium_map | safe }}
 </div>
 
-<p style="text-align: center; padding-top: 30vh">Data from <a
+<p style="text-align: center; padding-top: 40vh">Data from <a
         href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
 </p>
-<div style="padding-top: 2vh; color: cadetblue" class="container">
+<div style="padding-top: 30px; color: cadetblue" class="container">
     <h2>Derby Lakes</h2>
     {% for lake in derby_lakes %}
         <p>{{ lake }}</p>
     {% endfor %}
+
+<ul style="list-style: none"> <li><h2>Resources</h2></li><li>  <a class="external-link" href="https://fortress.wa.gov/dfw/erules/efishrules/" target="_blank">   Emergency fishing rule changes  </a> </li> <li>  <a class="external-link" href="https://www.eregulations.com/washington/fishing/" target="_blank">   Sportfishing rules pamphlet  </a> </li> <li>  <a href="https://wdfw.wa.gov/fishing/reports" target="_blank">   Fish stocking reports  </a> </li> <li>  <a href="https://wdfw.wa.gov/fishing/regulations/app" target="_blank">   Fish Washington mobile app  </a> </li> <li>  <a class="external-link" href="https://fishhunt.dfw.wa.gov/#/application/help?tab=3&amp;subTab=-1" target="_blank">   Buy a fishing license  </a> </li> <li>  <a class="external-link" href="https://www.discoverpass.wa.gov/" target="_blank">   Discover Pass  </a> </li></ul>
 </div>
 </body>
 </html>
