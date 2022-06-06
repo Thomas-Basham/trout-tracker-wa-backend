@@ -9,8 +9,8 @@ from sqlalchemy import create_engine
 
 
 app = Flask(__name__)
-engine = create_engine('postgresql://postgres:reaper4g@localhost:5432/flasksql')
-app.config['SQLALCHEMY_DATABASE_URI'] ='postgresql://postgres:reaper4g@localhost:5432/flasksql'
+engine = create_engine('postgresql://jwfbiznnunacny:fba985f8952e07c141048fb3f27c2f9e92546f0776885f4730e1ae0dff06f6c9@ec2-54-165-178-178.compute-1.amazonaws.com:5432/d785j4kuapuget')
+app.config['SQLALCHEMY_DATABASE_URI'] ='postgresql://jwfbiznnunacny:fba985f8952e07c141048fb3f27c2f9e92546f0776885f4730e1ae0dff06f6c9@ec2-54-165-178-178.compute-1.amazonaws.com:5432/d785j4kuapuget'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
@@ -24,8 +24,8 @@ def render_the_map():
     folium_map = make_map(df)
 
     most_recent_stocked = df.head()
-    most_recent_stocked = df.drop(["latitude", "longitude", "Directions"], axis=1)
-    most_recent_stocked = most_recent_stocked.to_html(classes='table table-stripped' "table-hover" "table-sm")
+    most_recent_stocked = df.drop(["latitude", "longitude", "Directions", "index"], axis=1)
+    most_recent_stocked = most_recent_stocked.to_html(index=False, classes='table table-stripped' "table-hover" "table-sm")
     return render_template('index.html', folium_map=folium_map._repr_html_(),
                            derby_lakes=set(derby_lakes_on_map), most_recent_stocked=most_recent_stocked)
 
@@ -79,8 +79,6 @@ def make_map(df):
                 marker_cluster)
     folium.raster_layers.TileLayer('Stamen Terrain').add_to(m)
     folium.LayerControl().add_to(m)
-
-    df.to_sql('stocked_lakes_table', engine, if_exists='replace')
 
     return m
 
