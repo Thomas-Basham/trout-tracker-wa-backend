@@ -2,16 +2,25 @@
 import pandas as pd
 import folium
 from folium.plugins import MarkerCluster
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, flash
 import re
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+
 
 app = Flask(__name__)
+engine = create_engine('postgresql://postgres:reaper4g@localhost:5432/flasksql')
+app.config['SQLALCHEMY_DATABASE_URI'] ='postgresql://postgres:reaper4g@localhost:5432/flasksql'
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
 
 
 @app.route('/')
 def render_the_map():
     # *********************** DRIVER FOR MAP DATA **********************************
-    df = pd.read_csv("templates/Stocked-Lakes.csv",index_col=0)
+    with engine.connect().execution_options(autocommit=True) as conn:
+        df = pd.read_sql(f"""SELECT * FROM stocked_lakes_table """, con=conn)
     folium_map = make_map(df)
 
     most_recent_stocked = df.head()
@@ -68,6 +77,8 @@ def make_map(df):
     folium.raster_layers.TileLayer('Stamen Terrain').add_to(m)
     folium.LayerControl().add_to(m)
 
+    df.to_sql('stocked_lakes_table', engine, if_exists='replace')
+
     return m
 
 
@@ -93,4 +104,5 @@ def write_derby_participants(df):
 
 
 if __name__ == '__main__':
+    db.create_all()
     app.run(debug=True)
