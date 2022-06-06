@@ -11,11 +11,11 @@ app = Flask(__name__)
 @app.route('/')
 def render_the_map():
     # *********************** DRIVER FOR MAP DATA **********************************
-    df = pd.read_csv("templates/Stocked-Lakes.csv")
+    df = pd.read_csv("templates/Stocked-Lakes.csv",index_col=0)
     folium_map = make_map(df)
 
-    most_recent_stocked = df.head(50)
-    # most_recent_stocked = df.drop("Unnamed")
+    most_recent_stocked = df.head()
+    most_recent_stocked = df.drop(["latitude", "longitude", "Directions"], axis=1)
     most_recent_stocked = most_recent_stocked.to_html(classes='table table-stripped' "table-hover" "table-sm")
     return render_template('index.html', folium_map=folium_map._repr_html_(),
                            derby_lakes=set(derby_lakes_on_map), most_recent_stocked=most_recent_stocked)
