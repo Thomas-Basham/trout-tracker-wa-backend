@@ -5,28 +5,57 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <title>Wa Stocked Trout Finder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Wa Stocked Trout Finder | Thomas Basham</title>
     <link rel="stylesheet" types="text/css" href="{{ url_for('static',filename='/styles/index.css') }}"/>
 
 
 </head>
 <body>
-<h1>Stocked Trout Lakes in Washington</h1>
-<div class="container">
+<h1 style="margin-top: 2vh">Stocked Trout Lakes in Washington</h1>
+<div style="padding-bottom: 3vh" class="container border-bottom">
     {{ folium_map | safe }}
 </div>
 
-<p style="text-align: center; padding-top: 40vh">Data from <a
+<p style="text-align: center; padding-top: 2vh">Data from <a
         href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
 </p>
-<div style="padding-top: 30px; color: cadetblue" class="container">
-    <h2>Derby Lakes</h2>
-    {% for lake in derby_lakes %}
-        <p>{{ lake }}</p>
-    {% endfor %}
 
-<ul style="list-style: none"> <li><h2>Resources</h2></li><li>  <a class="external-link" href="https://fortress.wa.gov/dfw/erules/efishrules/" target="_blank">   Emergency fishing rule changes  </a> </li> <li>  <a class="external-link" href="https://www.eregulations.com/washington/fishing/" target="_blank">   Sportfishing rules pamphlet  </a> </li> <li>  <a href="https://wdfw.wa.gov/fishing/reports" target="_blank">   Fish stocking reports  </a> </li> <li>  <a href="https://wdfw.wa.gov/fishing/regulations/app" target="_blank">   Fish Washington mobile app  </a> </li> <li>  <a class="external-link" href="https://fishhunt.dfw.wa.gov/#/application/help?tab=3&amp;subTab=-1" target="_blank">   Buy a fishing license  </a> </li> <li>  <a class="external-link" href="https://www.discoverpass.wa.gov/" target="_blank">   Discover Pass  </a> </li></ul>
+<div style="padding-top: 1vh; color: cadetblue" class="container row">
+    <div class="col">
+
+        <h2 class="border-bottom">Derby Lakes</h2>
+        {% for lake in derby_lakes %}
+            <p>{{ lake }}</p>
+        {% endfor %}
+
+    </div>
+
+    <div class="col" style="text-align: center">
+        <ul style="list-style: none">
+            <li><h2 class="border-bottom">Resources</h2></li>
+            <li><a class="external-link" href="https://fortress.wa.gov/dfw/erules/efishrules/" target="_blank">
+                Emergency
+                fishing rule changes </a></li>
+            <li><a class="external-link" href="https://www.eregulations.com/washington/fishing/" target="_blank">
+                Sportfishing rules pamphlet </a></li>
+            <li><a href="https://wdfw.wa.gov/fishing/reports" target="_blank"> Fish stocking reports </a></li>
+            <li><a href="https://wdfw.wa.gov/fishing/regulations/app" target="_blank"> Fish Washington mobile app </a>
+            </li>
+            <li><a class="external-link" href="https://fishhunt.dfw.wa.gov/#/application/help?tab=3&amp;subTab=-1"
+                   target="_blank"> Buy a fishing license </a></li>
+            <li><a class="external-link" href="https://www.discoverpass.wa.gov/" target="_blank"> Discover Pass </a>
+            </li>
+        </ul>
+        <div class="col" style="text-align: center; margin: 0 auto">
+
+            <h2 class="border-bottom">Most Recently Stocked Lakes</h2>
+
+            {{ most_recent_stocked | safe }}
+        </div>
+
+    </div>
 </div>
 </body>
 </html>
