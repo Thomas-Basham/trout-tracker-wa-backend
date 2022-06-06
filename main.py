@@ -3,23 +3,29 @@ import pandas as pd
 import folium
 from folium.plugins import MarkerCluster
 from flask import Flask, render_template, url_for
-# from scraper import write_derby_participants
 import re
-import jinja2
-app = Flask(__name__)  #, static_url_path='', static_folder='static'
 
+app = Flask(__name__)
 
 
 @app.route('/')
 def render_the_map():
-    #*********************** DRIVER FOR MAP DATA **********************************
+    # *********************** DRIVER FOR MAP DATA **********************************
     df = pd.read_csv("templates/Stocked-Lakes.csv")
     folium_map = make_map(df)
 
-    most_recent_stocked = df.head(10)
+    most_recent_stocked = df.head(50)
+    # most_recent_stocked = df.drop("Unnamed")
     most_recent_stocked = most_recent_stocked.to_html(classes='table table-stripped' "table-hover" "table-sm")
     return render_template('index.html', folium_map=folium_map._repr_html_(),
                            derby_lakes=set(derby_lakes_on_map), most_recent_stocked=most_recent_stocked)
+
+
+@app.route('/fullscreen')
+def map_full_screen():
+    df = pd.read_csv("templates/Stocked-Lakes.csv")
+    folium_map = make_map(df)
+    return render_template('map_full_screen.html', folium_map=folium_map._repr_html_())
 
 
 # Make the Map with Folium
@@ -40,7 +46,7 @@ def make_map(df):
         <h3 >{r["Lake"].capitalize()}<h3/>
         <p style="color:green">Stocked Amount: {r["Stocked Fish"]}<p/>
         <a style="color:blue" href="{r["Directions"]}" target="_blank">Directions via Googlemaps <a/>
-        <p style="color:red">Date Stocked: {r["Dates"]}</p>
+        <p style="color:red">Date Stocked: {r["Date"]}</p>
         <p style="color:orange">In Trout Derby: {r["Derby Participant"]}</p>
         
         '''
@@ -54,7 +60,7 @@ def make_map(df):
         if r["Derby Participant"] == True:
             folium.Marker(location=location, tooltip=r["Lake"].capitalize(), popup=popup,
                           icon=folium.Icon(color='green', icon= 'info', prefix='fa')).add_to(
-                marker_cluster)
+                m)
         else:
             folium.Marker(location=location, tooltip=r["Lake"].capitalize(), popup=popup,
                           icon=folium.Icon(color='blue', icon= 'info', prefix='fa')).add_to(
@@ -62,11 +68,12 @@ def make_map(df):
     folium.raster_layers.TileLayer('Stamen Terrain').add_to(m)
     folium.LayerControl().add_to(m)
 
-
     return m
 
 
 derby_lakes_on_map = []
+
+
 def write_derby_participants(df):
     df["Derby Participant"] = ""
     derby_lakes = ['Golf Course Pond', 'Beehive Reservoir', 'Battle Ground Lake', 'Blue Lake (Columbia County)', 'Horseshoe Lake (Cowlitz County)', 'Jameson Lake', 'Curlew Lake', 'Dalton Lake', 'Corral Lake', 'Duck Lake', 'Deer Lake (Island County)', 'Leland Lake', 'Cottage Lake', 'Island Lake (Kitsap County)', 'Easton Ponds', 'Rowland Lake', 'Carlisle Lake', 'Fishtrap Lake', 'Benson Lake', 'Alta Lake', 'Black Lake', 'Diamond Lake', 'American Lake', 'Lake Erie', 'Icehouse Lake', 'Ballinger Lake', 'Badger Lake', 'Cedar Lake', 'Deep Lake (Thurston County)', 'Bennington Lake', 'Lake Padden', 'Garfield Pond', 'I-82 Pond 4']
@@ -81,7 +88,7 @@ def write_derby_participants(df):
                 df.loc[ind, ['Derby Participant']] = [True]
             # elif lake.capitalize() not in df['Lake'][ind].capitalize():
             #     df.loc[ind, ['Derby Participant']] = [False]
-    print(f"DERBY LAKES: {(set(derby_lakes_on_map))}")
+    # print(f"DERBY LAKES: {(set(derby_lakes_on_map))}")
     return df
 
 
