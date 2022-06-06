@@ -26,13 +26,10 @@
 
 </header>
 <div style="padding-bottom: 3vh; width: 100%" class="container border-bottom">
-    <a href="/fullscreen">View Larger Map<span class="glyphicon glyphicon-share"></span></a>
+    <a href="/fullscreen">View Larger Map(For Mobile)<span class="glyphicon glyphicon-share"></span></a>
     {{ folium_map | safe }}
 </div>
 
-<p style="text-align: center; padding-top: 2vh">Data from <a
-        href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
-</p>
 
 <div style="padding-top: 1vh; color: cadetblue" class="container row">
     <div class="col">
@@ -70,6 +67,9 @@
     <div class="row" style="text-align: center;">
 
         <div>
+<h1 style="text-align: center; padding-top: 2vh">Data From <a
+        href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
+</h1>
             {{ most_recent_stocked | safe }}
         </div>
     </div>
