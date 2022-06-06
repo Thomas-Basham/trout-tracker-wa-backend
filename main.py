@@ -16,11 +16,10 @@ def render_the_map():
     df = pd.read_csv("templates/Stocked-Lakes.csv")
     folium_map = make_map(df)
 
-    derby_lakes = ['Golf Course Pond', 'Beehive Reservoir', 'Battle Ground Lake', 'Blue Lake (Columbia County)', 'Horseshoe Lake (Cowlitz County)', 'Jameson Lake', 'Curlew Lake', 'Dalton Lake', 'Corral Lake', 'Duck Lake', 'Deer Lake (Island County)', 'Leland Lake', 'Cottage Lake', 'Island Lake (Kitsap County)', 'Easton Ponds', 'Rowland Lake', 'Carlisle Lake', 'Fishtrap Lake', 'Benson Lake', 'Alta Lake', 'Black Lake', 'Diamond Lake', 'American Lake', 'Lake Erie', 'Icehouse Lake', 'Ballinger Lake', 'Badger Lake', 'Cedar Lake', 'Deep Lake (Thurston County)', 'Bennington Lake', 'Lake Padden', 'Garfield Pond', 'I-82 Pond 4']
     most_recent_stocked = df.head(10)
     most_recent_stocked = most_recent_stocked.to_html(classes='table table-stripped' "table-hover" "table-sm")
     return render_template('index.html', folium_map=folium_map._repr_html_(),
-                           derby_lakes=derby_lakes, most_recent_stocked=most_recent_stocked)
+                           derby_lakes=set(derby_lakes_on_map), most_recent_stocked=most_recent_stocked)
 
 
 # Make the Map with Folium
@@ -51,14 +50,14 @@ def make_map(df):
 
         location = (r["latitude"], r["longitude"])
 
-        if r["Derby Participant"] == False:
-            folium.Marker(location=location, tooltip=r["Lake"].capitalize(), popup=popup,
-                          icon=folium.Icon(color='blue', icon= 'info', prefix='fa')).add_to(
-                marker_cluster)
 
         if r["Derby Participant"] == True:
             folium.Marker(location=location, tooltip=r["Lake"].capitalize(), popup=popup,
                           icon=folium.Icon(color='green', icon= 'info', prefix='fa')).add_to(
+                marker_cluster)
+        else:
+            folium.Marker(location=location, tooltip=r["Lake"].capitalize(), popup=popup,
+                          icon=folium.Icon(color='blue', icon= 'info', prefix='fa')).add_to(
                 marker_cluster)
     folium.raster_layers.TileLayer('Stamen Terrain').add_to(m)
     folium.LayerControl().add_to(m)
@@ -67,6 +66,7 @@ def make_map(df):
     return m
 
 
+derby_lakes_on_map = []
 def write_derby_participants(df):
     df["Derby Participant"] = ""
     derby_lakes = ['Golf Course Pond', 'Beehive Reservoir', 'Battle Ground Lake', 'Blue Lake (Columbia County)', 'Horseshoe Lake (Cowlitz County)', 'Jameson Lake', 'Curlew Lake', 'Dalton Lake', 'Corral Lake', 'Duck Lake', 'Deer Lake (Island County)', 'Leland Lake', 'Cottage Lake', 'Island Lake (Kitsap County)', 'Easton Ponds', 'Rowland Lake', 'Carlisle Lake', 'Fishtrap Lake', 'Benson Lake', 'Alta Lake', 'Black Lake', 'Diamond Lake', 'American Lake', 'Lake Erie', 'Icehouse Lake', 'Ballinger Lake', 'Badger Lake', 'Cedar Lake', 'Deep Lake (Thurston County)', 'Bennington Lake', 'Lake Padden', 'Garfield Pond', 'I-82 Pond 4']
@@ -74,15 +74,14 @@ def write_derby_participants(df):
 
     # print(df[df['Lake'].str.contains('Pond')==True])
 
-    derby_lakes_on_map = []
     for lake in derby_lakes:
         for ind in df.index:
             if lake.capitalize() in df['Lake'][ind].capitalize():
                 derby_lakes_on_map.append(lake)
                 df.loc[ind, ['Derby Participant']] = [True]
-            else:
-                df.loc[ind, ['Derby Participant']] = [False]
-    print((set(derby_lakes_on_map)))
+            # elif lake.capitalize() not in df['Lake'][ind].capitalize():
+            #     df.loc[ind, ['Derby Participant']] = [False]
+    print(f"DERBY LAKES: {(set(derby_lakes_on_map))}")
     return df
 
 
