@@ -25,3 +25,5 @@ soupsieve==2.3.2.post1
 SQLAlchemy==1.4.37
 urllib3==1.26.9
 Werkzeug==2.1.2
+
+pytest~=7.1.2

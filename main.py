@@ -1,3 +1,4 @@
+import os
 
 import pandas as pd
 import folium
@@ -6,11 +7,11 @@ from flask import Flask, render_template, url_for, request, flash
 import re
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
-
+from dotenv import load_dotenv
 
 app = Flask(__name__)
-engine = create_engine('postgresql://jwfbiznnunacny:fba985f8952e07c141048fb3f27c2f9e92546f0776885f4730e1ae0dff06f6c9@ec2-54-165-178-178.compute-1.amazonaws.com:5432/d785j4kuapuget')
-app.config['SQLALCHEMY_DATABASE_URI'] ='postgresql://jwfbiznnunacny:fba985f8952e07c141048fb3f27c2f9e92546f0776885f4730e1ae0dff06f6c9@ec2-54-165-178-178.compute-1.amazonaws.com:5432/d785j4kuapuget'
+engine = create_engine(os.environ.get("SQLALCHEMY_DATABASE_URI"))
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("SQLALCHEMY_DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
@@ -48,7 +49,6 @@ def make_map(df):
     m = folium.Map(width="100%" , max_width="100%", max_height="100%", location=df[["latitude", "longitude"]].mean().to_list(),
                    zoom_start=7)  # if the points are too close to each other, cluster them, create a cluster overlay with MarkerCluster, add to m
     marker_cluster = MarkerCluster().add_to(m)
-    derby_lakes = ['Golf Course Pond', 'Beehive Reservoir', 'Battle Ground Lake', 'Blue Lake (Columbia County)', 'Horseshoe Lake (Cowlitz County)', 'Jameson Lake', 'Curlew Lake', 'Dalton Lake', 'Corral Lake', 'Duck Lake', 'Deer Lake (Island County)', 'Leland Lake', 'Cottage Lake', 'Island Lake (Kitsap County)', 'Easton Ponds', 'Rowland Lake', 'Carlisle Lake', 'Fishtrap Lake', 'Benson Lake', 'Alta Lake', 'Black Lake', 'Diamond Lake', 'American Lake', 'Lake Erie', 'Icehouse Lake', 'Ballinger Lake', 'Badger Lake', 'Cedar Lake', 'Deep Lake (Thurston County)', 'Bennington Lake', 'Lake Padden', 'Garfield Pond', 'I-82 Pond 4']
 
     # draw the markers and assign popup and hover texts
     # add the markers the the cluster layers so that they are automatically clustered
@@ -67,7 +67,6 @@ def make_map(df):
         popup = folium.Popup(iframe, max_width="max-content")
 
         location = (r["latitude"], r["longitude"])
-
 
         if r["Derby Participant"] == True:
             folium.Marker(location=location, tooltip=r["Lake"].capitalize(), popup=popup,
@@ -98,9 +97,7 @@ def write_derby_participants(df):
             if lake.capitalize() in df['Lake'][ind].capitalize():
                 derby_lakes_on_map.append(lake)
                 df.loc[ind, ['Derby Participant']] = [True]
-            # elif lake.capitalize() not in df['Lake'][ind].capitalize():
-            #     df.loc[ind, ['Derby Participant']] = [False]
-    # print(f"DERBY LAKES: {(set(derby_lakes_on_map))}")
+
     return df
 
 
