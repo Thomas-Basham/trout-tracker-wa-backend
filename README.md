@@ -1,18 +1,17 @@
 # wa-stocked-trout-finder
 [Deployed Site](https://wa-stocked-trout-finder.herokuapp.com/)
 
-A Full Stack Flask Web App used for visually displaying the most recent lakes that were stocked with trout in Washington State 
+A Full Stack Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an interactive map
 
 Data scraped from WDFW.wa.gov website with Beautiful Soup
 
 put into a Pandas Dataframe
 
-Fed to Folium to render the map
-
 Data persisted with Heroku Postgres
 
-Chron Job set to scrape WDFW and update with new data every night at 2:00am
+Fed to Folium to render the map
 
+Chron Job set to scrape WDFW and update with new data every night at 2:00am
 
 
 ## Resources
