@@ -11,7 +11,8 @@ Data persisted with Heroku Postgres
 
 Fed to Folium to render the map
 
-Chron Job set to scrape WDFW and update with new data every night at 2:00am
+Chron Job set to scrape WDFW and update with new data every morning at 5:00am
+
 
 
 ## Resources

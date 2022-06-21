@@ -5,7 +5,9 @@ import numpy as np
 from geopy import GoogleV3
 import re
 import pandas as pd
-import dotenv
+from dotenv import load_dotenv
+load_dotenv()
+
 from geopy.geocoders import Nominatim
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
@@ -136,7 +138,7 @@ def get_lat_lon():
     # Use locator to get lat and lon of lake names
     # Google is preffered, Nominatim for backup
     #     locator = Nominatim(user_agent="your_app_name")
-    locator = GoogleV3(api_key=os.environ.get('GV3_API_KEY'))
+    locator = GoogleV3(api_key=os.getenv('GV3_API_KEY'))
     # locator = GoogleV3(api_key=os.getenv('API_KEY'))
 
     for ind in df.index:
@@ -159,9 +161,7 @@ def get_lat_lon():
                 df.loc[ind, ['longitude']] = [np.nan]
             #                 https://www.google.com/maps/search/?api=1&query=pizza+seattle+wa
 
-    # Make a CSV File for testing purposes
-    # TODO Remove this upon deployment
-
+    write_derby_participants(df)
     df.to_sql('stocked_lakes_table', engine, if_exists='replace')
 
     print(df.dropna())
@@ -188,9 +188,34 @@ def scrape_derby_names():
     text_lst_trimmed = []
     for i in text_list:
         text_lst_trimmed.append(i.replace("\n", ""))
+    text_lst_trimmed = [re.sub(r"\(.*?\)", '', text) for text in text_lst_trimmed]
     print(text_lst_trimmed)
     return text_lst_trimmed
 
+
+
+
+def write_derby_participants(df):
+    df["Derby Participant"] = ""
+    # derby_lakes = ['Golf Course Pond', 'Beehive Reservoir', 'Battle Ground Lake', 'Blue Lake (Columbia County)', 'Horseshoe Lake (Cowlitz County)', 'Jameson Lake', 'Curlew Lake', 'Dalton Lake', 'Corral Lake', 'Duck Lake', 'Deer Lake (Island County)', 'Leland Lake', 'Cottage Lake', 'Island Lake (Kitsap County)', 'Easton Ponds', 'Rowland Lake', 'Carlisle Lake', 'Fishtrap Lake', 'Benson Lake', 'Alta Lake', 'Black Lake', 'Diamond Lake', 'American Lake', 'Lake Erie', 'Icehouse Lake', 'Ballinger Lake', 'Badger Lake', 'Cedar Lake', 'Deep Lake (Thurston County)', 'Bennington Lake', 'Lake Padden', 'Garfield Pond', 'I-82 Pond 4']
+
+    derby_lakes_on_map = []
+    derby_lakes = scrape_derby_names()
+
+    # print(df[df['Lake'].str.contains('Pond')==True])
+
+    for lake in derby_lakes:
+        for ind in df.index:
+            if lake.capitalize() in df['Lake'][ind].capitalize():
+                derby_lakes_on_map.append(lake)
+                df.loc[ind, ['Derby Participant']] = True
+
+    derbydf = pd.DataFrame(
+        {'Lake': derby_lakes_on_map,
+         })
+    derbydf.to_sql('derby_lakes_table', engine, if_exists='replace')
+
+    return df
 
 # DRIVER
 if __name__ == "__main__":
