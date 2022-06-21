@@ -10,18 +10,14 @@
     <title>Wa Stocked Trout Finder | Thomas Basham</title>
     <link rel="stylesheet" types="text/css" href="{{ url_for('static',filename='/styles/index.css') }}"/>
 
-    <div class="row">
-    <div class="col-1" style="width: fit-content">
-    <a href="/">Home</a>
-
-
+    <div class="col-1" >
+    <a href="/" style="display: inline-block;vertical-align: middle;">Home</a>
+    <img alt="screen-rotate-img" src="/static/screen-rotate.png" width="20" style=" display: inline-block;vertical-align: middle;">
     </div>
 
 
 
 
-
-</div>
     {{ folium_map | safe }}
 
 
