@@ -1,4 +1,6 @@
 # wa-stocked-trout-finder
+
+**Author:** Thomas Basham
 [Deployed Site](https://wa-stocked-trout-finder.herokuapp.com/)
 
 A Full Stack Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an interactive map
