@@ -6,22 +6,36 @@ from geopy import GoogleV3
 import re
 import pandas as pd
 from dotenv import load_dotenv
-load_dotenv()
-
 from geopy.geocoders import Nominatim
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from main import app
 import os
-# Scrape https://wdfw.wa.gov/fishing/reports/stocking/trout-plants
+
+load_dotenv()
+
+# Load Database
 engine = create_engine(os.environ.get("SQLALCHEMY_DATABASE_URI"))
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("SQLALCHEMY_DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
 db = SQLAlchemy(app)
 db.create_all()
 
 
+"""
+************************* Scrape data to render the map from ************************* 
+
+Need: Lake names, stock count, date stocked, derby participant, and lat/lon
+Steps: 
+1. Scrape the data from wdfw.wa.gov/
+2. Use Geolocator to get lat/lon
+3. Make the data into a Pandas Dataframe
+4. Save Pandas Dataframe to Postgres Database 
+
+"""
+
+
+# Scrape https://wdfw.wa.gov/fishing/reports/stocking/trout-plants
 # return list of lake names
 def scrape_lake_names():
     url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants"
@@ -77,7 +91,7 @@ def scrape_stock_count():
     text_list = [i.strip() for i in text_list]
     return text_list
 
-#
+
 # Return list of Scraped Dates
 def scrape_date():
     url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants"
@@ -101,6 +115,7 @@ def scrape_date():
 
 
 # Make a Dataframe from scraped data
+# Driver Function for above code
 def make_df():
     # Get lake names, Stock Count, And Dates
     lakes = scrape_lake_names()
@@ -129,45 +144,8 @@ def make_df():
     return df
 
 
-# Driver Function
-# Find Lat Lon's from lake names
-# Update dataframe with the Lat Lon's
-def get_lat_lon():
-    df = make_df()
-
-    # Use locator to get lat and lon of lake names
-    # Google is preffered, Nominatim for backup
-    #     locator = Nominatim(user_agent="your_app_name")
-    locator = GoogleV3(api_key=os.getenv('GV3_API_KEY'))
-    # locator = GoogleV3(api_key=os.getenv('API_KEY'))
-
-    for ind in df.index:
-        if df['Lake'][ind]:
-            if locator.geocode(df['Lake'][ind]):
-                # Nominatim
-                #                   df.loc[ind, ['latitude']] = [locator.geocode(df['Lake'][ind]).latitude]
-                #                   df.loc[ind, ['longitude']] = [locator.geocode(df['Lake'][ind]).longitude]
-
-                # GoogleV3
-                df.loc[ind, ['latitude']] = [locator.geocode(df['Lake'][ind]).point[0]]
-                df.loc[ind, ['longitude']] = [locator.geocode(df['Lake'][ind]).point[1]]
-
-                df.loc[ind, ['Directions']] = [f"https://www.google.com/maps/search/?api=1&query={df['Lake'][ind]}"]
-
-                # Account for errors.
-            # TODO: make a list of nan to display lakes not on map
-            else:
-                df.loc[ind, ['latitude']] = [np.nan]
-                df.loc[ind, ['longitude']] = [np.nan]
-            #                 https://www.google.com/maps/search/?api=1&query=pizza+seattle+wa
-
-    write_derby_participants(df)
-    df.to_sql('stocked_lakes_table', engine, if_exists='replace')
-
-    print(df.dropna())
-    return df.dropna()
-
-# TODO Make another table for derby participants from scraped names
+# Get the names of lakes that are in the state trout derby
+# Helper function for below code
 def scrape_derby_names():
     url_string = "https://wdfw.wa.gov/fishing/contests/trout-derby/lakes"
     response = requests.get(url_string)
@@ -193,16 +171,13 @@ def scrape_derby_names():
     return text_lst_trimmed
 
 
-
-
+# Write the derby lake to the dataframe if lake will exist on the map
+# Helper function for below code
 def write_derby_participants(df):
     df["Derby Participant"] = ""
-    # derby_lakes = ['Golf Course Pond', 'Beehive Reservoir', 'Battle Ground Lake', 'Blue Lake (Columbia County)', 'Horseshoe Lake (Cowlitz County)', 'Jameson Lake', 'Curlew Lake', 'Dalton Lake', 'Corral Lake', 'Duck Lake', 'Deer Lake (Island County)', 'Leland Lake', 'Cottage Lake', 'Island Lake (Kitsap County)', 'Easton Ponds', 'Rowland Lake', 'Carlisle Lake', 'Fishtrap Lake', 'Benson Lake', 'Alta Lake', 'Black Lake', 'Diamond Lake', 'American Lake', 'Lake Erie', 'Icehouse Lake', 'Ballinger Lake', 'Badger Lake', 'Cedar Lake', 'Deep Lake (Thurston County)', 'Bennington Lake', 'Lake Padden', 'Garfield Pond', 'I-82 Pond 4']
 
     derby_lakes_on_map = []
     derby_lakes = scrape_derby_names()
-
-    # print(df[df['Lake'].str.contains('Pond')==True])
 
     for lake in derby_lakes:
         for ind in df.index:
@@ -210,13 +185,55 @@ def write_derby_participants(df):
                 derby_lakes_on_map.append(lake)
                 df.loc[ind, ['Derby Participant']] = True
 
-    derbydf = pd.DataFrame(
+    derby_df = pd.DataFrame(
         {'Lake': derby_lakes_on_map,
          })
-    derbydf.to_sql('derby_lakes_table', engine, if_exists='replace')
+    derby_df.to_sql('derby_lakes_table', engine, if_exists='replace')
 
     return df
 
-# DRIVER
+
+# Driver Function
+# Find Lat Lon's from lake names
+# Update dataframe with the Lat Lon's
+# Save dataframe to Postgres database for use with map
+def get_lat_lon():
+    df = make_df()
+
+    # Use locator to get lat and lon of lake names
+    # Google is preferred, Use Nominatim for backup
+    #     locator = Nominatim(user_agent="your_app_name")
+    locator = GoogleV3(api_key=os.getenv('GV3_API_KEY'))
+
+    # iterate through dataframe and insert lat/lon per lake name
+    for ind in df.index:
+        if df['Lake'][ind]:
+            if locator.geocode(df['Lake'][ind]):
+                # Nominatim
+                #                   df.loc[ind, ['latitude']] = [locator.geocode(df['Lake'][ind]).latitude]
+                #                   df.loc[ind, ['longitude']] = [locator.geocode(df['Lake'][ind]).longitude]
+
+                # GoogleV3
+                df.loc[ind, ['latitude']] = [locator.geocode(df['Lake'][ind]).point[0]]
+                df.loc[ind, ['longitude']] = [locator.geocode(df['Lake'][ind]).point[1]]
+
+                df.loc[ind, ['Directions']] = [f"https://www.google.com/maps/search/?api=1&query={df['Lake'][ind]}"]
+
+            # Account for errors.
+            # TODO: make a list of nan to display lakes not on map Note: Only Necessary if GV3 Fails
+            else:
+                df.loc[ind, ['latitude']] = [np.nan]
+                df.loc[ind, ['longitude']] = [np.nan]
+
+    write_derby_participants(df)
+
+    # Save the dataframe to Postgres Database
+    df.to_sql('stocked_lakes_table', engine, if_exists='replace')
+
+    print(df.dropna())
+    return df.dropna()
+
+
+# Run Once Every morning on Heroku Scheduler
 if __name__ == "__main__":
     get_lat_lon()
