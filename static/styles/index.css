@@ -51,15 +51,20 @@ main  {
 }
 
 
-table {
+table, .table {
     color: white;
     border-radius: 10px !important;
 }
 
-.table-node{
+tr:nth-child(even) {
+    background-color: blue !important;
+}
+
+
+.table-container{
     height: 40vh;
     overflow: auto;
-    border-radius: 10px;
+    border-radius: 10px !important;
 }
 
 .folium-map {
