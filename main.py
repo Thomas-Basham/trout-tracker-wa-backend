@@ -1,20 +1,19 @@
 import os
-
 import pandas as pd
 import folium
-from folium.plugins import MarkerCluster
-from flask import Flask, render_template, url_for, request, flash
-import re
+from folium.plugins import MarkerCluster, Fullscreen
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
+
+# Postgres Database
 engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
 db = SQLAlchemy(app)
 
 
@@ -30,7 +29,7 @@ def render_the_map():
 
     most_recent_stocked = df.head()
     most_recent_stocked = df.drop(["latitude", "longitude", "Directions", "index"], axis=1)
-    most_recent_stocked = most_recent_stocked.to_html(index=False, classes='table table-stripped' "table-hover" "table-sm")
+    most_recent_stocked = most_recent_stocked.to_html(index=False, classes='table table-hover table-bordered table-dark table-striped table-sm')
     return render_template('index.html', folium_map=folium_map._repr_html_(),
                            derby_lakes=derby_lakes, most_recent_stocked=most_recent_stocked)
 
@@ -50,10 +49,16 @@ def make_map(df):
     # https://towardsdatascience.com/pythons-geocoding-convert-a-list-of-addresses-into-a-map-f522ef513fd6
     # write_derby_participants(df)
     # import the library and its Marker clusterization service
-    m = folium.Map(width="100%" , max_width="100%", max_height="100%", location=df[["latitude", "longitude"]].mean().to_list(),
-                   zoom_start=7)  # if the points are too close to each other, cluster them, create a cluster overlay with MarkerCluster, add to m
+    m = folium.Map(width="100%", max_width="100%", max_height="100%", location=df[["latitude", "longitude"]].mean().to_list(),
+                   zoom_start=7)
+    # if the points are too close to each other, cluster them, create a cluster overlay with MarkerCluster, add to m
     marker_cluster = MarkerCluster().add_to(m)
-
+    Fullscreen(
+        position='topright',
+        title='Expand me',
+        title_cancel='Exit me',
+        force_separate_button=True
+    ).add_to(m)
     # draw the markers and assign popup and hover texts
     # add the markers the the cluster layers so that they are automatically clustered
     for i, r in df.iterrows():
@@ -84,25 +89,6 @@ def make_map(df):
     folium.LayerControl().add_to(m)
 
     return m
-
-#
-# derby_lakes_on_map = []
-
-
-# def write_derby_participants(df):
-#     df["Derby Participant"] = ""
-#     derby_lakes = ['Golf Course Pond', 'Beehive Reservoir', 'Battle Ground Lake', 'Blue Lake (Columbia County)', 'Horseshoe Lake (Cowlitz County)', 'Jameson Lake', 'Curlew Lake', 'Dalton Lake', 'Corral Lake', 'Duck Lake', 'Deer Lake (Island County)', 'Leland Lake', 'Cottage Lake', 'Island Lake (Kitsap County)', 'Easton Ponds', 'Rowland Lake', 'Carlisle Lake', 'Fishtrap Lake', 'Benson Lake', 'Alta Lake', 'Black Lake', 'Diamond Lake', 'American Lake', 'Lake Erie', 'Icehouse Lake', 'Ballinger Lake', 'Badger Lake', 'Cedar Lake', 'Deep Lake (Thurston County)', 'Bennington Lake', 'Lake Padden', 'Garfield Pond', 'I-82 Pond 4']
-#     derby_lakes = [re.sub(r"\(.*?\)", '', text) for text in derby_lakes]
-#
-#     # print(df[df['Lake'].str.contains('Pond')==True])
-#
-#     for lake in derby_lakes:
-#         for ind in df.index:
-#             if lake.capitalize() in df['Lake'][ind].capitalize():
-#                 derby_lakes_on_map.append(lake)
-#                 df.loc[ind, ['Derby Participant']] = [True]
-#
-#     return df
 
 
 if __name__ == '__main__':
