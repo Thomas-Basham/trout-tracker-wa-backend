@@ -1,10 +1,11 @@
 import os
 import pytest
 from dotenv import load_dotenv
-load_dotenv()
 from geopy import GoogleV3
 
-from main import app, db
+from main import app
+
+load_dotenv()
 
 
 def test_app_exists():
