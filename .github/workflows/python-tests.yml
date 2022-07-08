@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-    - 'python/**'
+    - '/**'
   pull_request:
     branches: [ main ]
     paths:
-    - 'python/**'
+    - '/**'
 
 jobs:
   ci:
@@ -32,8 +32,8 @@ jobs:
         run: poetry --help
       - name: Install dependencies
         run: poetry install
-        working-directory: ./python
+        working-directory: ./
       - name: Run pytest
         shell: bash
         run: python -m poetry run python -m pytest -v tests
-        working-directory: ./python
+        working-directory: ./
