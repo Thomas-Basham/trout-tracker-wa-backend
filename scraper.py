@@ -15,8 +15,13 @@ import os
 load_dotenv()
 
 # Load Database
-engine = create_engine(os.environ.get("SQLALCHEMY_DATABASE_URI"))
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("SQLALCHEMY_DATABASE_URI")
+if os.getenv("SQLALCHEMY_DATABASE_URI"):
+    engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
+if not os.getenv("SQLALCHEMY_DATABASE_URI"):
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://"
+    engine = create_engine('sqlite:///')
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 db.create_all()

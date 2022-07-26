@@ -4,11 +4,9 @@ from dotenv import load_dotenv
 from geopy import GoogleV3
 import requests
 from bs4 import BeautifulSoup
+from scraper import get_lat_lon
 
 
-def test_request_example(client):
-    response = client.get("/")
-    assert b"<h1>Washington Stocked Trout Finder</h1>" in response.data
 
 
 def test_scrape_lake_names():
@@ -63,6 +61,12 @@ def test_scrape_derby_names():
     soup = BeautifulSoup(response.content, "html.parser")
     found_text = soup.find("div", {"class": "derby-lakes-list"}).findAll("ul", recursive=False)
     assert found_text
+
+
+@pytest.mark.skip('Skipped for Github Test Badge')
+def test_request_example(client):
+    response = client.get("/")
+    assert b"<h1>Washington Stocked Trout Finder</h1>" in response.data
 
 
 @pytest.mark.skip('Skipped for Github Test Badge')
