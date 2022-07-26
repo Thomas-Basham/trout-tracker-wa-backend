@@ -3,14 +3,12 @@ import pytest
 from dotenv import load_dotenv
 from geopy import GoogleV3
 import requests
-import time
 from bs4 import BeautifulSoup
-import numpy as np
 
 
-def test_app_exists():
-    from main import app
-    assert app
+def test_request_example(client):
+    response = client.get("/")
+    assert b"<h1>Washington Stocked Trout Finder</h1>" in response.data
 
 
 def test_scrape_lake_names():
@@ -66,6 +64,7 @@ def test_scrape_derby_names():
     found_text = soup.find("div", {"class": "derby-lakes-list"}).findAll("ul", recursive=False)
     assert found_text
 
+
 @pytest.mark.skip('Skipped for Github Test Badge')
 def test_geocoder():
     load_dotenv()
@@ -74,3 +73,36 @@ def test_geocoder():
     print(lat_lon)
     assert lat_lon == (46.2775138, -117.814262, 0.0)
 
+
+def create_app():
+    from main import app
+    app.config['TESTING'] = True
+    # Default port is 5000
+    app.config['LIVESERVER_PORT'] = 8943
+    # Default timeout is 5 seconds
+    app.config['LIVESERVER_TIMEOUT'] = 10
+    return app
+
+
+@pytest.fixture()
+def app():
+    app = create_app()
+    app.config.update({
+        "TESTING": True,
+    })
+
+    # other setup can go here
+
+    yield app
+
+    # clean up / reset resources here
+
+
+@pytest.fixture()
+def client(app):
+    return app.test_client()
+
+
+@pytest.fixture()
+def runner(app):
+    return app.test_cli_runner()
