@@ -1,5 +1,7 @@
 # wa-stocked-trout-finder
 
+[![Python application](https://github.com/Thomas-Basham/wa-stocked-trout-finder/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/Thomas-Basham/wa-stocked-trout-finder/actions/workflows/python-app.yml)
+
 **Author:** Thomas Basham
 
 [wa-stocked-trout-finder.herokuapp.com](https://wa-stocked-trout-finder.herokuapp.com)
