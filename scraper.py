@@ -125,7 +125,7 @@ def make_df():
     # Get lake names, Stock Count, And Dates
     lakes = scrape_lake_names()
 
-    amount_scraped = len(lakes)
+    amount_scraped = len(lakes)  # this is to adjust the total returned lakes if needed
 
     lakes = lakes[1:amount_scraped]
 
@@ -135,7 +135,7 @@ def make_df():
     dates = scrape_date()
     dates = dates[1:amount_scraped]
 
-    # Make a Dataframe with empty lat & lon collumns
+    # Make a Dataframe with empty lat & lon columns
     df = pd.DataFrame(
         {'Lake': lakes,
          'Stocked Fish': stock_count,
