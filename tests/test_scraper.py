@@ -7,8 +7,6 @@ from bs4 import BeautifulSoup
 from scraper import get_lat_lon
 
 
-
-
 def test_scrape_lake_names():
     url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants"
     response = requests.get(url_string)
