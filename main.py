@@ -50,9 +50,9 @@ def map_full_screen_view():
     folium_map = make_map(df)
     return render_template('map_full_screen.html', folium_map=folium_map._repr_html_())
 
-@app.route('/about')
-def about_view():
-
+# @app.route('/about')
+# def about_view():
+#
 
 # Make the Map with Folium
 def make_map(df):
