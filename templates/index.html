@@ -39,7 +39,7 @@
 
 <main>
 
-    <div style="padding-bottom: 3vh; width: 100%" class="container border-bottom">
+    <div style="padding-bottom: 1vh; width: 100%" class="container border-bottom mb-4">
         <div class="d-flex justify-content-between ">
             <a href="/fullscreen">View Larger Map<span class="glyphicon glyphicon-share"></span></a>
             <h1 class="">Stocked Trout Lakes in Washington</h1>
@@ -52,7 +52,14 @@
         <div class="col">
 
             <h2 class="border-bottom">Trout Derby Lakes</h2>
-            <h3> (Shown On Map in Green)</h3>
+            <h3> (Shown On Map With Green Pins)</h3>
+
+            <a href="https://wdfw.wa.gov/fishing/contests/trout-derby" target="_blank" rel="noreferrer">Learn more about
+                the Trout Derby</a>
+
+            <br>
+            <br>
+
             {% for lake in derby_lakes %}
                 <div class="row">
                     <p>{{ lake }}</p>
@@ -60,7 +67,12 @@
                 </div>
             {% endfor %}
 
+            {% if derby_lakes|length == 0 %}
 
+                <p>There are no recently Stocked lakes with derby trout. It's most likely all the derby trout have been
+                    caught already. Better luck next year!</p>
+
+            {% endif %}
         </div>
 
         <div class="col" style="text-align: center">
