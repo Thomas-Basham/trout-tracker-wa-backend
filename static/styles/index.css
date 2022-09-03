@@ -54,6 +54,10 @@ a {
     color: white;
 }
 
+a:hover {
+    color: darkcyan;
+}
+
 table, .table {
     color: white;
     border-radius: 10px !important;
@@ -66,9 +70,6 @@ tr:nth-child(even) {
     background-color: #53647B !important;
 }
 
-/*tr:nth-child(odd) {*/
-/*    background-color: #fefefe !important;*/
-/*}*/
 
 
 
@@ -109,9 +110,9 @@ footer a {
     bottom: 0;
 }
 
-.table {
-
+.section {
+    background-color: #53647B;
+    border-radius: 8px;
+    width: 100px !important;
 }
-
-
 
