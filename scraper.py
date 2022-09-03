@@ -26,7 +26,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 db.create_all()
 
-
 """
 ************************* Scrape data to render the map from ************************* 
 
@@ -43,7 +42,7 @@ Steps:
 # Scrape https://wdfw.wa.gov/fishing/reports/stocking/trout-plants
 # return list of lake names
 def scrape_lake_names():
-    url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants"
+    url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
     response = requests.get(url_string)
     if response.status_code != 200:
         print("Error fetching page")
@@ -77,7 +76,7 @@ def scrape_lake_names():
 
 # return list of Stock Counts
 def scrape_stock_count():
-    url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants"
+    url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
     response = requests.get(url_string)
     if response.status_code != 200:
         print(response)
@@ -99,7 +98,7 @@ def scrape_stock_count():
 
 # Return list of Scraped Dates
 def scrape_date():
-    url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants"
+    url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
     response = requests.get(url_string)
     if response.status_code != 200:
         print(response)
