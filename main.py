@@ -24,7 +24,7 @@ db = SQLAlchemy(app)
 
 
 @app.route('/')
-def render_the_map():
+def index_view():
     # *********************** DRIVER FOR MAP DATA **********************************
     with engine.connect().execution_options(autocommit=True) as conn:
         df = pd.read_sql(f"""SELECT * FROM stocked_lakes_table """, con=conn)
@@ -42,13 +42,16 @@ def render_the_map():
 
 
 @app.route('/fullscreen')
-def map_full_screen():
+def map_full_screen_view():
     # df = pd.read_csv("templates/Stocked-Lakes.csv")
     with engine.connect().execution_options(autocommit=True) as conn:
         df = pd.read_sql(f"""SELECT * FROM stocked_lakes_table """, con=conn)
 
     folium_map = make_map(df)
     return render_template('map_full_screen.html', folium_map=folium_map._repr_html_())
+
+@app.route('/about')
+def about_view():
 
 
 # Make the Map with Folium
