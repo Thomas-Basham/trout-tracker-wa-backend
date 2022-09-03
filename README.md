@@ -1,4 +1,4 @@
-trout-finder
+# Trout Finder
 
 [![Python application](https://github.com/Thomas-Basham/wa-stocked-trout-finder/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/Thomas-Basham/wa-stocked-trout-finder/actions/workflows/python-app.yml)
 
