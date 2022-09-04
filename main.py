@@ -44,8 +44,7 @@ def index_view():
     most_recent_stocked = most_recent_stocked.to_html(index=False, classes='table ')
 
     # OPEN_ROUTE_API_KEY
-
-    client = openrouteservice.Client(key='KEY')
+    client = openrouteservice.Client(key=os.getenv('OPEN_ROUTE_API_KEY'))
 
 
     return render_template('index.html', folium_map=folium_map._repr_html_(),
