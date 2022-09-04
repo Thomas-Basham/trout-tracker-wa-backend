@@ -38,9 +38,6 @@ header {
     color: #fefefe
 }
 
-header h1{
-    margin-left: 15vw;
-}
 
 body {
     background-color: #14213d;
@@ -111,8 +108,7 @@ footer a {
 }
 
 .section {
-    background-color: #53647B;
+    /*background-color: #53647B;*/
     border-radius: 8px;
-    width: 100px !important;
 }
 
