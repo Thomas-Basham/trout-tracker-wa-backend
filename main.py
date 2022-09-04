@@ -43,8 +43,8 @@ def index_view():
     most_recent_stocked = df.drop(["latitude", "longitude", "Directions", "index"], axis=1)
     most_recent_stocked = most_recent_stocked.to_html(index=False, classes='table ')
 
-    # OPEN_ROUTE_API_KEY
-    client = openrouteservice.Client(key=os.getenv('OPEN_ROUTE_API_KEY'))
+    # TODO: Setup route service?
+    # client = openrouteservice.Client(key=os.getenv('OPEN_ROUTE_API_KEY'))
 
 
     return render_template('index.html', folium_map=folium_map._repr_html_(),
@@ -112,6 +112,10 @@ def make_map(df):
 
     return folium_map
 
+import sys
+import logging
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
 
 if __name__ == '__main__':
     db.create_all()
