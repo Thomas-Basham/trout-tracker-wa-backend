@@ -47,6 +47,9 @@ main  {
 
 }
 
+p {
+    font-size: 20px !important;
+}
 a {
     color: white;
 }
@@ -67,7 +70,9 @@ tr:nth-child(even) {
     background-color: #53647B !important;
 }
 
-
+tr:hover {
+    background-color: dimgrey !important;
+}
 
 
 .table-container{
