@@ -9,7 +9,8 @@ from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
-
+import sys
+import logging
 
 load_dotenv()
 
@@ -71,7 +72,7 @@ def make_map(df):
                             location=df[["latitude", "longitude"]].mean().to_list(),
                             zoom_start=7)
 
-    # if the points are too close to each other, cluster them, create a cluster overlay with MarkerCluster, add to m
+    # if the points are too close to each other, cluster them, create a cluster overlay with MarkerCluster, add to map
     marker_cluster = MarkerCluster().add_to(folium_map)
     Fullscreen(
         position='topright',
@@ -112,8 +113,7 @@ def make_map(df):
 
     return folium_map
 
-import sys
-import logging
+
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 
