@@ -12,7 +12,7 @@ A Full Stack Flask Web App used for displaying the most recent lakes that were s
 
 * Flask
 
-* Beautiful Soup Data scraped from [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants) 
+* Beautiful Soup (Data scraped from [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants))
 
 * Pandas
 
@@ -38,7 +38,5 @@ A Full Stack Flask Web App used for displaying the most recent lakes that were s
 [measure-driving-distance-time-and-plot-routes-between-two-geographical-locations](https://medium.com/analytics-vidhya/measure-driving-distance-time-and-plot-routes-between-two-geographical-locations-using-python-39995dfea7e)
 
 ### TODO
-* Add About Page
-* Request User location
 * Add Email Alerts 
 * Add user selected map boundary alerts 
