@@ -71,7 +71,8 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: dimgrey !important;
+    background-color: darkcyan !important;
+    cursor: default;
 }
 
 
