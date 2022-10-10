@@ -42,7 +42,8 @@ header {
 body {
     background-color: #14213d;
 }
-main  {
+
+main {
     color: white;
 
 }
@@ -50,6 +51,7 @@ main  {
 p {
     font-size: 20px !important;
 }
+
 a {
     color: white;
 }
@@ -66,6 +68,7 @@ table, .table {
 th {
     text-align: center;
 }
+
 tr:nth-child(even) {
     background-color: #53647B !important;
 }
@@ -76,7 +79,7 @@ tr:hover {
 }
 
 
-.table-container{
+.table-container {
     height: 40vh;
     overflow: auto;
     border-radius: 10px !important;
@@ -95,7 +98,7 @@ iframe {
     margin-bottom: 200px !important;
 }
 
-.leaflet-popup-content{
+.leaflet-popup-content {
     width: 200px !important;
     height: 100px !important;
 }

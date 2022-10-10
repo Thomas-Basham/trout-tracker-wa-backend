@@ -6,7 +6,7 @@ from geopy import GoogleV3
 import re
 import pandas as pd
 from dotenv import load_dotenv
-from geopy.geocoders import Nominatim
+# from geopy.geocoders import Nominatim
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from main import app
