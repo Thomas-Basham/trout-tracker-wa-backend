@@ -2,10 +2,8 @@ import os
 import pandas as pd
 import folium
 from folium.plugins import MarkerCluster, Fullscreen
-import openrouteservice
-from openrouteservice import convert
-import json
-from flask import Flask, render_template, request, jsonify
+
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
@@ -34,19 +32,18 @@ db = SQLAlchemy(app)
 @app.route('/')
 def index_view():
     with engine.connect().execution_options(autocommit=True) as conn:
-        df = pd.read_sql(f"""SELECT * FROM stocked_lakes_table """, con=conn)
-        derbydf = pd.read_sql(f"""SELECT * FROM derby_lakes_table """, con=conn)
-        folium_map = make_map(df)
+        stocked_lakes_df = pd.read_sql(f"""SELECT * FROM stocked_lakes_table """, con=conn)
+        derby_df = pd.read_sql(f"""SELECT * FROM derby_lakes_table """, con=conn)
+        folium_map = make_map(stocked_lakes_df)
 
-    derby_lakes = set(derbydf['Lake'])
+    derby_lakes = set(derby_df['Lake'])
 
-    most_recent_stocked = df.head()
-    most_recent_stocked = df.drop(["latitude", "longitude", "Directions", "index"], axis=1)
+    most_recent_stocked = stocked_lakes_df.head()
+    most_recent_stocked = stocked_lakes_df.drop(["latitude", "longitude", "Directions", "index"], axis=1)
     most_recent_stocked = most_recent_stocked.to_html(index=False, classes='table ')
 
     # TODO: Setup route service?
     # client = openrouteservice.Client(key=os.getenv('OPEN_ROUTE_API_KEY'))
-
 
     return render_template('index.html', folium_map=folium_map._repr_html_(),
                            derby_lakes=derby_lakes, most_recent_stocked=most_recent_stocked)
@@ -55,9 +52,9 @@ def index_view():
 @app.route('/fullscreen')
 def map_full_screen_view():
     with engine.connect().execution_options(autocommit=True) as conn:
-        df = pd.read_sql(f"""SELECT * FROM stocked_lakes_table """, con=conn)
+        stocked_lakes_df = pd.read_sql(f"""SELECT * FROM stocked_lakes_table """, con=conn)
 
-    folium_map = make_map(df)
+    folium_map = make_map(stocked_lakes_df)
     return render_template('map_full_screen.html', folium_map=folium_map._repr_html_())
 
 
