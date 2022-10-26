@@ -96,7 +96,7 @@ def make_map(df):
         # green icon for derby lake participant
         if r["Derby Participant"] == "true":
             folium.Marker(location=location, tooltip=r["Lake"].capitalize(), popup=popup,
-                          icon=folium.Icon(color='green', icon='info', prefix='fa')).add_to(
+                          icon=folium.Icon(color='yellow', icon='trophy', prefix='fa')).add_to(
                 folium_map)
 
         # blue icon for all other lakes
