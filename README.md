@@ -1,6 +1,5 @@
 # Trout Finder
 
-[![Python application](https://github.com/Thomas-Basham/trout-finder/actions/workflows/python-app.yml/badge.svg)](https://github.com/Thomas-Basham/trout-finder/actions/workflows/python-app.yml)
 
 **Author:** Thomas Basham
 
@@ -9,6 +8,8 @@
 ![Python application](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![Python application](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Python application]( 	https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)
+
+[![Python application](https://github.com/Thomas-Basham/trout-finder/actions/workflows/python-app.yml/badge.svg)](https://github.com/Thomas-Basham/trout-finder/actions/workflows/python-app.yml)
 
 A Full Stack Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an interactive map
 
