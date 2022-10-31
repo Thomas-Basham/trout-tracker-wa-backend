@@ -23,7 +23,7 @@ A Flask Web App used for displaying the most recent lakes that were stocked with
 
 * Folium
 
-* Postgresql
+* PostgreSQL
 
 * Heroku Scheduler(To schedule webscraping daily)
 
@@ -37,8 +37,3 @@ A Flask Web App used for displaying the most recent lakes that were stocked with
 
 [Pandas to SQL](https://towardsdatascience.com/upload-your-pandas-dataframe-to-your-database-10x-faster-eb6dc6609ddf)
 
-[measure-driving-distance-time-and-plot-routes-between-two-geographical-locations](https://medium.com/analytics-vidhya/measure-driving-distance-time-and-plot-routes-between-two-geographical-locations-using-python-39995dfea7e)
-
-### TODO
-* Add Email Alerts 
-* Add user selected map boundary alerts 
