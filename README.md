@@ -3,7 +3,7 @@
 
 **Author:** Thomas Basham
 
-[wa-stocked-trout-finder.herokuapp.com](https://wa-stocked-trout-finder.herokuapp.com)
+[trout-finder.vercel.app](https://trout-finder.vercel.app)
 
 ![Python application](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![Python application](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
