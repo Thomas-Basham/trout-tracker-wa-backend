@@ -13,7 +13,7 @@ import logging
 load_dotenv()
 
 app = Flask(__name__)
-
+app.app_context().push()
 # ************** Postgres Database **************
 # If database in .env exists, use that,
 if os.getenv("SQLALCHEMY_DATABASE_URI"):
