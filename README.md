@@ -13,7 +13,7 @@
 
 A Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an interactive map
 
-## Tech Used 
+23## Tech Used 
 
 * Flask
 
@@ -29,6 +29,11 @@ A Flask Web App used for displaying the most recent lakes that were stocked with
 
 * Google V3 Geolocator(To get lat/lon of lakes)
 
+![screenshot](static/screenshots/WaStockedTroutLakes1.png)
+![screenshot](static/screenshots/WaStockedTroutLakes2.png)
+![screenshot](static/screenshots/WaStockedTroutLakes3.png)
+![screenshot](static/screenshots/WaStockedTroutLakes4.png)
+![screenshot](static/screenshots/WaStockedTroutLakes5.png)
 
 ## Resources
 [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants)
