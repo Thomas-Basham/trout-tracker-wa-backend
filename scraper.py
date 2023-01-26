@@ -7,7 +7,7 @@ import re
 import pandas as pd
 from dotenv import load_dotenv
 # from geopy.geocoders import Nominatim
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from main import app
 import os
@@ -23,8 +23,8 @@ if not os.getenv("SQLALCHEMY_DATABASE_URI"):
     engine = create_engine('sqlite:///')
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db = SQLAlchemy(app)
-db.create_all()
+# db = SQLAlchemy(app)
+# db.create_all()
 
 """
 ************************* Scrape data to render the map from ************************* 

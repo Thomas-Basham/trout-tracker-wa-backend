@@ -4,7 +4,7 @@ import folium
 from folium.plugins import MarkerCluster, Fullscreen
 
 from flask import Flask, render_template
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 from dotenv import load_dotenv
 import sys
@@ -26,7 +26,7 @@ if not os.getenv("SQLALCHEMY_DATABASE_URI"):
   engine = create_engine('sqlite://')
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 
 
 @app.route('/')
@@ -111,5 +111,5 @@ app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
 
 if __name__ == '__main__':
-  db.create_all()
+  # db.create_all()
   app.run(debug=False)
