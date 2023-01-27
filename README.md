@@ -11,6 +11,8 @@
 
 [![Python application](https://github.com/Thomas-Basham/trout-finder/actions/workflows/python-app.yml/badge.svg)](https://github.com/Thomas-Basham/trout-finder/actions/workflows/python-app.yml)
 
+[![daily-cron](https://github.com/Thomas-Basham/trout-finder/actions/workflows/cron.yaml/badge.svg)](https://github.com/Thomas-Basham/trout-finder/actions/workflows/cron.yaml)
+
 A Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an interactive map
 
 23## Tech Used 

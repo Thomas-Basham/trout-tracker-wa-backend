@@ -25,6 +25,7 @@ if not os.getenv("SQLALCHEMY_DATABASE_URI"):
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
+
 @app.route('/')
 def index_view():
   with engine.connect().execution_options(autocommit=True) as conn:
@@ -59,7 +60,7 @@ def make_map(lakes):
     position='topright',
     title='Expand me',
     title_cancel='Exit me',
-    force_separate_button=True
+    force_separate_button=False
   ).add_to(folium_map)
 
   for lake in lakes:
