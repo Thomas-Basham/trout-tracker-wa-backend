@@ -25,7 +25,6 @@ if not os.getenv("SQLALCHEMY_DATABASE_URI"):
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
-
 @app.route('/')
 def index_view():
   with engine.connect().execution_options(autocommit=True) as conn:
@@ -37,6 +36,7 @@ def index_view():
 
   return render_template('index.html', folium_map=folium_map,
                          derby_lakes=derby_lakes_set, most_recent_stocked=stocked_lakes)
+
 
 @app.route('/fullscreen')
 def map_full_screen_view():
@@ -87,6 +87,7 @@ def make_map(lakes):
   folium.LayerControl().add_to(folium_map)
 
   return folium_map
+
 
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.ERROR)
