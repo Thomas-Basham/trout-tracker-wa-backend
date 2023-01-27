@@ -1,30 +1,59 @@
 import requests
 import time
 from bs4 import BeautifulSoup
-import numpy as np
 from geopy import GoogleV3
 import re
-import pandas as pd
 from dotenv import load_dotenv
 # from geopy.geocoders import Nominatim
-# from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
 from main import app
 import os
 
 load_dotenv()
+#
+# from sqlalchemy import create_engine, Column, Integer, String, Date
+# from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine, Column, Integer, Date, String, Boolean
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+# Create a SQLAlchemy base
+Base = declarative_base()
+
+
+# Create the stocked_lakes_table class
+class StockedLakes(Base):
+  __tablename__ = 'stocked_lakes_table'
+  id = Column(Integer, primary_key=True)
+  lake = Column(String)
+  stocked_fish = Column(String)
+  date = Column(String)
+  latitude = Column(String)
+  longitude = Column(String)
+  directions = Column(String)
+  derby_participant = Column(Boolean)
+
+
+class DerbyLake(Base):
+  __tablename__ = 'derby_lakes_table'
+  id = Column(Integer, primary_key=True)
+  lake = Column(String)
+
 
 # Load Database
 if os.getenv("SQLALCHEMY_DATABASE_URI"):
-    engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
-if not os.getenv("SQLALCHEMY_DATABASE_URI"):
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://"
-    engine = create_engine('sqlite:///')
+  engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
+  app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
+else:
+  app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://"
+  engine = create_engine('sqlite:///')
+
+# Base.metadata.create_all(bind=engine)
+# sqlalchemy.schema.MetaData.create_all(bind=engine, tables=[StockedLakes, DerbyLake], checkfirst=True)
+# Start a session
+Session = sessionmaker(bind=engine)
+session = Session()
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-# db = SQLAlchemy(app)
-# db.create_all()
 
 """
 ************************* Scrape data to render the map from ************************* 
@@ -42,202 +71,176 @@ Steps:
 # Scrape https://wdfw.wa.gov/fishing/reports/stocking/trout-plants
 # return list of lake names
 def scrape_lake_names():
-    url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
-    response = requests.get(url_string)
-    if response.status_code != 200:
-        print("Error fetching page")
-        exit()
-    soup = BeautifulSoup(response.content, "html.parser")
+  url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
+  response = requests.get(url_string)
+  if response.status_code != 200:
+    print("Error fetching page")
+    exit()
+  soup = BeautifulSoup(response.content, "html.parser")
 
-    # Scrape Names
-    found_text = soup.findAll(class_="views-field views-field-lake-stocked")
+  # Scrape Names
+  found_text = soup.findAll(class_="views-field views-field-lake-stocked")
 
-    text_list = []
-    for i in found_text:
-        text_list.append(i.text + " County, Washington")
+  text_list = []
+  for i in found_text:
+    text_list.append(i.text + " County, Washington")
 
-    # Clean up Names
-    text_lst_trimmed = []
-    for i in text_list:
-        text_lst_trimmed.append(i.replace("\n", "").replace("- Region", ''))
-    text_lst_trimmed = [re.sub(r"\(.*?\)", '', text) for text in text_lst_trimmed]
-    text_lst_trimmed = [re.sub(r'[^\w\s]', '', text) for text in text_lst_trimmed]
-    text_lst_trimmed = [re.sub(r"\d", '', text) for text in text_lst_trimmed]
-    text_lst_trimmed = [re.sub(r"\bLK\b", 'Lake', text) for text in text_lst_trimmed]
-    text_lst_trimmed = [re.sub(r"\bPD\b", 'Pond', text) for text in text_lst_trimmed]
-    text_lst_trimmed = [re.sub(r"\bCR\b", 'Creek', text) for text in text_lst_trimmed]
-    text_lst_trimmed = [re.sub(r"\bPRK\b", 'Park', text) for text in text_lst_trimmed]
-    text_lst_trimmed = [re.sub(r"\bCO\b", 'County', text) for text in text_lst_trimmed]
-    text_lst_trimmed = [" ".join(text.split()) for text in text_lst_trimmed]
+  # Clean up Names
+  text_lst_trimmed = []
+  for i in text_list:
+    text_lst_trimmed.append(i.replace("\n", "").replace("- Region", ''))
+  text_lst_trimmed = [re.sub(r"\(.*?\)", '', text) for text in text_lst_trimmed]
+  text_lst_trimmed = [re.sub(r'[^\w\s]', '', text) for text in text_lst_trimmed]
+  text_lst_trimmed = [re.sub(r"\d", '', text) for text in text_lst_trimmed]
+  text_lst_trimmed = [re.sub(r"\bLK\b", 'Lake', text) for text in text_lst_trimmed]
+  text_lst_trimmed = [re.sub(r"\bPD\b", 'Pond', text) for text in text_lst_trimmed]
+  text_lst_trimmed = [re.sub(r"\bCR\b", 'Creek', text) for text in text_lst_trimmed]
+  text_lst_trimmed = [re.sub(r"\bPRK\b", 'Park', text) for text in text_lst_trimmed]
+  text_lst_trimmed = [re.sub(r"\bCO\b", 'County', text) for text in text_lst_trimmed]
+  text_lst_trimmed = [" ".join(text.split()) for text in text_lst_trimmed]
 
-    time.sleep(1)
-    return text_lst_trimmed
+  time.sleep(1)
+  return text_lst_trimmed
 
 
 # return list of Stock Counts
 def scrape_stock_count():
-    url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
-    response = requests.get(url_string)
-    if response.status_code != 200:
-        print(response)
-        print("Error fetching page")
-        exit()
-    soup = BeautifulSoup(response.content, "html.parser")
+  url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
+  response = requests.get(url_string)
+  if response.status_code != 200:
+    print(response)
+    print("Error fetching page")
+    exit()
+  soup = BeautifulSoup(response.content, "html.parser")
 
-    # Scrape Stock Count
-    found_text = soup.findAll(class_="views-field views-field-num-fish")
+  # Scrape Stock Count
+  found_text = soup.findAll(class_="views-field views-field-num-fish")
 
-    text_list = []
-    for i in found_text:
-        text_list.append(i.text)
-        time.sleep(1)
+  text_list = []
+  for i in found_text:
+    text_list.append(i.text)
+    time.sleep(1)
 
-    text_list = [i.strip() for i in text_list]
-    return text_list
+  text_list = [i.strip() for i in text_list]
+  return text_list
 
 
 # Return list of Scraped Dates
 def scrape_date():
-    url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
-    response = requests.get(url_string)
-    if response.status_code != 200:
-        print(response)
-        print("Error fetching page")
-        exit()
-    soup = BeautifulSoup(response.content, "html.parser")
+  url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
+  response = requests.get(url_string)
+  if response.status_code != 200:
+    print(response)
+    print("Error fetching page")
+    exit()
+  soup = BeautifulSoup(response.content, "html.parser")
 
-    # Scrape Dates
-    found_text = soup.findAll(class_="views-field views-field-stock-date")
+  # Scrape Dates
+  found_text = soup.findAll(class_="views-field views-field-stock-date")
 
-    text_list = []
-    for i in found_text:
-        text_list.append(i.text)
-        time.sleep(1)
+  text_list = []
+  for i in found_text:
+    text_list.append(i.text)
+    time.sleep(1)
 
-    text_list = [i.strip() for i in text_list]
-    return text_list
+  text_list = [i.strip() for i in text_list]
+  return text_list
 
 
-# Make a Dataframe from scraped data
-# Driver Function for above code
 def make_df():
-    # Get lake names, Stock Count, And Dates
-    lakes = scrape_lake_names()
+  lakes = scrape_lake_names()
+  amount_scraped = len(lakes)
+  lakes = lakes[1:amount_scraped]
 
-    amount_scraped = len(lakes)  # this is to adjust the total returned lakes if needed
+  stock_count = scrape_stock_count()
+  stock_count = stock_count[1:amount_scraped]
 
-    lakes = lakes[1:amount_scraped]
+  dates = scrape_date()
+  dates = dates[1:amount_scraped]
 
-    stock_count = scrape_stock_count()
-    stock_count = stock_count[1:amount_scraped]
+  # Create a list of dictionaries
+  data = []
+  for i in range(amount_scraped - 1):
+    data.append({'lake': lakes[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'latitude': "", 'longitude': "",
+                 'directions': ""})
 
-    dates = scrape_date()
-    dates = dates[1:amount_scraped]
-
-    # Make a Dataframe with empty lat & lon columns
-    df = pd.DataFrame(
-        {'Lake': lakes,
-         'Stocked Fish': stock_count,
-         'Date': dates
-         })
-
-    df["latitude"] = ""
-    df["longitude"] = ""
-    df["Directions"] = ""
-
-    return df
+  return data
 
 
 # Get the names of lakes that are in the state trout derby
 # Helper function for below code
 def scrape_derby_names():
-    url_string = "https://wdfw.wa.gov/fishing/contests/trout-derby/lakes"
-    response = requests.get(url_string)
-    if response.status_code != 200:
-        print("Error fetching page")
-        exit()
-    soup = BeautifulSoup(response.content, "html.parser")
-    #     UL -> LI -> a
-    # Scrape Names
-    #     found_text = soup.findAll( class_="derby-lakes-list")
-    text_list = []
-    found_text = soup.find("div", {"class": "derby-lakes-list"}).findAll("ul", recursive=False)
+  url_string = "https://wdfw.wa.gov/fishing/contests/trout-derby/lakes"
+  response = requests.get(url_string)
+  if response.status_code != 200:
+    print("Error fetching page")
+    exit()
+  soup = BeautifulSoup(response.content, "html.parser")
+  #     UL -> LI -> a
+  # Scrape Names
+  #     found_text = soup.findAll( class_="derby-lakes-list")
+  text_list = []
+  found_text = soup.find("div", {"class": "derby-lakes-list"}).findAll("ul", recursive=False)
 
-    for i in found_text:
-        text_list.append(i.find("li").text)
+  for i in found_text:
+    text_list.append(i.find("li").text)
 
-    # Clean up Names
-    text_lst_trimmed = []
-    for i in text_list:
-        text_lst_trimmed.append(i.replace("\n", ""))
-    text_lst_trimmed = [re.sub(r"\(.*?\)", '', text) for text in text_lst_trimmed]
-    print(text_lst_trimmed)
-    return text_lst_trimmed
-
-
-# Write the derby lake to the dataframe if lake will exist on the map
-# Helper function for below code
-def write_derby_participants(df):
-    df["Derby Participant"] = ""
-
-    derby_lakes_on_map = []
-    derby_lakes = scrape_derby_names()
-
-    for lake in derby_lakes:
-        for ind in df.index:
-            if lake.capitalize() in df['Lake'][ind].capitalize():
-                derby_lakes_on_map.append(lake)
-                df.loc[ind, ['Derby Participant']] = True
-
-    derby_df = pd.DataFrame(
-        {'Lake': derby_lakes_on_map,
-         })
-    derby_df.to_sql('derby_lakes_table', engine, if_exists='replace')
-
-    return df
+  # Clean up Names
+  text_lst_trimmed = []
+  for i in text_list:
+    text_lst_trimmed.append(i.replace("\n", ""))
+  text_lst_trimmed = [re.sub(r"\(.*?\)", '', text) for text in text_lst_trimmed]
+  print(text_lst_trimmed)
+  return text_lst_trimmed
 
 
-# Driver Function
-# Find Lat Lon's from lake names
-# Update dataframe with the Lat Lon's
-# Save dataframe to Postgres database for use with map
+def write_derby_participants(data):
+  # Iterate through the data and add it to the database
+  derby_lakes_on_map = []
+  derby_lakes = scrape_derby_names()
+  for lake in derby_lakes:
+    for item in data:
+      if lake.capitalize() in item['lake'].capitalize():
+        item['derby_participant'] = True
+        derby_lakes_on_map.append(lake)
+        session.add(StockedLakes(**item))
+  for lake in derby_lakes_on_map:
+    session.add(DerbyLake(lake=lake))
+  session.commit()
+  session.close()
+
+
 def get_lat_lon():
-    df = make_df()
+  data = make_df()
 
-    # Use locator to get lat and lon of lake names
-    # Google is preferred, Use Nominatim for backup
-    #     locator = Nominatim(user_agent="your_app_name")
-    locator = GoogleV3(api_key=os.getenv('GV3_API_KEY'))
+  locator = GoogleV3(api_key=os.getenv('GV3_API_KEY'))
 
-    # iterate through dataframe and insert lat/lon per lake name
-    for ind in df.index:
-        if df['Lake'][ind]:
-            if locator.geocode(df['Lake'][ind]):
-                # Nominatim
-                #                   df.loc[ind, ['latitude']] = [locator.geocode(df['Lake'][ind]).latitude]
-                #                   df.loc[ind, ['longitude']] = [locator.geocode(df['Lake'][ind]).longitude]
+  for i in range(len(data)):
+    if data[i]['lake']:
+      geocode = locator.geocode(data[i]['lake'])
+      if geocode:
+        data[i]['latitude'] = geocode.point[0]
+        data[i]['longitude'] = geocode.point[1]
+        data[i]['directions'] = f"https://www.google.com/maps/search/?api=1&query={data[i]['lake']}"
+      else:
+        data[i]['latitude'] = None
+        data[i]['longitude'] = None
+        data[i]['directions'] = f"https://www.google.com/maps/search/?api=1&query={data[i]['lake']}"
 
-                # GoogleV3
-                df.loc[ind, ['latitude']] = [locator.geocode(df['Lake'][ind]).point[0]]
-                df.loc[ind, ['longitude']] = [locator.geocode(df['Lake'][ind]).point[1]]
+  write_derby_participants(data)
+  for lake_data in data:
+    lake = StockedLakes(lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date'],
+                        latitude=lake_data['latitude'], longitude=lake_data['longitude'],
+                        directions=lake_data['directions'])
+    session.add(lake)
+    session.commit()
+    # engine.execute(lake.insert())
 
-                df.loc[ind, ['Directions']] = [f"https://www.google.com/maps/search/?api=1&query={df['Lake'][ind]}"]
-
-            # Account for errors.
-            # TODO: make a list of nan to display lakes not on map Note: Only Necessary if GV3 Fails
-            else:
-                df.loc[ind, ['latitude']] = [np.nan]
-                df.loc[ind, ['longitude']] = [np.nan]
-
-    write_derby_participants(df)
-
-    # Save the dataframe to Postgres Database
-    df.to_sql('stocked_lakes_table', engine, if_exists='replace')
-
-    print(df.dropna())
-    return df.dropna()
+  return data
 
 
 # Run Once Every morning on Heroku Scheduler
 if __name__ == "__main__":
-    get_lat_lon()
+  Base.metadata.drop_all(engine)
+  Base.metadata.create_all(bind=engine)
+  get_lat_lon()
