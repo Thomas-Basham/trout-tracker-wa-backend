@@ -68,10 +68,29 @@
         </div>
         <div class="row pb-2 mb-5 mt-5" style="text-align: center;">
             <h1 class="text-center mb-4">Data From <a class="dont-break-out"
-                    href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
+                                                      href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
             </h1>
             <div class="table-container">
-                {{ most_recent_stocked | safe }}
+                <table id="data" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Body of Water</th>
+                        <th>Stocked Fish</th>
+                        <th>Date Stocked</th>
+                        <th>Derby Participant</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for td in most_recent_stocked %}
+                        <tr>
+                            <td>{{ td["Lake"] }}</td>
+                            <td>{{ td["Stocked Fish"] }}</td>
+                            <td>{{ td["Date"] }}</td>
+                            <td>{{ td["Derby Participant"] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
 
