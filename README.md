@@ -15,19 +15,19 @@
 
 A Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an interactive map
 
-23## Tech Used 
+## Tech Used 
 
 * Flask
 
 * Beautiful Soup (Data scraped from [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants))
 
-* Pandas
-
 * Folium
 
-* PostgreSQL
+* SQLAlchemy
 
-* Heroku Scheduler(To schedule webscraping daily)
+* Postgres Database
+
+* Cron Job(To schedule webscraping daily)
 
 * Google V3 Geolocator(To get lat/lon of lakes)
 
