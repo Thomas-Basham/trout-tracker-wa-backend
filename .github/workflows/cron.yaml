@@ -1,7 +1,7 @@
 name: daily-cron
 on:
   schedule:
-    - cron: '*/2 * * * *'
+    - cron: '* * * * *'
 jobs:
   cron:
     runs-on: ubuntu-latest
@@ -22,3 +22,7 @@ jobs:
 
       - name: execute py script
         run: python scraper.py
+        env:
+          GV3_API_KEY: ${{ secrets.GV3_API_KEY }},
+          SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }},
+          OPEN_ROUTE_API_KEY: ${{ secrets.OPEN_ROUTE_API_KEY }},
