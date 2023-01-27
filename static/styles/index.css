@@ -83,7 +83,7 @@ tr:hover {
 .table-container {
     height: 40vh;
     overflow: auto;
-    border-radius: 10px !important;
+    /*border-radius: 10px !important;*/
 }
 
 .folium-map {
@@ -123,21 +123,45 @@ footer a {
 }
 
 .dont-break-out {
+    font-size: medium;
+    text-decoration: none;
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 
-  /* These are technically the same, but use both */
-  overflow-wrap: break-word;
-  word-wrap: break-word;
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
 
-  -ms-word-break: break-all;
-  /* This is the dangerous one in WebKit, as it breaks things wherever */
-  word-break: break-all;
-  /* Instead use this non-standard one: */
-  word-break: break-word;
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
 
-  /* Adds a hyphen where the word breaks, if supported (No Blink) */
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
+}
+
+table {
+    border-collapse: separate;
+    border: solid whitesmoke 1px;
+    border-radius: 10px;
+}
+
+td, th {
+    /*border-left:solid black 1px;*/
+    /*border-top:solid black 1px;*/
+
+}
+
+th {
+    background-color: blue;
+    border-top: none;
+
+}
+
+td:first-child, th:first-child {
+    border-left: none;
 
 }
