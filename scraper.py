@@ -47,8 +47,6 @@ else:
   app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://"
   engine = create_engine('sqlite:///')
 
-# Base.metadata.create_all(bind=engine)
-# sqlalchemy.schema.MetaData.create_all(bind=engine, tables=[StockedLakes, DerbyLake], checkfirst=True)
 # Start a session
 Session = sessionmaker(bind=engine)
 session = Session()
