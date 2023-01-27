@@ -1,21 +1,17 @@
+# from geopy.geocoders import Nominatim
 import requests
 import time
 from bs4 import BeautifulSoup
 from geopy import GoogleV3
 import re
 from dotenv import load_dotenv
-# from geopy.geocoders import Nominatim
 from main import app
 import os
-
-load_dotenv()
-#
-# from sqlalchemy import create_engine, Column, Integer, String, Date
-# from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, Column, Integer, Date, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+load_dotenv()
 # Create a SQLAlchemy base
 Base = declarative_base()
 
@@ -33,6 +29,7 @@ class StockedLakes(Base):
   derby_participant = Column(Boolean)
 
 
+# Create the derby_lakes_table class
 class DerbyLake(Base):
   __tablename__ = 'derby_lakes_table'
   id = Column(Integer, primary_key=True)
@@ -58,10 +55,10 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 Need: Lake names, stock count, date stocked, derby participant, and lat/lon
 Steps: 
-1. Scrape the data from wdfw.wa.gov/
+1. Scrape the data from wdfw.wa.gov
 2. Use Geolocator to get lat/lon
-3. Make the data into a Pandas Dataframe
-4. Save Pandas Dataframe to Postgres Database 
+3. Make the data into a list of dictionaries 
+4. Save data to Postgres Database 
 
 """
 
@@ -145,6 +142,31 @@ def scrape_date():
   return text_list
 
 
+# Get the names of lakes that are in the state trout derby
+def scrape_derby_names():
+  url_string = "https://wdfw.wa.gov/fishing/contests/trout-derby/lakes"
+  response = requests.get(url_string)
+  if response.status_code != 200:
+    print("Error fetching page")
+    exit()
+  soup = BeautifulSoup(response.content, "html.parser")
+
+  # Scrape Names
+  text_list = []
+  found_text = soup.find("div", {"class": "derby-lakes-list"}).findAll("ul", recursive=False)
+
+  for i in found_text:
+    text_list.append(i.find("li").text)
+
+  # Clean up Names
+  text_lst_trimmed = []
+  for i in text_list:
+    text_lst_trimmed.append(i.replace("\n", ""))
+  text_lst_trimmed = [re.sub(r"\(.*?\)", '', text) for text in text_lst_trimmed]
+  print(text_lst_trimmed)
+  return text_lst_trimmed
+
+
 def make_df():
   lakes = scrape_lake_names()
   amount_scraped = len(lakes)
@@ -161,56 +183,12 @@ def make_df():
   for i in range(amount_scraped - 1):
     data.append({'lake': lakes[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'latitude': "", 'longitude': "",
                  'directions': ""})
-
-  return data
-
-
-# Get the names of lakes that are in the state trout derby
-# Helper function for below code
-def scrape_derby_names():
-  url_string = "https://wdfw.wa.gov/fishing/contests/trout-derby/lakes"
-  response = requests.get(url_string)
-  if response.status_code != 200:
-    print("Error fetching page")
-    exit()
-  soup = BeautifulSoup(response.content, "html.parser")
-  #     UL -> LI -> a
-  # Scrape Names
-  #     found_text = soup.findAll( class_="derby-lakes-list")
-  text_list = []
-  found_text = soup.find("div", {"class": "derby-lakes-list"}).findAll("ul", recursive=False)
-
-  for i in found_text:
-    text_list.append(i.find("li").text)
-
-  # Clean up Names
-  text_lst_trimmed = []
-  for i in text_list:
-    text_lst_trimmed.append(i.replace("\n", ""))
-  text_lst_trimmed = [re.sub(r"\(.*?\)", '', text) for text in text_lst_trimmed]
-  print(text_lst_trimmed)
-  return text_lst_trimmed
+  data = get_lat_lon(data)
+  write_lake_data(data)
+  write_derby_data(data)
 
 
-def write_derby_participants(data):
-  # Iterate through the data and add it to the database
-  derby_lakes_on_map = []
-  derby_lakes = scrape_derby_names()
-  for lake in derby_lakes:
-    for item in data:
-      if lake.capitalize() in item['lake'].capitalize():
-        item['derby_participant'] = True
-        derby_lakes_on_map.append(lake)
-        session.add(StockedLakes(**item))
-  for lake in derby_lakes_on_map:
-    session.add(DerbyLake(lake=lake))
-  session.commit()
-  session.close()
-
-
-def get_lat_lon():
-  data = make_df()
-
+def get_lat_lon(data):
   locator = GoogleV3(api_key=os.getenv('GV3_API_KEY'))
 
   for i in range(len(data)):
@@ -225,20 +203,36 @@ def get_lat_lon():
         data[i]['longitude'] = None
         data[i]['directions'] = f"https://www.google.com/maps/search/?api=1&query={data[i]['lake']}"
 
-  write_derby_participants(data)
+  return data
+
+
+def write_derby_data(data):
+  # Iterate through the data and add it to the database
+  derby_lakes_on_map = []
+  derby_lakes = scrape_derby_names()
+  for lake in derby_lakes:
+    for item in data:
+      if lake.capitalize() in item['lake'].capitalize():
+        item['derby_participant'] = True
+        derby_lakes_on_map.append(lake)
+        session.add(StockedLakes(**item))
+  for lake in derby_lakes_on_map:
+    session.add(DerbyLake(lake=lake))
+  session.commit()
+
+
+def write_lake_data(data):
   for lake_data in data:
     lake = StockedLakes(lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date'],
                         latitude=lake_data['latitude'], longitude=lake_data['longitude'],
                         directions=lake_data['directions'])
     session.add(lake)
     session.commit()
-    # engine.execute(lake.insert())
-
-  return data
 
 
 # Run Once Every morning on Heroku Scheduler
 if __name__ == "__main__":
   Base.metadata.drop_all(engine)
-  Base.metadata.create_all(bind=engine)
-  get_lat_lon()
+  Base.metadata.create_all(engine)
+  make_df()
+  session.close()

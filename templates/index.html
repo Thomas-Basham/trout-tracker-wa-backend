@@ -86,7 +86,7 @@
                             <td>{{ td["lake"] }}</td>
                             <td>{{ td["stocked_fish"] }}</td>
                             <td>{{ td["date"] }}</td>
-                            <td>{{ td["derby_participant"] }}</td>
+                            <td>{{ True if td["derby_participant"] else '' }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
