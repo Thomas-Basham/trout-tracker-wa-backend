@@ -136,35 +136,6 @@ def scrape_derby_names():
   return text_lst_trimmed
 
 
-def make_df():
-  lakes = scrape_lake_names()
-  amount_scraped = len(lakes)
-  lakes = lakes[1:amount_scraped]
-
-  stock_count = scrape_stock_count()
-  stock_count = stock_count[1:amount_scraped]
-
-  dates = scrape_date()
-  dates = dates[1:amount_scraped]
-
-  # Create a list of dictionaries
-  data = []
-  for i in range(amount_scraped - 1):
-    data.append({'lake': lakes[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'latitude': "", 'longitude': "",
-                 'directions': "", "derby_participant": False})
-  data = get_lat_lon(data)
-  Base.metadata.drop_all(engine)
-  Base.metadata.create_all(engine)
-
-  new_data = write_derby_data(data)
-  write_lake_data(new_data)
-  session.close()
-  with engine.connect().execution_options(autocommit=True) as conn:
-    stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
-    derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
-  print(stocked_lakes, derby_lakes)
-
-
 def get_lat_lon(data):
   locator = GoogleV3(api_key=os.getenv('GV3_API_KEY'))
 
@@ -203,6 +174,35 @@ def write_lake_data(data):
                         directions=lake_data['directions'], derby_participant=lake_data['derby_participant'])
     session.add(lake)
   session.commit()
+
+
+def make_df():
+  lakes = scrape_lake_names()
+  amount_scraped = len(lakes)
+  lakes = lakes[1:amount_scraped]
+
+  stock_count = scrape_stock_count()
+  stock_count = stock_count[1:amount_scraped]
+
+  dates = scrape_date()
+  dates = dates[1:amount_scraped]
+
+  # Create a list of dictionaries
+  data = []
+  for i in range(amount_scraped - 1):
+    data.append({'lake': lakes[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'latitude': "", 'longitude': "",
+                 'directions': "", "derby_participant": False})
+  data = get_lat_lon(data)
+  Base.metadata.drop_all(engine)
+  Base.metadata.create_all(engine)
+
+  new_data = write_derby_data(data)
+  write_lake_data(new_data)
+  session.close()
+  with engine.connect().execution_options(autocommit=True) as conn:
+    stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
+    derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
+  print(stocked_lakes, derby_lakes)
 
 
 # Run Once Every morning on Heroku Scheduler
