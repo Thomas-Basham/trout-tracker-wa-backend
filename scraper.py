@@ -202,6 +202,8 @@ def make_df():
   with engine.connect().execution_options(autocommit=True) as conn:
     stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
     derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
+  session.close()
+  engine.connect().close()
   print(stocked_lakes, derby_lakes)
 
 
