@@ -30,6 +30,7 @@ def index_view():
   with engine.connect().execution_options(autocommit=True) as conn:
     stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
     derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
+  engine.dispose()
 
   folium_map = make_map(stocked_lakes)._repr_html_()
   derby_lakes_set = set(lake["lake"] for lake in derby_lakes)
@@ -42,7 +43,7 @@ def index_view():
 def map_full_screen_view():
   with engine.connect().execution_options(autocommit=True) as conn:
     stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
-
+  engine.dispose()
   folium_map = make_map(stocked_lakes)._repr_html_()
   return render_template('map_full_screen.html', folium_map=folium_map)
 
@@ -94,5 +95,4 @@ app.logger.setLevel(logging.ERROR)
 
 if __name__ == '__main__':
   app.run(debug=False)
-  engine.connect().close()
 
