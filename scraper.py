@@ -7,7 +7,7 @@ import re
 from dotenv import load_dotenv
 from main import app
 import os
-from sqlalchemy import create_engine, Column, Integer, Date, String, Boolean
+from sqlalchemy import create_engine, Column, Integer, Date, String, Boolean, update
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -62,23 +62,19 @@ Steps:
 
 """
 
+lake_url = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"
+response = requests.get(lake_url)
+if response.status_code != 200:
+  print("Error fetching page")
+  exit()
+soup = BeautifulSoup(response.content, "html.parser")
 
-# Scrape https://wdfw.wa.gov/fishing/reports/stocking/trout-plants
+
 # return list of lake names
 def scrape_lake_names():
-  url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
-  response = requests.get(url_string)
-  if response.status_code != 200:
-    print("Error fetching page")
-    exit()
-  soup = BeautifulSoup(response.content, "html.parser")
-
-  # Scrape Names
   found_text = soup.findAll(class_="views-field views-field-lake-stocked")
 
-  text_list = []
-  for i in found_text:
-    text_list.append(i.text + " County, Washington")
+  text_list = [i.text + " County, Washington" for i in found_text]
 
   # Clean up Names
   text_lst_trimmed = []
@@ -100,50 +96,26 @@ def scrape_lake_names():
 
 # return list of Stock Counts
 def scrape_stock_count():
-  url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
-  response = requests.get(url_string)
-  if response.status_code != 200:
-    print(response)
-    print("Error fetching page")
-    exit()
-  soup = BeautifulSoup(response.content, "html.parser")
+  found_stock_counts = soup.findAll(class_="views-field views-field-num-fish")
 
-  # Scrape Stock Count
-  found_text = soup.findAll(class_="views-field views-field-num-fish")
+  found_stock_text_list = [i.text.strip() for i in found_stock_counts]
 
-  text_list = []
-  for i in found_text:
-    text_list.append(i.text)
-    time.sleep(1)
-
-  text_list = [i.strip() for i in text_list]
-  return text_list
+  return found_stock_text_list
 
 
 # Return list of Scraped Dates
 def scrape_date():
-  url_string = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all"
-  response = requests.get(url_string)
-  if response.status_code != 200:
-    print(response)
-    print("Error fetching page")
-    exit()
-  soup = BeautifulSoup(response.content, "html.parser")
+  date_text = soup.findAll(class_="views-field views-field-stock-date")
 
-  # Scrape Dates
-  found_text = soup.findAll(class_="views-field views-field-stock-date")
+  date_text_list = [i.text.strip() for i in date_text]
 
-  text_list = []
-  for i in found_text:
-    text_list.append(i.text)
-    time.sleep(1)
-
-  text_list = [i.strip() for i in text_list]
-  return text_list
+  time.sleep(1)
+  return date_text_list
 
 
 # Get the names of lakes that are in the state trout derby
 def scrape_derby_names():
+  global response, soup
   url_string = "https://wdfw.wa.gov/fishing/contests/trout-derby/lakes"
   response = requests.get(url_string)
   if response.status_code != 200:
@@ -163,7 +135,6 @@ def scrape_derby_names():
   for i in text_list:
     text_lst_trimmed.append(i.replace("\n", ""))
   text_lst_trimmed = [re.sub(r"\(.*?\)", '', text) for text in text_lst_trimmed]
-  print(text_lst_trimmed)
   return text_lst_trimmed
 
 
@@ -182,10 +153,18 @@ def make_df():
   data = []
   for i in range(amount_scraped - 1):
     data.append({'lake': lakes[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'latitude': "", 'longitude': "",
-                 'directions': ""})
+                 'directions': "", "derby_participant": False})
   data = get_lat_lon(data)
-  write_lake_data(data)
-  write_derby_data(data)
+  Base.metadata.drop_all(engine)
+  Base.metadata.create_all(engine)
+
+  new_data = write_derby_data(data)
+  write_lake_data(new_data)
+  session.close()
+  with engine.connect().execution_options(autocommit=True) as conn:
+    stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
+    derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
+  print(stocked_lakes, derby_lakes)
 
 
 def get_lat_lon(data):
@@ -214,25 +193,25 @@ def write_derby_data(data):
     for item in data:
       if lake.capitalize() in item['lake'].capitalize():
         item['derby_participant'] = True
-        derby_lakes_on_map.append(lake)
-        session.add(StockedLakes(**item))
-  for lake in derby_lakes_on_map:
-    session.add(DerbyLake(lake=lake))
+        session.add(DerbyLake(lake=lake))
   session.commit()
+  return data
 
 
 def write_lake_data(data):
   for lake_data in data:
     lake = StockedLakes(lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date'],
                         latitude=lake_data['latitude'], longitude=lake_data['longitude'],
-                        directions=lake_data['directions'])
+                        directions=lake_data['directions'], derby_participant=lake_data['derby_participant'])
     session.add(lake)
-    session.commit()
+  session.commit()
 
 
 # Run Once Every morning on Heroku Scheduler
 if __name__ == "__main__":
-  Base.metadata.drop_all(engine)
-  Base.metadata.create_all(engine)
+  start_time = time.time()
+
   make_df()
-  session.close()
+
+  end_time = time.time()
+  print(f"It took {end_time - start_time:.2f} seconds to compute")
