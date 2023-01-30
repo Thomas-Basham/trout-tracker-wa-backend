@@ -90,7 +90,6 @@ def scrape_lake_names():
   text_lst_trimmed = [re.sub(r"\bCO\b", 'County', text) for text in text_lst_trimmed]
   text_lst_trimmed = [" ".join(text.split()) for text in text_lst_trimmed]
 
-  time.sleep(1)
   return text_lst_trimmed
 
 
@@ -109,7 +108,6 @@ def scrape_date():
 
   date_text_list = [i.text.strip() for i in date_text]
 
-  time.sleep(1)
   return date_text_list
 
 
