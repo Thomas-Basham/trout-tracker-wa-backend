@@ -18,7 +18,7 @@ if os.getenv("SQLALCHEMY_DATABASE_URI"):
   app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
 
 # else use sqlite database
-if not os.getenv("SQLALCHEMY_DATABASE_URI"):
+else:
   app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://"
   engine = create_engine('sqlite://')
 
@@ -94,3 +94,5 @@ app.logger.setLevel(logging.ERROR)
 
 if __name__ == '__main__':
   app.run(debug=False)
+  engine.connect().close()
+
