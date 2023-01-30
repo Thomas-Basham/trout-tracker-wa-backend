@@ -82,7 +82,7 @@
                     <tbody>
                     {% for td in most_recent_stocked %}
                         <tr>
-                            <td>{{ td["lake"] }}</td>
+                            <td>{{ td["lake"].title() }}</td>
                             <td>{{ td["stocked_fish"] }}</td>
                             <td>{{ td["date"] }}</td>
                             <td>{{ True if td["derby_participant"] else '' }}</td>
