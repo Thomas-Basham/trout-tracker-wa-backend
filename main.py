@@ -16,6 +16,10 @@ app.app_context().push()
 if os.getenv("SQLALCHEMY_DATABASE_URI"):
   engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
   app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
+  with engine.connect().execution_options(autocommit=True) as conn:
+    stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
+    derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
+  engine.dispose()
 
 # else use sqlite database
 else:
@@ -24,10 +28,6 @@ else:
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-with engine.connect().execution_options(autocommit=True) as conn:
-  stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
-  derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
-engine.dispose()
 
 @app.route('/')
 def index_view():
