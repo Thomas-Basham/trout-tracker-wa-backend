@@ -24,15 +24,15 @@ else:
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+with engine.connect().execution_options(autocommit=True) as conn:
+  stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
+  derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
+engine.dispose()
 
 @app.route('/')
 def index_view():
-  with engine.connect().execution_options(autocommit=True) as conn:
-    stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
-    derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
-  engine.dispose()
-
   folium_map = make_map(stocked_lakes)._repr_html_()
+
   derby_lakes_set = set(lake["lake"] for lake in derby_lakes)
 
   return render_template('index.html', folium_map=folium_map,
@@ -41,9 +41,7 @@ def index_view():
 
 @app.route('/fullscreen')
 def map_full_screen_view():
-  with engine.connect().execution_options(autocommit=True) as conn:
-    stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
-  engine.dispose()
+
   folium_map = make_map(stocked_lakes)._repr_html_()
   return render_template('map_full_screen.html', folium_map=folium_map)
 
