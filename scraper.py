@@ -195,11 +195,7 @@ def make_df():
   new_data = write_derby_data(data)
   write_lake_data(new_data)
   session.close()
-  with engine.connect().execution_options(autocommit=True) as conn:
-    stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
-    derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
-  engine.dispose()
-  # print(stocked_lakes, derby_lakes)
+
 
 
 # Run Once Every morning on Heroku Scheduler
