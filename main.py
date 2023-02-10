@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from dotenv import load_dotenv
 import sys
 import logging
-
+from scraper import make_df
 load_dotenv()
 
 app = Flask(__name__.split('.')[0])
@@ -31,9 +31,19 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 @app.route('/')
 def index_view():
-  folium_map = make_map(stocked_lakes)._repr_html_()
+  global stocked_lakes,derby_lakes
+  if len(stocked_lakes) > 1 and len(derby_lakes) > 1:
+    folium_map = make_map(stocked_lakes)._repr_html_()
 
-  derby_lakes_set = set(lake["lake"] for lake in derby_lakes)
+    derby_lakes_set = set(lake["lake"] for lake in derby_lakes)
+  else:
+    make_df()
+    with engine.connect().execution_options(autocommit=True) as conn:
+      stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
+      derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
+      folium_map = make_map(stocked_lakes)._repr_html_()
+      derby_lakes_set = set(lake["lake"] for lake in derby_lakes)
+    engine.dispose()
 
   return render_template('index.html', folium_map=folium_map,
                          derby_lakes=derby_lakes_set, most_recent_stocked=stocked_lakes)
@@ -41,8 +51,17 @@ def index_view():
 
 @app.route('/fullscreen')
 def map_full_screen_view():
+  global stocked_lakes
+  if len(stocked_lakes) > 1 :
+    folium_map = make_map(stocked_lakes)._repr_html_()
 
-  folium_map = make_map(stocked_lakes)._repr_html_()
+  else:
+    make_df()
+    with engine.connect().execution_options(autocommit=True) as conn:
+      stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
+      folium_map = make_map(stocked_lakes)._repr_html_()
+    engine.dispose()
+
   return render_template('map_full_screen.html', folium_map=folium_map)
 
 

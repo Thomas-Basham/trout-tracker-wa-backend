@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup
 from geopy import GoogleV3
 import re
 from dotenv import load_dotenv
-from main import app
 import os
 from sqlalchemy import create_engine, Column, Integer, Date, String, Boolean, update
 from sqlalchemy.ext.declarative import declarative_base
@@ -39,16 +38,13 @@ class DerbyLake(Base):
 # Load Database
 if os.getenv("SQLALCHEMY_DATABASE_URI"):
   engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
-  app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
 else:
-  app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://"
   engine = create_engine('sqlite:///')
 
 # Start a session
 Session = sessionmaker(bind=engine)
 session = Session()
 
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 """
 ************************* Scrape data to render the map from ************************* 
@@ -203,7 +199,7 @@ def make_df():
     stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
     derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
   engine.dispose()
-  print(stocked_lakes, derby_lakes)
+  # print(stocked_lakes, derby_lakes)
 
 
 # Run Once Every morning on Heroku Scheduler
