@@ -151,8 +151,6 @@ def get_lat_lon(data):
 
 
 def write_derby_data(data):
-  # Iterate through the data and add it to the database
-  derby_lakes_on_map = []
   derby_lakes = scrape_derby_names()
   for lake in derby_lakes:
     for item in data:
@@ -162,13 +160,30 @@ def write_derby_data(data):
   session.commit()
   return data
 
+# OLD
+# def write_lake_data(data):
+#   for lake_data in data:
+#     lake = StockedLakes(lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date'],
+#                         latitude=lake_data['latitude'], longitude=lake_data['longitude'],
+#                         directions=lake_data['directions'], derby_participant=lake_data['derby_participant'])
+#
+#     session.add(lake)
+#   session.commit()
 
 def write_lake_data(data):
   for lake_data in data:
+    # check if entry already exists in the table
+    existing_lake = session.query(StockedLakes).filter_by(lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date']).first()
+    if existing_lake:
+      continue  # skip if the lake already exists in the table
+
+    # add the lake to the table if it doesn't exist
     lake = StockedLakes(lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date'],
                         latitude=lake_data['latitude'], longitude=lake_data['longitude'],
                         directions=lake_data['directions'], derby_participant=lake_data['derby_participant'])
+
     session.add(lake)
+
   session.commit()
 
 
@@ -189,9 +204,10 @@ def make_df():
     data.append({'lake': lakes[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'latitude': "", 'longitude': "",
                  'directions': "", "derby_participant": False})
   data = get_lat_lon(data)
-  Base.metadata.drop_all(engine)
+  # Base.metadata.drop_all(engine) # TODO: Remove drop_all  then add logic to add row if it doesnt exist
   Base.metadata.create_all(engine)
 
+  # Write the data
   new_data = write_derby_data(data)
   write_lake_data(new_data)
   session.close()
