@@ -1,8 +1,8 @@
 # from geopy.geocoders import Nominatim
 import re
-import os
-import time
-import requests
+from os import getenv
+from time import time
+from requests import get
 from datetime import datetime
 from bs4 import BeautifulSoup
 from geopy import GoogleV3
@@ -48,8 +48,8 @@ class DerbyLake(Base):
 class DataBase:
   def __init__(self):
     # Load Database
-    if os.getenv("SQLALCHEMY_DATABASE_URI"):
-      self.engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
+    if getenv("SQLALCHEMY_DATABASE_URI"):
+      self.engine = create_engine(getenv("SQLALCHEMY_DATABASE_URI"))
     else:
       self.engine = create_engine('sqlite:///')
 
@@ -76,8 +76,8 @@ class DataBase:
 
   def write_data(self):
     scraper = Scraper()
-    Base.metadata.drop_all(self.engine)  # TODO: Remove in production
-    Base.metadata.create_all(self.engine)  # TODO: Remove in production
+    # Base.metadata.drop_all(self.engine)  # TODO: Remove in production
+    # Base.metadata.create_all(self.engine)  # TODO: Remove in production
     self.write_derby_data(scraper)
     self.write_lake_data(scraper)
     self.session.commit()
@@ -121,7 +121,7 @@ class Scraper:
 
   def __init__(self):
     self.lake_url = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"
-    self.response = requests.get(self.lake_url)
+    self.response = get(self.lake_url)
     if self.response.status_code != 200:
       print("Error fetching page")
       exit()
@@ -204,7 +204,7 @@ class Scraper:
   # Get the latitude and longitude of the lake names and update the df
   @staticmethod
   def get_lat_lon(data):
-    locator = GoogleV3(api_key=os.getenv('GV3_API_KEY'))
+    locator = GoogleV3(api_key=getenv('GV3_API_KEY'))
 
     for i in range(len(data)):
       lake = data[i]['lake']
@@ -218,7 +218,7 @@ class Scraper:
           data[i]['latitude'] = ''
           data[i]['longitude'] = ''
           data[i]['directions'] = f"https://www.google.com/maps/search/?api=1&query={lake}"
-    print(data)
+    # print(data)
     return data
 
   # Get the names of lakes that are in the state trout derby
@@ -226,7 +226,7 @@ class Scraper:
     url_string = "https://wdfw.wa.gov/fishing/contests/trout-derby/lakes"
 
     # Reassign response and soup to new url
-    self.response = requests.get(url_string)
+    self.response = get(url_string)
     self.soup = BeautifulSoup(self.response.content, "html.parser")
 
     # Scrape Names
@@ -246,11 +246,11 @@ class Scraper:
 
 # Run Once Every morning on Heroku Scheduler
 if __name__ == "__main__":
-  start_time = time.time()
+  start_time = time()
 
   data_base = DataBase()
   # Scraper()
   data_base.write_data()
 
-  end_time = time.time()
+  end_time = time()
   print(f"It took {end_time - start_time:.2f} seconds to compute")
