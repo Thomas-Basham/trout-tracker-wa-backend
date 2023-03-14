@@ -1,14 +1,61 @@
 {% extends "base.html" %}
 
-{% block content %}
 
+{% block content %}
+    <!-- Plotly JavaScript -->
+    <script src="https://cdn.plot.ly/plotly-2.7.0.min.js"></script>
+    <div class="container mb-4">
+
+        <form method="POST" class="form-inline">
+            <div class="form-group ">
+                <label for="days">Show data from the last</label>
+                <input type="number" name="days" class="form-control mx-2" id="days" min="1" value={{ days }}>
+                <label for="days">days</label>
+            </div>
+            <button type="submit" class="btn btn-primary mx-2">Update</button>
+        </form>
+    </div>
 
     <div style="padding-bottom: 1vh; width: 100%" class="container border-bottom mb-4">
         <div class="d-flex justify-content-between align-text-bottom ">
-            <a href="/fullscreen">View Larger Map<span class="glyphicon glyphicon-share"></span></a>
             <h1 class="">Stocked Trout Lakes in Washington</h1>
+            <a href="/fullscreen">View Larger Map<span class="glyphicon glyphicon-share"></span></a>
         </div>
         {{ folium_map | safe }}
+    </div>
+    <div class="container">
+
+        <h1>Stocked Lakes Chart</h1>
+        <div>{{ chart | safe }}</div>
+
+    </div>
+    <div class="container border-bottom">
+
+        <h1 class="  mt-5">Data From <a class="dont-break-out"
+                                        href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
+        </h1>
+        <div class="row p-2 mb-5  table-container" style="text-align: center;">
+            <table id="data" class="table table-striped rounded p-2">
+                <thead>
+                <tr>
+                    <th>Body of Water</th>
+                    <th>Stocked Fish</th>
+                    <th>Date Stocked</th>
+                    <th>Derby Participant</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for td in most_recent_stocked %}
+                    <tr>
+                        <td>{{ td["lake"].title() }}</td>
+                        <td>{{ td["stocked_fish"] }}</td>
+                        <td>{{ td["date"] }}</td>
+                        <td>{{ True if td["derby_participant"] else '' }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 
@@ -65,31 +112,6 @@
                         class="glyphicon glyphicon-share"></span> </a>
                 </li>
             </ul>
-        </div>
-            <h1 class="text-center  mt-5">Data From <a class="dont-break-out"
-                                                      href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
-            </h1>
-        <div class="row p-2 mb-5  table-container" style="text-align: center;">
-                <table id="data" class="table table-striped rounded p-2">
-                    <thead>
-                    <tr>
-                        <th>Body of Water</th>
-                        <th>Stocked Fish</th>
-                        <th>Date Stocked</th>
-                        <th>Derby Participant</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for td in most_recent_stocked %}
-                        <tr>
-                            <td>{{ td["lake"].title() }}</td>
-                            <td>{{ td["stocked_fish"] }}</td>
-                            <td>{{ td["date"] }}</td>
-                            <td>{{ True if td["derby_participant"] else '' }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
         </div>
 
         <div class="row mt-5" id="about">
