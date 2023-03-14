@@ -1,68 +1,54 @@
-import os
 import folium
 from folium.plugins import MarkerCluster, Fullscreen
 from flask import Flask, render_template, request
-from sqlalchemy import create_engine, func, Integer, cast, text
+from sqlalchemy import func
 from dotenv import load_dotenv
 import sys
 import logging
-from scraper import make_df, session, StockedLakes, DerbyLake
+from scraper import DataBase, StockedLakes
 from plotly.offline import plot
 import plotly.graph_objs as go
 from datetime import datetime, timedelta
 
 load_dotenv()
-
 app = Flask(__name__.split('.')[0])
 app.app_context().push()
-# ************** Postgres Database **************
-# If database in .env exists, use that,
-if os.getenv("SQLALCHEMY_DATABASE_URI"):
-  engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
-  app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
-  stocked_lakes = engine.connect().execute(text("SELECT * FROM stocked_lakes_table")).fetchall()
-
-  derby_lakes = engine.connect().execute(text("SELECT * FROM derby_lakes_table")).fetchall()
-  total_stocked_by_date = session.query(
-    func.to_date(StockedLakes.date, 'Mon DD, YYYY').label('stocked_date'),
-    func.sum(cast(func.translate(StockedLakes.stocked_fish, ',', ''), Integer))
-  ).group_by('stocked_date').order_by('stocked_date').all()
-
-  engine.dispose()
-
-# else use sqlite database
-else:
-  app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite://"
-  engine = create_engine('sqlite://')
+data_base = DataBase()
+data = data_base.get_data()  # returns data object
+stocked_lakes_data = data['stocked_lakes']
+derby_lakes_data = data['derby_lakes']
+total_stocked_by_date = data['total_stocked_by_date']
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index_view():
-  global stocked_lakes, derby_lakes, total_stocked_by_date
+  global data_base, data, stocked_lakes_data, derby_lakes_data, total_stocked_by_date
+
   days = 30
-  if len(stocked_lakes) > 1 and len(derby_lakes) > 1:
-    folium_map = make_map(stocked_lakes)._repr_html_()
+  if len(stocked_lakes_data) > 1:
+    folium_map = make_map(stocked_lakes_data)._repr_html_()
+
+    derby_lakes_set = set(lake["lake"] for lake in derby_lakes_data)
+  else:
+    data_base.write_data()
+    data = data_base.get_data()  # returns data object
+    stocked_lakes_data = data['stocked_lakes']
+    derby_lakes_data = data['derby_lakes']
+    derby_lakes = derby_lakes_data
+    folium_map = make_map(stocked_lakes_data)._repr_html_()
 
     derby_lakes_set = set(lake["lake"] for lake in derby_lakes)
-  else:
-    make_df()
-    with engine.connect().execution_options(autocommit=True) as conn:
-      stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
-      derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
-      folium_map = make_map(stocked_lakes)._repr_html_()
 
-      derby_lakes_set = set(lake["lake"] for lake in derby_lakes)
-
-    engine.dispose()
+  chart = show_chart(total_stocked_by_date)
 
   if request.method == 'POST':
     form = request.form
     days = int(form['days'])
     end_date = datetime.now()
     start_date = end_date - timedelta(days=days)
-    filtered_lakes_by_days = session.query(
+    filtered_lakes_by_days = data_base.session.query(
       StockedLakes.date,
       StockedLakes.lake,
       StockedLakes.stocked_fish,
@@ -71,33 +57,34 @@ def index_view():
       StockedLakes.directions,
       StockedLakes.derby_participant
     ).filter(
-      func.to_date(StockedLakes.date, 'Mon DD, YYYY').between(start_date, end_date)
+      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
     ).order_by(StockedLakes.date).all()
+
     folium_map = make_map(filtered_lakes_by_days)._repr_html_()
 
-    total_stocked_by_date = session.query(
-      func.to_date(StockedLakes.date, 'Mon DD, YYYY').label('stocked_date'),
-      func.sum(cast(func.translate(StockedLakes.stocked_fish, ',', ''), Integer))
-    ).group_by('stocked_date').filter(
+    filtered_total_stocked_by_date = data_base.session.query(
+      StockedLakes.date,
+      func.sum(StockedLakes.stocked_fish)
+    ).group_by(StockedLakes.date).filter(
       StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
-    ).order_by('stocked_date').all()
+    ).order_by(StockedLakes.date).all()
+    chart = show_chart(filtered_total_stocked_by_date)
 
-  return render_template('index.html', folium_map=folium_map, chart=show_chart(total_stocked_by_date),
-                         derby_lakes=derby_lakes_set, most_recent_stocked=stocked_lakes, days=days)
+  return render_template('index.html', folium_map=folium_map, chart=chart,
+                         derby_lakes=derby_lakes_set, most_recent_stocked=stocked_lakes_data, days=days)
 
 
 @app.route('/fullscreen')
 def map_full_screen_view():
-  global stocked_lakes
-  if len(stocked_lakes) > 1:
-    folium_map = make_map(stocked_lakes)._repr_html_()
-
+  global data_base, stocked_lakes_data, data
+  if len(stocked_lakes_data) > 1:
+    folium_map = make_map(stocked_lakes_data)._repr_html_()
   else:
-    make_df()
-    with engine.connect().execution_options(autocommit=True) as conn:
-      stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
-      folium_map = make_map(stocked_lakes)._repr_html_()
-    engine.dispose()
+    data_base.write_data()
+    data = data_base.get_data()  # returns data object
+    stocked_lakes_data = data['stocked_lakes']
+
+    folium_map = make_map(stocked_lakes_data)._repr_html_()
 
   return render_template('map_full_screen.html', folium_map=folium_map)
 
@@ -106,8 +93,8 @@ def map_full_screen_view():
 # Make the Map with Folium
 def make_map(lakes):
   if lakes:
-    latitudes = [float(lake["latitude"]) for lake in lakes]
-    longitudes = [float(lake["longitude"]) for lake in lakes]
+    latitudes = [float(lake["latitude"]) for lake in lakes if lake != '']
+    longitudes = [float(lake["longitude"]) for lake in lakes if lake != '']
     location = [sum(latitudes) / len(latitudes), sum(longitudes) / len(longitudes)]
     folium_map = folium.Map(width="100%", max_width="100%", max_height="100%", location=location, zoom_start=7)
 
