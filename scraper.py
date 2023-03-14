@@ -6,7 +6,7 @@ from geopy import GoogleV3
 import re
 from dotenv import load_dotenv
 import os
-from sqlalchemy import create_engine, Column, Integer, Date, String, Boolean, update
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, update
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -201,7 +201,7 @@ def make_df():
     data.append({'lake': lakes[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'latitude': "", 'longitude': "",
                  'directions': "", "derby_participant": False})
   data = get_lat_lon(data)
-  # Base.metadata.drop_all(engine) # TODO: Remove drop_all  then add logic to add row if it doesnt exist
+  Base.metadata.drop_all(engine)
   Base.metadata.create_all(engine)
 
   # Write the data
