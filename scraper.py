@@ -45,7 +45,6 @@ else:
 Session = sessionmaker(bind=engine)
 session = Session()
 
-
 """
 ************************* Scrape data to render the map from ************************* 
 
@@ -57,6 +56,11 @@ Steps:
 4. Save data to Postgres Database 
 
 """
+
+# ARCHIVE
+# lake_url = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/archive/2021?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250&page=4" # ARCHIVE
+# ARCHIVE
+
 
 lake_url = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"
 response = requests.get(lake_url)
@@ -160,20 +164,13 @@ def write_derby_data(data):
   session.commit()
   return data
 
-# OLD
-# def write_lake_data(data):
-#   for lake_data in data:
-#     lake = StockedLakes(lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date'],
-#                         latitude=lake_data['latitude'], longitude=lake_data['longitude'],
-#                         directions=lake_data['directions'], derby_participant=lake_data['derby_participant'])
-#
-#     session.add(lake)
-#   session.commit()
 
 def write_lake_data(data):
   for lake_data in data:
     # check if entry already exists in the table
-    existing_lake = session.query(StockedLakes).filter_by(lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date']).first()
+    existing_lake = session.query(StockedLakes).filter_by(lake=lake_data['lake'],
+                                                          stocked_fish=lake_data['stocked_fish'],
+                                                          date=lake_data['date']).first()
     if existing_lake:
       continue  # skip if the lake already exists in the table
 
@@ -211,7 +208,6 @@ def make_df():
   new_data = write_derby_data(data)
   write_lake_data(new_data)
   session.close()
-
 
 
 # Run Once Every morning on Heroku Scheduler
