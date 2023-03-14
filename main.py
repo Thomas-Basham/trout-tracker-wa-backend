@@ -39,8 +39,6 @@ def index_view():
 
     derby_lakes_set = set(lake["lake"] for lake in derby_lakes)
 
-  chart = show_chart(total_stocked_by_date)
-
   if request.method == 'POST':
     form = request.form
     days = int(form['days'])
@@ -67,6 +65,9 @@ def index_view():
       StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
     ).order_by(StockedLakes.date).all()
     chart = show_chart(filtered_total_stocked_by_date)
+
+  else:
+    chart = show_chart(total_stocked_by_date)
 
   return render_template('index.html', folium_map=folium_map, chart=chart,
                          derby_lakes=derby_lakes_set, most_recent_stocked=stocked_lakes_data, days=days)
