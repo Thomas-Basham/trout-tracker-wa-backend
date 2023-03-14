@@ -73,7 +73,7 @@ def index_view():
       StockedLakes.directions,
       StockedLakes.derby_participant
     ).filter(
-      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
+      func.to_date(StockedLakes.date, 'Mon DD, YYYY').between(start_date, end_date)
     ).order_by(StockedLakes.date).all()
     folium_map = make_map(filtered_lakes_by_days)._repr_html_()
 
