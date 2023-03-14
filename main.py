@@ -1,10 +1,8 @@
-import folium
+from folium import Map, Popup, Icon, Marker, raster_layers, LayerControl
 from folium.plugins import MarkerCluster, Fullscreen
 from flask import Flask, render_template, request
 from sqlalchemy import func
 from dotenv import load_dotenv
-import sys
-import logging
 from scraper import DataBase, StockedLakes
 from plotly.offline import plot
 import plotly.graph_objs as go
@@ -96,7 +94,7 @@ def make_map(lakes):
     latitudes = [float(lake["latitude"]) for lake in lakes if lake != '']
     longitudes = [float(lake["longitude"]) for lake in lakes if lake != '']
     location = [sum(latitudes) / len(latitudes), sum(longitudes) / len(longitudes)]
-    folium_map = folium.Map(width="100%", max_width="100%", max_height="100%", location=location, zoom_start=7)
+    folium_map = Map(width="100%", max_width="100%", max_height="100%", location=location, zoom_start=7)
 
     marker_cluster = MarkerCluster().add_to(folium_map)
     Fullscreen(
@@ -114,25 +112,25 @@ def make_map(lakes):
         <a style="color:blue" href="{lake["directions"]}" target="_blank">Directions via Googlemaps <a/>
         '''
 
-      popup = folium.Popup(html, max_width=400)
+      popup = Popup(html, max_width=400)
       location = (lake["latitude"], lake["longitude"])
 
       if lake["derby_participant"]:
-        folium.Marker(location=location, tooltip=lake["lake"].capitalize(), popup=popup,
-                      icon=folium.Icon(color='red', icon='trophy', prefix='fa')).add_to(
+        Marker(location=location, tooltip=lake["lake"].capitalize(), popup=popup,
+               icon=Icon(color='red', icon='trophy', prefix='fa')).add_to(
           folium_map)
       else:
-        folium.Marker(location=location, tooltip=lake["lake"].capitalize(), popup=popup,
-                      icon=folium.Icon(color='blue', icon='info', prefix='fa')).add_to(
+        Marker(location=location, tooltip=lake["lake"].capitalize(), popup=popup,
+               icon=Icon(color='blue', icon='info', prefix='fa')).add_to(
           marker_cluster)
 
-    folium.raster_layers.TileLayer('Stamen Terrain').add_to(folium_map)
-    folium.LayerControl().add_to(folium_map)
+    raster_layers.TileLayer('Stamen Terrain').add_to(folium_map)
+    LayerControl().add_to(folium_map)
 
     return folium_map
   else:
     # return a blank map if there is no data
-    return folium.Map(location=[47.7511, -120.7401], zoom_start=7)
+    return Map(location=[47.7511, -120.7401], zoom_start=7)
 
 
 def show_chart(lakes):
@@ -153,9 +151,6 @@ def show_chart(lakes):
 
   return graph_html
 
-
-app.logger.addHandler(logging.StreamHandler(sys.stdout))
-app.logger.setLevel(logging.ERROR)
 
 if __name__ == '__main__':
   app.run(debug=False)
