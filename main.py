@@ -2,11 +2,11 @@ import os
 import folium
 from folium.plugins import MarkerCluster, Fullscreen
 from flask import Flask, render_template, request
-from sqlalchemy import create_engine, func, Integer, cast
+from sqlalchemy import create_engine, func, Integer, cast, text
 from dotenv import load_dotenv
 import sys
 import logging
-from scraper import make_df, session, StockedLakes
+from scraper import make_df, session, StockedLakes, DerbyLake
 from plotly.offline import plot
 import plotly.graph_objs as go
 from datetime import datetime, timedelta
@@ -20,17 +20,15 @@ app.app_context().push()
 if os.getenv("SQLALCHEMY_DATABASE_URI"):
   engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
   app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
-  with engine.connect().execution_options(autocommit=True) as conn:
-    stocked_lakes = conn.execute(f"SELECT * FROM stocked_lakes_table").fetchall()
+  stocked_lakes = engine.connect().execute(text("SELECT * FROM stocked_lakes_table")).fetchall()
 
-    derby_lakes = conn.execute(f"SELECT * FROM derby_lakes_table").fetchall()
+  derby_lakes = engine.connect().execute(text("SELECT * FROM derby_lakes_table")).fetchall()
+  total_stocked_by_date = session.query(
+    func.to_date(StockedLakes.date, 'Mon DD, YYYY').label('stocked_date'),
+    func.sum(cast(func.translate(StockedLakes.stocked_fish, ',', ''), Integer))
+  ).group_by('stocked_date').order_by('stocked_date').all()
 
-    total_stocked_by_date = session.query(
-      func.to_date(StockedLakes.date, 'Mon DD, YYYY').label('stocked_date'),
-      func.sum(cast(func.translate(StockedLakes.stocked_fish, ',', ''), Integer))
-    ).group_by('stocked_date').order_by('stocked_date').all()
-
-  # engine.dispose()
+  engine.dispose()
 
 # else use sqlite database
 else:
