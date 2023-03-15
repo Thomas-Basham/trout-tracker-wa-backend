@@ -1,12 +1,16 @@
+from dotenv import load_dotenv
+from datetime import datetime, timedelta
+import os
+from flask import Flask, render_template, request
 from folium import Map, Popup, Icon, Marker, raster_layers, LayerControl
 from folium.plugins import MarkerCluster, Fullscreen
-from flask import Flask, render_template, request
-from dotenv import load_dotenv
-from plotly.offline import plot
-# import plotly.graph_objs as go
-import os
-from plotly.graph_objs import Scatter, Figure, Layout
-from datetime import datetime, timedelta
+
+from bokeh.plotting import figure
+from bokeh.models import ColumnDataSource
+from bokeh.models.tools import HoverTool
+from bokeh.palettes import Category10
+from bokeh.embed import components
+
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, func, text, Column, Integer, String, Boolean, DateTime
@@ -196,20 +200,25 @@ def show_chart(lakes):
   # Extract the dates and total stocked fish into separate lists
   dates = [item[0] for item in lakes]
   total_stocked_fish = [item[1] for item in lakes]
-  # print(dates)
-  # Create a Plotly line graph with the total stocked fish by date
-  chart_data = Scatter(x=dates, y=total_stocked_fish, mode='lines')
-  layout = Layout(title='Total Stocked Trout by Date',
-                  xaxis_title='Date',
-                  yaxis_title='Total Stocked Fish',
-                  margin=dict(l=50, r=50, t=50, b=50),
-                  autosize=True
-                  )
-  fig = Figure(data=[chart_data], layout=layout)
-  graph_html = plot(fig, output_type='div')
 
-  return graph_html
+  # Create a ColumnDataSource with the data
+  source = ColumnDataSource(data=dict(dates=dates, total_stocked_fish=total_stocked_fish))
+
+  # Create a Bokeh figure with a line plot of the total stocked fish by date
+  p = figure(title='Total Stocked Trout by Date', x_axis_label='Date', y_axis_label='Total Stocked Fish',
+             sizing_mode="stretch_width", height=500)
+  p.line('dates', 'total_stocked_fish', source=source, line_width=2, line_color=Category10[3][0])
+
+  # Add a hover tool to show the values on hover
+  hover = HoverTool(tooltips=[('Date', '@dates{%F}'), ('Total Stocked Fish', '@total_stocked_fish')],
+                    formatters={'@dates': 'datetime'}, mode='vline')
+  p.add_tools(hover)
+
+  # Generate the HTML components to display the chart
+  script, div = components(p)
+
+  return div + script
 
 
 if __name__ == '__main__':
-  app.run(debug=False)
+  app.run(debug=True)
