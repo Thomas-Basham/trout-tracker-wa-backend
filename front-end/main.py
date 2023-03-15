@@ -52,14 +52,6 @@ class DataBase:
     self.Session = sessionmaker(bind=self.engine)
     self.session = self.Session()
 
-    # self.stocked_lakes = self.conn.execute(text("SELECT * FROM stocked_lakes_table")).fetchall()
-    # print(self.stocked_lakes)
-    # self.derby_lakes = self.conn.execute(text("SELECT * FROM derby_lakes_table")).fetchall()
-    # self.total_stocked_by_date = self.session.query(
-    #   StockedLakes.date,
-    #   func.sum(StockedLakes.stocked_fish)
-    # ).group_by('date').order_by('date').all()
-
   def get_data(self):
     stocked_lakes = self.conn.execute(text("SELECT * FROM stocked_lakes_table")).fetchall()
     derby_lakes = self.conn.execute(text("SELECT * FROM derby_lakes_table")).fetchall()
@@ -82,19 +74,10 @@ def index_view():
   global data_base, data, stocked_lakes_data, derby_lakes_data, total_stocked_by_date
 
   days = 30
-  # if len(stocked_lakes_data) > 1:
+
   folium_map = make_map(stocked_lakes_data)._repr_html_()
 
   derby_lakes_set = set(lake["lake"] for lake in derby_lakes_data)
-  # else:
-  #   data_base.write_data()
-  #   data = data_base.get_data()  # returns data object
-  #   stocked_lakes_data = data['stocked_lakes']
-  #   derby_lakes_data = data['derby_lakes']
-  #   derby_lakes = derby_lakes_data
-  #   folium_map = make_map(stocked_lakes_data)._repr_html_()
-  #
-  #   derby_lakes_set = set(lake["lake"] for lake in derby_lakes)
 
   if request.method == 'POST':
     form = request.form
@@ -133,14 +116,7 @@ def index_view():
 @app.route('/fullscreen')
 def map_full_screen_view():
   global data_base, stocked_lakes_data, data
-  # if len(stocked_lakes_data) > 1:
   folium_map = make_map(stocked_lakes_data)._repr_html_()
-  # else:
-  # data_base.write_data()
-  # data = data_base.get_data()  # returns data object
-  # stocked_lakes_data = data['stocked_lakes']
-  #
-  # folium_map = make_map(stocked_lakes_data)._repr_html_()
 
   return render_template('map_full_screen.html', folium_map=folium_map)
 
@@ -190,29 +166,6 @@ def make_map(lakes):
     # return a blank map if there is no data
     return Map(location=[47.7511, -120.7401], zoom_start=7)
 
-
-# def show_chart(lakes):
-#   # Extract the dates and total stocked fish into separate lists
-#   dates = [item[0] for item in lakes]
-#   total_stocked_fish = [item[1] for item in lakes]
-#
-#   # Create a ColumnDataSource with the data
-#   source = ColumnDataSource(data=dict(dates=dates, total_stocked_fish=total_stocked_fish))
-#
-#   # Create a Bokeh figure with a line plot of the total stocked fish by date
-#   p = figure(title='Total Stocked Trout by Date', x_axis_label='Date', y_axis_label='Total Stocked Fish',
-#              sizing_mode="stretch_width", height=500)
-#   p.line('dates', 'total_stocked_fish', source=source, line_width=2, line_color=Category10[3][0])
-#
-#   # Add a hover tool to show the values on hover
-#   hover = HoverTool(tooltips=[('Date', '@dates{%F}'), ('Total Stocked Fish', '@total_stocked_fish')],
-#                     formatters={'@dates': 'datetime'}, mode='vline')
-#   p.add_tools(hover)
-#
-#   # Generate the HTML components to display the chart
-#   script, div = components(p)
-#
-#   return div + script
 
 def show_chart(lakes, date_format='%Y-%m-%d'):
   # Extract the dates and total stocked fish into separate lists
