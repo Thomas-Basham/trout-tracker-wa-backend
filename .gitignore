@@ -126,9 +126,12 @@ celerybeat.pid
 
 # Environments
 back-end/.env
+<<<<<<< HEAD
 front-end/.env
 ./.env
 .env
+=======
+>>>>>>> 64b3c392a337e71c9380da0412c4e891acab7022
 .venv
 env/
 venv/
