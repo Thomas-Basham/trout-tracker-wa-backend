@@ -1,16 +1,11 @@
+import json
+
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import os
 from flask import Flask, render_template, request
 from folium import Map, Popup, Icon, Marker, raster_layers, LayerControl
 from folium.plugins import MarkerCluster, Fullscreen
-
-from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource
-from bokeh.models.tools import HoverTool
-from bokeh.palettes import Category10
-from bokeh.embed import components
-
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, func, text, Column, Integer, String, Boolean, DateTime
@@ -196,28 +191,66 @@ def make_map(lakes):
     return Map(location=[47.7511, -120.7401], zoom_start=7)
 
 
-def show_chart(lakes):
+# def show_chart(lakes):
+#   # Extract the dates and total stocked fish into separate lists
+#   dates = [item[0] for item in lakes]
+#   total_stocked_fish = [item[1] for item in lakes]
+#
+#   # Create a ColumnDataSource with the data
+#   source = ColumnDataSource(data=dict(dates=dates, total_stocked_fish=total_stocked_fish))
+#
+#   # Create a Bokeh figure with a line plot of the total stocked fish by date
+#   p = figure(title='Total Stocked Trout by Date', x_axis_label='Date', y_axis_label='Total Stocked Fish',
+#              sizing_mode="stretch_width", height=500)
+#   p.line('dates', 'total_stocked_fish', source=source, line_width=2, line_color=Category10[3][0])
+#
+#   # Add a hover tool to show the values on hover
+#   hover = HoverTool(tooltips=[('Date', '@dates{%F}'), ('Total Stocked Fish', '@total_stocked_fish')],
+#                     formatters={'@dates': 'datetime'}, mode='vline')
+#   p.add_tools(hover)
+#
+#   # Generate the HTML components to display the chart
+#   script, div = components(p)
+#
+#   return div + script
+
+def show_chart(lakes, date_format='%Y-%m-%d'):
   # Extract the dates and total stocked fish into separate lists
   dates = [item[0] for item in lakes]
   total_stocked_fish = [item[1] for item in lakes]
 
-  # Create a ColumnDataSource with the data
-  source = ColumnDataSource(data=dict(dates=dates, total_stocked_fish=total_stocked_fish))
+  # Convert datetime objects to strings using the specified format
+  date_strings = [date.strftime(date_format) for date in dates]
 
-  # Create a Bokeh figure with a line plot of the total stocked fish by date
-  p = figure(title='Total Stocked Trout by Date', x_axis_label='Date', y_axis_label='Total Stocked Fish',
-             sizing_mode="stretch_width", height=500)
-  p.line('dates', 'total_stocked_fish', source=source, line_width=2, line_color=Category10[3][0])
+  # Create a ChartJS line chart with the total stocked fish by date
+  chart_data = {
+    'labels': date_strings,
+    'datasets': [
+      {
+        'label': 'Total Stocked Trout by Date',
+        'data': total_stocked_fish,
+        'backgroundColor': 'rgba(54, 162, 235, 0.2)',
+        'borderColor': 'rgba(54, 162, 235, 1)',
+        'borderWidth': 1,
+        'pointRadius': 0
+      }
+    ]
+  }
+  chart_options = {
+    'scales': {
+      'xAxes': [{
+        'type': 'time',
+        'time': {
+          'unit': 'day',
+          'parser': date_format,
+          'tooltipFormat': 'll'
+        }
+      }]
+    }
+  }
+  graph_html = f'<canvas id="myChart"></canvas>\n<script>\nvar ctx = document.getElementById("myChart").getContext("2d");\nvar myChart = new Chart(ctx, {{ type: "line", data: {json.dumps(chart_data)}, options: {json.dumps(chart_options)} }});\n</script>'
 
-  # Add a hover tool to show the values on hover
-  hover = HoverTool(tooltips=[('Date', '@dates{%F}'), ('Total Stocked Fish', '@total_stocked_fish')],
-                    formatters={'@dates': 'datetime'}, mode='vline')
-  p.add_tools(hover)
-
-  # Generate the HTML components to display the chart
-  script, div = components(p)
-
-  return div + script
+  return graph_html
 
 
 if __name__ == '__main__':
