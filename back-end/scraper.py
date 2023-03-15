@@ -48,14 +48,6 @@ class DataBase:
     self.Session = sessionmaker(bind=self.engine)
     self.session = self.Session()
 
-    # self.stocked_lakes = self.conn.execute(text("SELECT * FROM stocked_lakes_table")).fetchall()
-    # print(self.stocked_lakes)
-    # self.derby_lakes = self.conn.execute(text("SELECT * FROM derby_lakes_table")).fetchall()
-    # self.total_stocked_by_date = self.session.query(
-    #   StockedLakes.date,
-    #   func.sum(StockedLakes.stocked_fish)
-    # ).group_by('date').order_by('date').all()
-
   def get_data(self):
     stocked_lakes = self.conn.execute(text("SELECT * FROM stocked_lakes_table")).fetchall()
     derby_lakes = self.conn.execute(text("SELECT * FROM derby_lakes_table")).fetchall()
