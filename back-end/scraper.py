@@ -7,8 +7,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from geopy import GoogleV3
 from dotenv import load_dotenv
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import create_engine, func, text, Column, Integer, String, Boolean, DateTime
 
 load_dotenv()
@@ -68,8 +67,8 @@ class DataBase:
 
   def write_data(self):
     scraper = Scraper()
-    Base.metadata.drop_all(self.engine)  # TODO: Remove in production
-    Base.metadata.create_all(self.engine)  # TODO: Remove in production
+    # Base.metadata.drop_all(self.engine)  # TODO: Remove in production
+    # Base.metadata.create_all(self.engine)  # TODO: Remove in production
     self.write_derby_data(scraper)
     self.write_lake_data(scraper)
     self.session.commit()
