@@ -18,8 +18,23 @@ jobs:
       - name: install python packages
         run: |
           python -m pip install --upgrade pip
+          pip install flake8 pytest
+          pip install python-dotenv
           pip install -r ./back-end/requirements.txt
-      - name: execute py script
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test with pytest
+        run: |
+          pytest
+        env:
+          GV3_API_KEY: ${{ secrets.GV3_API_KEY }}
+          SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
+          OPEN_ROUTE_API_KEY: ${{ secrets.OPEN_ROUTE_API_KEY }}
+      - name: run scraper
         run: python ./back-end/scraper.py
         env:
           GV3_API_KEY: ${{ secrets.GV3_API_KEY }}
