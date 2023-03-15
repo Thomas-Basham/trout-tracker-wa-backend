@@ -2,8 +2,11 @@
 
 
 {% block content %}
-    <!-- Plotly JavaScript -->
-    <script src="https://cdn.plot.ly/plotly-2.7.0.min.js"></script>
+    <!-- <link href="http://cdn.bokeh.org/bokeh/release/bokeh-3.0.1.min.css" rel="stylesheet" type="text/css"> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bokeh/3.0.1/bokeh.min.js"
+            integrity="sha512-p7EUyPmeDeOwHiu7fIZNboAcQLxei3sWtXoHoShWWiPNUSRng/Xs5JPcaFPRa4dKy9IuHjyIQuLE4caGCwuewA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <div class="container mb-4">
 
         <form method="POST" class="form-inline">
@@ -16,16 +19,16 @@
         </form>
     </div>
 
-    <div style="padding-bottom: 1vh; width: 100%" class="container border-bottom mb-4">
+    <div id="interactive-map" style="padding-bottom: 1vh; width: 100%" class="container border-bottom mb-4">
         <div class="d-flex justify-content-between align-text-bottom ">
             <h1 class="">Stocked Trout Lakes in Washington</h1>
             <a href="/fullscreen">View Larger Map<span class="glyphicon glyphicon-share"></span></a>
         </div>
         {{ folium_map | safe }}
     </div>
-    <div class="container">
+    <div id="interactive-chart" class="container">
 
-        <h1>Stocked Lakes Chart</h1>
+        <h1>Total Trout Stocked By Date</h1>
         <div>{{ chart | safe }}</div>
 
     </div>
