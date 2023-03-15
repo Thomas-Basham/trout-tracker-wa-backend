@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - run: |
+          cd back-end
       - name: checkout repo content
         uses: actions/checkout@v2
 
