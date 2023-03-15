@@ -1,23 +1,81 @@
 from folium import Map, Popup, Icon, Marker, raster_layers, LayerControl
 from folium.plugins import MarkerCluster, Fullscreen
 from flask import Flask, render_template, request
-from sqlalchemy import func
 from dotenv import load_dotenv
-from scraper import DataBase, StockedLakes
 from plotly.offline import plot
-import plotly.graph_objs as go
+# import plotly.graph_objs as go
+import os
+from plotly.graph_objs import Scatter, Figure, Layout
 from datetime import datetime, timedelta
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine, func, text, Column, Integer, String, Boolean, DateTime
 
 load_dotenv()
 app = Flask(__name__.split('.')[0])
 app.app_context().push()
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+# Create a SQLAlchemy base
+Base = declarative_base()
+
+
+# Create the stocked_lakes_table class
+class StockedLakes(Base):
+  __tablename__ = 'stocked_lakes_table'
+  id = Column(Integer, primary_key=True)
+  lake = Column(String)
+  stocked_fish = Column(Integer)
+  date = Column(DateTime)
+  latitude = Column(String)
+  longitude = Column(String)
+  directions = Column(String)
+  derby_participant = Column(Boolean)
+
+
+# Create the derby_lakes_table class
+class DerbyLake(Base):
+  __tablename__ = 'derby_lakes_table'
+  id = Column(Integer, primary_key=True)
+  lake = Column(String)
+
+
+class DataBase:
+  def __init__(self):
+    # Load Database
+    if os.getenv("SQLALCHEMY_DATABASE_URI"):
+      self.engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
+    else:
+      self.engine = create_engine('sqlite:///')
+
+    self.conn = self.engine.connect()
+    self.Session = sessionmaker(bind=self.engine)
+    self.session = self.Session()
+
+    # self.stocked_lakes = self.conn.execute(text("SELECT * FROM stocked_lakes_table")).fetchall()
+    # print(self.stocked_lakes)
+    # self.derby_lakes = self.conn.execute(text("SELECT * FROM derby_lakes_table")).fetchall()
+    # self.total_stocked_by_date = self.session.query(
+    #   StockedLakes.date,
+    #   func.sum(StockedLakes.stocked_fish)
+    # ).group_by('date').order_by('date').all()
+
+  def get_data(self):
+    stocked_lakes = self.conn.execute(text("SELECT * FROM stocked_lakes_table")).fetchall()
+    derby_lakes = self.conn.execute(text("SELECT * FROM derby_lakes_table")).fetchall()
+    total_stocked_by_date = self.session.query(
+      StockedLakes.date,
+      func.sum(StockedLakes.stocked_fish)
+    ).group_by(StockedLakes.date).order_by(StockedLakes.date).all()
+    return {"stocked_lakes": stocked_lakes, "derby_lakes": derby_lakes, "total_stocked_by_date": total_stocked_by_date}
+
+
 data_base = DataBase()
 data = data_base.get_data()  # returns data object
 stocked_lakes_data = data['stocked_lakes']
 derby_lakes_data = data['derby_lakes']
 total_stocked_by_date = data['total_stocked_by_date']
-
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -25,19 +83,19 @@ def index_view():
   global data_base, data, stocked_lakes_data, derby_lakes_data, total_stocked_by_date
 
   days = 30
-  if len(stocked_lakes_data) > 1:
-    folium_map = make_map(stocked_lakes_data)._repr_html_()
+  # if len(stocked_lakes_data) > 1:
+  folium_map = make_map(stocked_lakes_data)._repr_html_()
 
-    derby_lakes_set = set(lake["lake"] for lake in derby_lakes_data)
-  else:
-    data_base.write_data()
-    data = data_base.get_data()  # returns data object
-    stocked_lakes_data = data['stocked_lakes']
-    derby_lakes_data = data['derby_lakes']
-    derby_lakes = derby_lakes_data
-    folium_map = make_map(stocked_lakes_data)._repr_html_()
-
-    derby_lakes_set = set(lake["lake"] for lake in derby_lakes)
+  derby_lakes_set = set(lake["lake"] for lake in derby_lakes_data)
+  # else:
+  #   data_base.write_data()
+  #   data = data_base.get_data()  # returns data object
+  #   stocked_lakes_data = data['stocked_lakes']
+  #   derby_lakes_data = data['derby_lakes']
+  #   derby_lakes = derby_lakes_data
+  #   folium_map = make_map(stocked_lakes_data)._repr_html_()
+  #
+  #   derby_lakes_set = set(lake["lake"] for lake in derby_lakes)
 
   if request.method == 'POST':
     form = request.form
@@ -76,14 +134,14 @@ def index_view():
 @app.route('/fullscreen')
 def map_full_screen_view():
   global data_base, stocked_lakes_data, data
-  if len(stocked_lakes_data) > 1:
-    folium_map = make_map(stocked_lakes_data)._repr_html_()
-  else:
-    data_base.write_data()
-    data = data_base.get_data()  # returns data object
-    stocked_lakes_data = data['stocked_lakes']
-
-    folium_map = make_map(stocked_lakes_data)._repr_html_()
+  # if len(stocked_lakes_data) > 1:
+  folium_map = make_map(stocked_lakes_data)._repr_html_()
+  # else:
+  # data_base.write_data()
+  # data = data_base.get_data()  # returns data object
+  # stocked_lakes_data = data['stocked_lakes']
+  #
+  # folium_map = make_map(stocked_lakes_data)._repr_html_()
 
   return render_template('map_full_screen.html', folium_map=folium_map)
 
@@ -140,14 +198,14 @@ def show_chart(lakes):
   total_stocked_fish = [item[1] for item in lakes]
   # print(dates)
   # Create a Plotly line graph with the total stocked fish by date
-  data = go.Scatter(x=dates, y=total_stocked_fish, mode='lines')
-  layout = go.Layout(title='Total Stocked Trout by Date',
-                     xaxis_title='Date',
-                     yaxis_title='Total Stocked Fish',
-                     margin=dict(l=50, r=50, t=50, b=50),
-                     autosize=True
-                     )
-  fig = go.Figure(data=[data], layout=layout)
+  chart_data = Scatter(x=dates, y=total_stocked_fish, mode='lines')
+  layout = Layout(title='Total Stocked Trout by Date',
+                  xaxis_title='Date',
+                  yaxis_title='Total Stocked Fish',
+                  margin=dict(l=50, r=50, t=50, b=50),
+                  autosize=True
+                  )
+  fig = Figure(data=[chart_data], layout=layout)
   graph_html = plot(fig, output_type='div')
 
   return graph_html
