@@ -21,7 +21,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: execute py script
-        run: python scraper.py
+        run: python ./back-end/scraper.py
         env:
           GV3_API_KEY: ${{ secrets.GV3_API_KEY }}
           SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}

@@ -7,8 +7,8 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from geopy import GoogleV3
 from dotenv import load_dotenv
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, func, text, Column, Integer, String, Boolean, DateTime
 
 load_dotenv()
@@ -28,14 +28,6 @@ class StockedLakes(Base):
   longitude = Column(String)
   directions = Column(String)
   derby_participant = Column(Boolean)
-
-  # @property
-  # def date(self):
-  #   return datetime.strptime(self.date, '%b %d, %Y') or datetime.strptime(self.date, '%b %dd, %Y')
-  #
-  # @date.setter
-  # def date(self, value):
-  #   self.date = datetime.strptime(value, '%m/%d/%Y').strftime('%b %d, %Y')
 
 
 # Create the derby_lakes_table class
@@ -76,8 +68,8 @@ class DataBase:
 
   def write_data(self):
     scraper = Scraper()
-    # Base.metadata.drop_all(self.engine)  # TODO: Remove in production
-    # Base.metadata.create_all(self.engine)  # TODO: Remove in production
+    Base.metadata.drop_all(self.engine)  # TODO: Remove in production
+    Base.metadata.create_all(self.engine)  # TODO: Remove in production
     self.write_derby_data(scraper)
     self.write_lake_data(scraper)
     self.session.commit()
@@ -149,13 +141,14 @@ class Scraper:
                         i.text.strip() + " County").strip().replace("\n", "").replace(" Region ", '').replace("  ",
                                                                                                               " ").title()
                  for i in found_text]
-    return text_list
+    return text_list[1:]
 
   # return list of Stock Counts
   def scrape_stock_count(self):
     found_stock_counts = self.soup.findAll(class_="views-field views-field-num-fish")
 
     stock_count_text_list = [i.text.strip().replace(',', '') for i in found_stock_counts]
+
     stock_count_int_list = []
     for i in stock_count_text_list:
       try:
@@ -165,36 +158,36 @@ class Scraper:
         print(f"Error: {i} is not a valid number")
         continue
 
-    return stock_count_int_list
+    return stock_count_int_list[1:]
 
   # Return list of Scraped Dates
   def scrape_date(self):
     date_text = self.soup.findAll(class_="views-field views-field-stock-date")
 
     date_text_list = [i.text.strip() for i in date_text]
+
     date_list = []
     for i in date_text_list:
       try:
-
         date_list.append(datetime.strptime(i, '%b %d, %Y') or datetime.strptime(i, '%b %dd, %Y'))
       except ValueError:
         date_list.append(i)
         print(f"Error: {i} is not a valid number")
         continue
 
-    return date_list
+    return date_list[1:]
 
   def make_df(self):
-    # lakes = scrape_lake_names()
-    amount_scraped = len(self.lake_names)
-    stock_count = self.stock_counts[1:amount_scraped]
-    dates = self.dates[1:amount_scraped]
+    lake_names = self.lake_names
+    stock_count = self.stock_counts
+    dates = self.dates
+    amount_scraped = len(lake_names)
 
     # Create a list of dictionaries
     data = []
     for i in range(amount_scraped - 1):
       data.append(
-        {'lake': self.lake_names[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'latitude': "", 'longitude': "",
+        {'lake': lake_names[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'latitude': "", 'longitude': "",
          'directions': "", "derby_participant": False})
 
     data = self.get_lat_lon(data)  # ? side effect
