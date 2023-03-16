@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from geopy import GoogleV3
 from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker, declarative_base
-from sqlalchemy import create_engine, func, text, Column, Integer, String, Boolean, DateTime
+from sqlalchemy import create_engine, func, text, Column, Integer, String, Boolean, Date
 
 load_dotenv()
 
@@ -22,7 +22,7 @@ class StockedLakes(Base):
   id = Column(Integer, primary_key=True)
   lake = Column(String)
   stocked_fish = Column(Integer)
-  date = Column(DateTime)
+  date = Column(Date)
   latitude = Column(String)
   longitude = Column(String)
   directions = Column(String)
@@ -34,6 +34,13 @@ class DerbyLake(Base):
   __tablename__ = 'derby_lakes_table'
   id = Column(Integer, primary_key=True)
   lake = Column(String)
+
+
+# Create the derby_lakes_table class
+class Utility(Base):
+  __tablename__ = 'utility_table'
+  id = Column(Integer, primary_key=True)
+  updated = Column(Date)
 
 
 class DataBase:
@@ -63,6 +70,7 @@ class DataBase:
     # Base.metadata.create_all(self.engine)  # TODO: Remove in production
     self.write_derby_data(scraper)
     self.write_lake_data(scraper)
+    self.write_utility_data()
     self.session.commit()
     self.session.close()
 
@@ -72,6 +80,9 @@ class DataBase:
       for item in scraper.df:
         if lake.capitalize() in item['lake'].capitalize():
           item['derby_participant'] = True
+          existing_lake = self.session.query(DerbyLake).filter_by(lake=lake).first()
+          if existing_lake:
+            continue  # skip if the lake already exists in the table
           self.session.add(DerbyLake(lake=lake))
 
   def write_lake_data(self, scraper):
@@ -89,6 +100,9 @@ class DataBase:
                           directions=lake_data['directions'], derby_participant=lake_data['derby_participant'])
 
       self.session.add(lake)
+
+  def write_utility_data(self):
+    self.session.add(Utility(updated=datetime.now().date()))
 
 
 class Scraper:
@@ -160,10 +174,10 @@ class Scraper:
     date_list = []
     for i in date_text_list:
       try:
-        date_list.append(datetime.strptime(i, '%b %d, %Y') or datetime.strptime(i, '%b %dd, %Y'))
+        date_list.append(datetime.strptime(i, '%b %d, %Y').date() or datetime.strptime(i, '%b %dd, %Y').date())
       except ValueError:
         date_list.append(i)
-        print(f"Error: {i} is not a valid number")
+        print(f"Error: {i} is not a valid date")
         continue
 
     return date_list[1:]
@@ -233,7 +247,6 @@ if __name__ == "__main__":
   start_time = time()
 
   data_base = DataBase()
-  # Scraper()
   data_base.write_data()
 
   end_time = time()

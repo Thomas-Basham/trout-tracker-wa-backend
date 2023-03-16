@@ -59,7 +59,10 @@ class DataBase:
       StockedLakes.date,
       func.sum(StockedLakes.stocked_fish)
     ).group_by(StockedLakes.date).order_by(StockedLakes.date).all()
-    return {"stocked_lakes": stocked_lakes, "derby_lakes": derby_lakes, "total_stocked_by_date": total_stocked_by_date}
+    utility = self.conn.execute(text("SELECT * FROM utility_table")).first()
+
+    return {"stocked_lakes": stocked_lakes, "derby_lakes": derby_lakes, "total_stocked_by_date": total_stocked_by_date,
+            "utility": utility}
 
 
 data_base = DataBase()
@@ -67,6 +70,7 @@ data = data_base.get_data()  # returns data object
 stocked_lakes_data = data['stocked_lakes']
 derby_lakes_data = data['derby_lakes']
 total_stocked_by_date = data['total_stocked_by_date']
+date_data_updated = data['utility'].updated
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -110,7 +114,8 @@ def index_view():
     chart = show_chart(total_stocked_by_date)
 
   return render_template('index.html', folium_map=folium_map, chart=chart,
-                         derby_lakes=derby_lakes_set, most_recent_stocked=stocked_lakes_data, days=days)
+                         derby_lakes=derby_lakes_set, most_recent_stocked=stocked_lakes_data, days=days,
+                         date_data_updated=date_data_updated)
 
 
 @app.route('/fullscreen')
