@@ -55,17 +55,7 @@ class DataBase:
     self.Session = sessionmaker(bind=self.engine)
     self.session = self.Session()
 
-  def get_data(self):
-    stocked_lakes = self.conn.execute(text("SELECT * FROM stocked_lakes_table")).fetchall()
-    derby_lakes = self.conn.execute(text("SELECT * FROM derby_lakes_table")).fetchall()
-    total_stocked_by_date = self.session.query(
-      StockedLakes.date,
-      func.sum(StockedLakes.stocked_fish)
-    ).group_by(StockedLakes.date).order_by(StockedLakes.date).all()
-    return {"stocked_lakes": stocked_lakes, "derby_lakes": derby_lakes, "total_stocked_by_date": total_stocked_by_date}
-
-  def write_data(self):
-    scraper = Scraper()
+  def write_data(self, scraper):
     # Base.metadata.drop_all(self.engine)  # TODO: Remove in production
     # Base.metadata.create_all(self.engine)  # TODO: Remove in production
     self.write_derby_data(scraper)
@@ -116,8 +106,8 @@ class Scraper:
   3. Make the data into a list of dictionaries
   """
 
-  def __init__(self):
-    self.lake_url = "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"
+  def __init__(self, lake_url):
+    self.lake_url = lake_url
     self.response = get(self.lake_url)
     if self.response.status_code != 200:
       print("Error fetching page")
@@ -242,12 +232,20 @@ class Scraper:
     return text_lst_trimmed
 
 
-# Run Once Every morning on Heroku Scheduler
+def write_archived_data():
+  for i in range(2022, 2015, -1):
+    for j in range(7):
+      data_base.write_data(scraper=Scraper(
+        lake_url=f'https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/archive/{i}?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250&page={j}'))
+
+
+# Run Once Every day
 if __name__ == "__main__":
   start_time = time()
 
   data_base = DataBase()
-  data_base.write_data()
-
+  data_base.write_data(scraper=Scraper(
+    lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"))
+  # write_archived_data()
   end_time = time()
   print(f"It took {end_time - start_time:.2f} seconds to compute")
