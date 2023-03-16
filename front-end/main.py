@@ -1,5 +1,4 @@
 import json
-
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import os
@@ -93,7 +92,7 @@ date_data_updated = data['utility'].updated
 
 @app.route('/', methods=['GET', 'POST'])
 def index_view():
-  global data_base, data, stocked_lakes_data, derby_lakes_data
+  global data_base, stocked_lakes_data, derby_lakes_data
 
   days = 365
   end_date = datetime.now()
@@ -146,7 +145,7 @@ def index_view():
 
 @app.route('/fullscreen')
 def map_full_screen_view():
-  global data_base, stocked_lakes_data, data
+  global stocked_lakes_data
   folium_map = make_map(stocked_lakes_data)._repr_html_()
 
   return render_template('map_full_screen.html', folium_map=folium_map)
@@ -198,43 +197,48 @@ def make_map(lakes):
     return Map(location=[47.7511, -120.7401], zoom_start=7)
 
 
-def show_chart(lakes, date_format='%Y-%m-%d'):
+def show_chart(lakes):
   # Extract the dates and total stocked fish into separate lists
-  dates = [item[0] for item in lakes]
-  total_stocked_fish = [item[1] for item in lakes]
+  if lakes:
+    date_format = '%Y-%m-%d'
+    dates = [item[0] for item in lakes]
+    total_stocked_fish = [item[1] for item in lakes]
 
-  # Convert datetime objects to strings using the specified format
-  date_strings = [date.strftime(date_format) for date in dates]
+    # Convert datetime objects to strings using the specified format
+    date_strings = [date.strftime(date_format) for date in dates]
 
-  # Create a ChartJS line chart with the total stocked fish by date
-  chart_data = {
-    'labels': date_strings,
-    'datasets': [
-      {
-        'label': 'Total Stocked Trout by Date',
-        'data': total_stocked_fish,
-        'backgroundColor': 'rgba(54, 162, 235, 0.2)',
-        'borderColor': 'rgba(54, 162, 235, 1)',
-        'borderWidth': 1,
-        'pointRadius': 0
-      }
-    ]
-  }
-  chart_options = {
-    'scales': {
-      'xAxes': [{
-        'type': 'time',
-        'time': {
-          'unit': 'day',
-          'parser': date_format,
-          'tooltipFormat': 'll'
+    # Create a ChartJS line chart with the total stocked fish by date
+    chart_data = {
+      'labels': date_strings,
+      'datasets': [
+        {
+          'label': 'Total Stocked Trout by Date',
+          'data': total_stocked_fish,
+          'backgroundColor': 'rgba(54, 162, 235, 0.2)',
+          'borderColor': 'rgba(54, 162, 235, 1)',
+          'borderWidth': 1,
+          'pointRadius': 0
         }
-      }]
+      ]
     }
-  }
-  graph_html = f'<canvas id="myChart"></canvas>\n<script>\nvar ctx = document.getElementById("myChart").getContext("2d");\nvar myChart = new Chart(ctx, {{ type: "line", data: {json.dumps(chart_data)}, options: {json.dumps(chart_options)} }});\n</script>'
+    chart_options = {
+      'scales': {
+        'xAxes': [{
+          'type': 'time',
+          'time': {
+            'unit': 'day',
+            'parser': date_format,
+            'tooltipFormat': 'll'
+          }
+        }]
+      }
+    }
+    graph_html = f'<canvas id="myChart"></canvas>\n<script>\nvar ctx = document.getElementById("myChart").getContext("2d");\nvar myChart = new Chart(ctx, {{ type: "line", data: {json.dumps(chart_data)}, options: {json.dumps(chart_options)} }});\n</script>'
 
-  return graph_html
+    return graph_html
+  else:
+    # else return an empty canvas if there is no data
+    return f'<canvas id="myChart"></canvas>'
 
 
 if __name__ == '__main__':

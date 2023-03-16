@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from geopy import GoogleV3
 from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker, declarative_base
-from sqlalchemy import create_engine, func, text, Column, Integer, String, Boolean, Date
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, Date
 
 load_dotenv()
 
@@ -246,6 +246,6 @@ if __name__ == "__main__":
   data_base = DataBase()
   data_base.write_data(scraper=Scraper(
     lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"))
-  # write_archived_data()
+
   end_time = time()
   print(f"It took {end_time - start_time:.2f} seconds to compute")
