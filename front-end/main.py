@@ -77,16 +77,12 @@ date_data_updated = data['utility'].updated
 def index_view():
   global data_base, data, stocked_lakes_data, derby_lakes_data, total_stocked_by_date
 
-  days = 30
-
-  folium_map = make_map(stocked_lakes_data)._repr_html_()
-
-  derby_lakes_set = set(lake["lake"] for lake in derby_lakes_data)
+  days = 365
+  end_date = datetime.now()
 
   if request.method == 'POST':
     form = request.form
     days = int(form['days'])
-    end_date = datetime.now()
     start_date = end_date - timedelta(days=days)
     filtered_lakes_by_days = data_base.session.query(
       StockedLakes.date,
@@ -111,10 +107,33 @@ def index_view():
     chart = show_chart(filtered_total_stocked_by_date)
 
   else:
-    chart = show_chart(total_stocked_by_date)
+    start_date = end_date - timedelta(days=days)
+
+    filtered_total_stocked_by_date = data_base.session.query(
+      StockedLakes.date,
+      func.sum(StockedLakes.stocked_fish)
+    ).group_by(StockedLakes.date).filter(
+      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
+    ).order_by(StockedLakes.date).all()
+
+    filtered_lakes_by_days = data_base.session.query(
+      StockedLakes.date,
+      StockedLakes.lake,
+      StockedLakes.stocked_fish,
+      StockedLakes.latitude,
+      StockedLakes.longitude,
+      StockedLakes.directions,
+      StockedLakes.derby_participant
+    ).filter(
+      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
+    ).order_by(StockedLakes.date).all()
+
+    chart = show_chart(filtered_total_stocked_by_date)
+
+    folium_map = make_map(filtered_lakes_by_days)._repr_html_()
 
   return render_template('index.html', folium_map=folium_map, chart=chart,
-                         derby_lakes=derby_lakes_set, most_recent_stocked=stocked_lakes_data, days=days,
+                         derby_lakes=derby_lakes_data, most_recent_stocked=stocked_lakes_data, days=days,
                          date_data_updated=date_data_updated)
 
 
