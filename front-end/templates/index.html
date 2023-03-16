@@ -74,13 +74,15 @@
 
             <br>
             <br>
+            <div style="height: 250px;overflow: auto">
 
-            {% for lake in derby_lakes %}
-                <div class="row">
-                    <p>{{ lake['lake'] }}</p>
+                {% for lake in derby_lakes %}
+                    <div class="row">
+                        <p>{{ lake['lake'] }}</p>
 
-                </div>
-            {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
 
             {% if derby_lakes|length == 0 %}
 
