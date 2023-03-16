@@ -53,12 +53,30 @@ class DataBase:
     self.session = self.Session()
 
   def get_data(self):
-    stocked_lakes = self.conn.execute(text("SELECT * FROM stocked_lakes_table")).fetchall()
+    end_date = datetime.now()
+    start_date = end_date - timedelta(days=365)
+
+    stocked_lakes = data_base.session.query(
+      StockedLakes.date,
+      StockedLakes.lake,
+      StockedLakes.stocked_fish,
+      StockedLakes.latitude,
+      StockedLakes.longitude,
+      StockedLakes.directions,
+      StockedLakes.derby_participant
+    ).filter(
+      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
+    ).order_by(StockedLakes.date).all()
+
     derby_lakes = self.conn.execute(text("SELECT * FROM derby_lakes_table")).fetchall()
+
     total_stocked_by_date = self.session.query(
       StockedLakes.date,
       func.sum(StockedLakes.stocked_fish)
-    ).group_by(StockedLakes.date).order_by(StockedLakes.date).all()
+    ).group_by(StockedLakes.date).filter(
+      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
+    ).order_by(StockedLakes.date).all()
+
     utility = self.conn.execute(text("SELECT * FROM utility_table")).first()
 
     return {"stocked_lakes": stocked_lakes, "derby_lakes": derby_lakes, "total_stocked_by_date": total_stocked_by_date,
@@ -69,13 +87,13 @@ data_base = DataBase()
 data = data_base.get_data()  # returns data object
 stocked_lakes_data = data['stocked_lakes']
 derby_lakes_data = data['derby_lakes']
-total_stocked_by_date = data['total_stocked_by_date']
+total_stocked_by_date_data = data['total_stocked_by_date']
 date_data_updated = data['utility'].updated
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index_view():
-  global data_base, data, stocked_lakes_data, derby_lakes_data, total_stocked_by_date
+  global data_base, data, stocked_lakes_data, derby_lakes_data
 
   days = 365
   end_date = datetime.now()
@@ -84,6 +102,8 @@ def index_view():
     form = request.form
     days = int(form['days'])
     start_date = end_date - timedelta(days=days)
+
+    # DATA QUERY
     filtered_lakes_by_days = data_base.session.query(
       StockedLakes.date,
       StockedLakes.lake,
@@ -96,44 +116,31 @@ def index_view():
       StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
     ).order_by(StockedLakes.date).all()
 
-    folium_map = make_map(filtered_lakes_by_days)._repr_html_()
-
+    # DATA QUERY
     filtered_total_stocked_by_date = data_base.session.query(
       StockedLakes.date,
       func.sum(StockedLakes.stocked_fish)
     ).group_by(StockedLakes.date).filter(
       StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
     ).order_by(StockedLakes.date).all()
+
+    # MAP AND CHART
+    folium_map = make_map(filtered_lakes_by_days)._repr_html_()
+
     chart = show_chart(filtered_total_stocked_by_date)
+
+    most_recent_stocked = filtered_lakes_by_days
 
   else:
-    start_date = end_date - timedelta(days=days)
 
-    filtered_total_stocked_by_date = data_base.session.query(
-      StockedLakes.date,
-      func.sum(StockedLakes.stocked_fish)
-    ).group_by(StockedLakes.date).filter(
-      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
-    ).order_by(StockedLakes.date).all()
+    chart = show_chart(total_stocked_by_date_data)
 
-    filtered_lakes_by_days = data_base.session.query(
-      StockedLakes.date,
-      StockedLakes.lake,
-      StockedLakes.stocked_fish,
-      StockedLakes.latitude,
-      StockedLakes.longitude,
-      StockedLakes.directions,
-      StockedLakes.derby_participant
-    ).filter(
-      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
-    ).order_by(StockedLakes.date).all()
+    folium_map = make_map(stocked_lakes_data)._repr_html_()
 
-    chart = show_chart(filtered_total_stocked_by_date)
-
-    folium_map = make_map(filtered_lakes_by_days)._repr_html_()
+    most_recent_stocked = stocked_lakes_data
 
   return render_template('index.html', folium_map=folium_map, chart=chart,
-                         derby_lakes=derby_lakes_data, most_recent_stocked=stocked_lakes_data, days=days,
+                         derby_lakes=derby_lakes_data, most_recent_stocked=most_recent_stocked, days=days,
                          date_data_updated=date_data_updated)
 
 
