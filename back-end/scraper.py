@@ -97,7 +97,6 @@ class DataBase:
     self.session.add(Utility(updated=datetime.now().date()))
 
   def back_up_database(self):
-    environ['PGPASSWORD'] = 'WpPuCuE9MwrOsHK0'
     all_stocked_lakes = self.session.query(StockedLakes).all()
 
     backup_file = 'backup_data.txt'
@@ -106,6 +105,13 @@ class DataBase:
         # Write each column value separated by a comma
         f.write(
           f"{row.id},{row.lake},{row.stocked_fish},{row.date},{row.latitude},{row.longitude},{row.directions},{row.derby_participant}\n")
+
+    backup_file = 'backup_data.sql'
+    with open(backup_file, 'w') as f:
+      for row in all_stocked_lakes:
+        # Write an INSERT INTO statement for each row
+        f.write(
+          f"INSERT INTO stocked_lakes_table (id, lake, stocked_fish, date, latitude, longitude, directions, derby_participant) VALUES ({row.id}, '{row.lake}', {row.stocked_fish}, '{row.date}', '{row.latitude}', '{row.longitude}', '{row.directions}', {row.derby_participant});\n")
 
     print(f"Database backed up to {backup_file}")
 
