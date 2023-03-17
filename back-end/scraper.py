@@ -1,6 +1,7 @@
 # from geopy.geocoders import Nominatim
 import re
-from os import getenv
+
+from os import getenv, environ
 from time import time
 from requests import get
 from datetime import datetime
@@ -9,6 +10,7 @@ from geopy import GoogleV3
 from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, Date
+import subprocess
 
 load_dotenv()
 
@@ -93,6 +95,19 @@ class DataBase:
 
   def write_utility_data(self):
     self.session.add(Utility(updated=datetime.now().date()))
+
+  def back_up_database(self):
+    environ['PGPASSWORD'] = 'WpPuCuE9MwrOsHK0'
+    all_stocked_lakes = self.session.query(StockedLakes).all()
+
+    backup_file = 'backup_data.txt'
+    with open(backup_file, 'w') as f:
+      for row in all_stocked_lakes:
+        # Write each column value separated by a comma
+        f.write(
+          f"{row.id},{row.lake},{row.stocked_fish},{row.date},{row.latitude},{row.longitude},{row.directions},{row.derby_participant}\n")
+
+    print(f"Database backed up to {backup_file}")
 
 
 class Scraper:
@@ -246,6 +261,8 @@ if __name__ == "__main__":
   data_base = DataBase()
   data_base.write_data(scraper=Scraper(
     lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"))
+
+  data_base.back_up_database()
 
   end_time = time()
   print(f"It took {end_time - start_time:.2f} seconds to compute")
