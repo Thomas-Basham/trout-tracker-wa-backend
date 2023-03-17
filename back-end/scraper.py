@@ -1,48 +1,18 @@
 # from geopy.geocoders import Nominatim
-import re
 
-from os import getenv, environ
+import re
+from os import getenv
 from time import time
 from requests import get
 from datetime import datetime
 from bs4 import BeautifulSoup
 from geopy import GoogleV3
 from dotenv import load_dotenv
-from sqlalchemy.orm import sessionmaker, declarative_base
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, Date
-import subprocess
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
+from data_tables import StockedLakes, DerbyLake, Utility
 
 load_dotenv()
-
-# Create a SQLAlchemy base
-Base = declarative_base()
-
-
-# Create the stocked_lakes_table class
-class StockedLakes(Base):
-  __tablename__ = 'stocked_lakes_table'
-  id = Column(Integer, primary_key=True)
-  lake = Column(String)
-  stocked_fish = Column(Integer)
-  date = Column(Date)
-  latitude = Column(String)
-  longitude = Column(String)
-  directions = Column(String)
-  derby_participant = Column(Boolean)
-
-
-# Create the derby_lakes_table class
-class DerbyLake(Base):
-  __tablename__ = 'derby_lakes_table'
-  id = Column(Integer, primary_key=True)
-  lake = Column(String)
-
-
-# Create the derby_lakes_table class
-class Utility(Base):
-  __tablename__ = 'utility_table'
-  id = Column(Integer, primary_key=True)
-  updated = Column(Date)
 
 
 class DataBase:
@@ -137,6 +107,7 @@ class Scraper:
     self.lake_names = self.scrape_lake_names()
     self.stock_counts = self.scrape_stock_count()
     self.dates = self.scrape_date()
+    self.species = self.scrape_species()
     self.df = self.make_df()
     self.derby_lake_names = self.scrape_derby_names()
 
@@ -176,6 +147,15 @@ class Scraper:
 
     return stock_count_int_list[1:]
 
+  # return list of Species
+  def scrape_species(self):
+    found_text = self.soup.findAll(class_="views-field views-field-species")
+
+    species_text_list = [i.text.strip() for i in found_text]
+    print("SPECIES", species_text_list)
+
+    return species_text_list[1:]
+
   # Return list of Scraped Dates
   def scrape_date(self):
     date_text = self.soup.findAll(class_="views-field views-field-stock-date")
@@ -192,6 +172,28 @@ class Scraper:
         continue
 
     return date_list[1:]
+
+  # Get the names of lakes that are in the state trout derby
+  def scrape_derby_names(self):
+    url_string = "https://wdfw.wa.gov/fishing/contests/trout-derby/lakes"
+
+    # Reassign response and soup to new url
+    self.response = get(url_string)
+    self.soup = BeautifulSoup(self.response.content, "html.parser")
+
+    # Scrape Names
+    text_list = []
+    found_text = self.soup.find("div", {"class": "derby-lakes-list"}).findAll("ul", recursive=False)
+
+    for i in found_text:
+      text_list.append(i.find("li").text)
+
+    # Clean up Names
+    text_lst_trimmed = []
+    for i in text_list:
+      text_lst_trimmed.append(i.replace("\n", ""))
+    text_lst_trimmed = [re.sub(r"\(.*?\)", '', text).title() for text in text_lst_trimmed]
+    return text_lst_trimmed
 
   def make_df(self):
     lake_names = self.lake_names
@@ -230,28 +232,6 @@ class Scraper:
     # print(data)
     return data
 
-  # Get the names of lakes that are in the state trout derby
-  def scrape_derby_names(self):
-    url_string = "https://wdfw.wa.gov/fishing/contests/trout-derby/lakes"
-
-    # Reassign response and soup to new url
-    self.response = get(url_string)
-    self.soup = BeautifulSoup(self.response.content, "html.parser")
-
-    # Scrape Names
-    text_list = []
-    found_text = self.soup.find("div", {"class": "derby-lakes-list"}).findAll("ul", recursive=False)
-
-    for i in found_text:
-      text_list.append(i.find("li").text)
-
-    # Clean up Names
-    text_lst_trimmed = []
-    for i in text_list:
-      text_lst_trimmed.append(i.replace("\n", ""))
-    text_lst_trimmed = [re.sub(r"\(.*?\)", '', text).title() for text in text_lst_trimmed]
-    return text_lst_trimmed
-
 
 def write_archived_data():
   for i in range(2022, 2015, -1):
@@ -265,10 +245,12 @@ if __name__ == "__main__":
   start_time = time()
 
   data_base = DataBase()
-  data_base.write_data(scraper=Scraper(
-    lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"))
-
-  # data_base.back_up_database()
-
+  # data_base.write_data(scraper=Scraper(
+  #   lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"))
+  #
+  # if getenv('ENVIRONMENT') and getenv('ENVIRONMENT') == 'testing':
+  #   data_base.back_up_database()
+  scraper = Scraper(
+    "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250")
   end_time = time()
   print(f"It took {end_time - start_time:.2f} seconds to compute")

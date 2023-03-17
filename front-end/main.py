@@ -6,37 +6,14 @@ from flask import Flask, render_template, request
 from folium import Map, Popup, Icon, Marker, raster_layers, LayerControl
 from folium.plugins import MarkerCluster, Fullscreen
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine, func, text, Column, Integer, String, Boolean, DateTime
+from sqlalchemy import create_engine, func, text
+from data_tables import StockedLakes, DerbyLake, Utility
 
 load_dotenv()
 app = Flask(__name__.split('.')[0])
 app.app_context().push()
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-# Create a SQLAlchemy base
-Base = declarative_base()
-
-
-# Create the stocked_lakes_table class
-class StockedLakes(Base):
-  __tablename__ = 'stocked_lakes_table'
-  id = Column(Integer, primary_key=True)
-  lake = Column(String)
-  stocked_fish = Column(Integer)
-  date = Column(DateTime)
-  latitude = Column(String)
-  longitude = Column(String)
-  directions = Column(String)
-  derby_participant = Column(Boolean)
-
-
-# Create the derby_lakes_table class
-class DerbyLake(Base):
-  __tablename__ = 'derby_lakes_table'
-  id = Column(Integer, primary_key=True)
-  lake = Column(String)
 
 
 class DataBase:
@@ -155,8 +132,12 @@ def map_full_screen_view():
 # Make the Map with Folium
 def make_map(lakes):
   if lakes:
-    latitudes = [float(lake["latitude"]) for lake in lakes if lake != '']
-    longitudes = [float(lake["longitude"]) for lake in lakes if lake != '']
+    latitudes = []
+    longitudes = []
+    for lake in lakes:
+      latitudes.append(lake["latitude"])
+      longitudes.append(lake["longitude"])
+
     location = [sum(latitudes) / len(latitudes), sum(longitudes) / len(longitudes)]
     folium_map = Map(width="100%", max_width="100%", max_height="100%", location=location, zoom_start=7)
 
