@@ -61,14 +61,6 @@ a:hover {
     color: darkcyan;
 }
 
-table, .table {
-    color: white;
-    border-radius: 10px !important;
-}
-
-th {
-    text-align: center;
-}
 
 tr:nth-child(even) {
     background-color: #53647B !important;
@@ -79,18 +71,50 @@ tr:hover {
     cursor: default;
 }
 
-
 .table-container {
-    /*height: 40vh;*/
+    overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
+    height: 40vh; /* gives an initial height of 200px to the table */
+}
+
+.table-container thead th {
+    position: sticky; /* make the table heads sticky */
+    top: 0; /* table head will be placed from the top of the table and sticks to it */
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    position: relative;
+    border-radius: 10px !important;
+    color: white;
+}
+
+th {
+    border-top: none;
 
 }
 
-#data-table tbody {
-    height: 40px;
-    max-height: 40px;
-    overflow: auto;
+td:first-child, th:first-child {
+    border-left: none;
 
 }
+
+th,
+td {
+    text-align: left;
+    border: none;
+}
+
+thead, th {
+    background-color: white;
+    color: #000;
+    padding-block: 2.5rem 1rem !important;
+    text-align: left;
+    position: sticky;
+    margin-top: 0 !important;
+    top: -5px; /* Don't forget this, required for the stickiness */
+}
+
 
 .folium-map {
     text-align: center;
@@ -149,25 +173,4 @@ footer a {
 
 }
 
-table {
-    border-collapse: separate;
-    border: solid whitesmoke 1px;
-    border-radius: 10px;
-}
 
-td, th {
-    /*border-left:solid black 1px;*/
-    /*border-top:solid black 1px;*/
-
-}
-
-th {
-    background-color: blue;
-    border-top: none;
-
-}
-
-td:first-child, th:first-child {
-    border-left: none;
-
-}
