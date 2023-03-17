@@ -118,7 +118,14 @@ class Scraper:
     self.weights = self.scrape_weights()
     self.hatcheries = self.scrape_hatcheries()
     self.df = self.make_df()
-    self.derby_lake_names = self.scrape_derby_names()
+
+    # The trout derby doesn't start until april 22. don't scrape names unless the derby is running
+    Trout_derby_start_date = datetime(2023, 4, 30)
+    today = datetime.now()
+    if today > Trout_derby_start_date:
+      self.derby_lake_names = self.scrape_derby_names()
+    else:
+      self.derby_lake_names = []
 
   def scrape_lake_names(self):
     ABBREVIATIONS = {
