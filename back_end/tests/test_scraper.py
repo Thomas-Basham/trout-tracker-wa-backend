@@ -9,19 +9,28 @@ scraper = Scraper(
 
 
 def test_scrape_lake_names():
-  assert len(scraper.lake_names) > 20 and type(scraper.lake_names) == list
+  data = scraper.lake_names
+  assert len(data) > 20 and type(data) == list and type(data[0] == str)
 
 
-def test_scrape_stock_count():
-  assert len(scraper.stock_counts) > 20 and type(scraper.stock_counts) == list
+def test_scrape_stock_counts():
+  data = scraper.stock_counts
+  assert len(data) > 20 and type(data) == list and type(data[0] == int)
 
 
-def test_scrape_date():
-  assert len(scraper.dates) > 20 and type(scraper.dates) == list
+def test_scrape_dates():
+  data = scraper.dates
+  assert len(data) > 20 and type(data) == list and type(data[0] == object)
 
 
-def test_scrape_derby_names():
-  assert type(scraper.derby_lake_names) == list
+def test_scrape_hatcheries():
+  data = scraper.hatcheries
+  assert len(data) > 20 and type(data) == list and type(data[0] == str)
+
+
+def test_scrape_weights():
+  data = scraper.weights
+  assert len(data) > 20 and type(data) == list and type(data[0] == float)
 
 
 def test_geocoder():
