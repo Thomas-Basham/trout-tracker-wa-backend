@@ -125,9 +125,9 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-back-end/.env
+back_end/.env
 <<<<<<< HEAD
-front-end/.env
+front_end/.env
 ./.env
 .env
 =======

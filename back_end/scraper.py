@@ -10,7 +10,7 @@ from geopy import GoogleV3
 from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from data_tables import StockedLakes, DerbyLake, Utility
+from front_end.data_tables import StockedLakes, DerbyLake, Utility
 
 load_dotenv()
 
@@ -152,8 +152,8 @@ class Scraper:
     found_text = self.soup.findAll(class_="views-field views-field-species")
 
     species_text_list = [i.text.strip() for i in found_text]
-    print("SPECIES", species_text_list)
 
+    # print("SPECIES", species_text_list)
     return species_text_list[1:]
 
   # Return list of Scraped Dates
@@ -222,12 +222,12 @@ class Scraper:
       if lake:
         geocode = locator.geocode(lake + ' washington state')
         if geocode:
-          data[i]['latitude'] = geocode.point[0]
-          data[i]['longitude'] = geocode.point[1]
+          data[i]['latitude'] = float(geocode.point[0])
+          data[i]['longitude'] = float(geocode.point[1])
           data[i]['directions'] = f"https://www.google.com/maps/search/?api=1&query={lake}"
         else:
-          data[i]['latitude'] = ''
-          data[i]['longitude'] = ''
+          data[i]['latitude'] = float('')
+          data[i]['longitude'] = float('')
           data[i]['directions'] = f"https://www.google.com/maps/search/?api=1&query={lake}"
     # print(data)
     return data
@@ -245,12 +245,11 @@ if __name__ == "__main__":
   start_time = time()
 
   data_base = DataBase()
-  # data_base.write_data(scraper=Scraper(
-  #   lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"))
-  #
-  # if getenv('ENVIRONMENT') and getenv('ENVIRONMENT') == 'testing':
-  #   data_base.back_up_database()
-  scraper = Scraper(
-    "https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250")
+  data_base.write_data(scraper=Scraper(
+    lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"))
+
+  if getenv('ENVIRONMENT') and getenv('ENVIRONMENT') == 'testing':
+    data_base.back_up_database()
+
   end_time = time()
   print(f"It took {end_time - start_time:.2f} seconds to compute")
