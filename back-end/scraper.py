@@ -268,7 +268,7 @@ if __name__ == "__main__":
   data_base.write_data(scraper=Scraper(
     lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"))
 
-  data_base.back_up_database()
+  # data_base.back_up_database()
 
   end_time = time()
   print(f"It took {end_time - start_time:.2f} seconds to compute")
