@@ -81,9 +81,15 @@ tr:hover {
 
 
 .table-container {
-    height: 40vh;
+    /*height: 40vh;*/
+
+}
+
+#data-table tbody {
+    height: 40px;
+    max-height: 40px;
     overflow: auto;
-    /*border-radius: 10px !important;*/
+
 }
 
 .folium-map {

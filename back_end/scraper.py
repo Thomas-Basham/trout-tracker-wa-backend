@@ -1,5 +1,5 @@
 # from geopy.geocoders import Nominatim
-
+import os
 import re
 from os import getenv
 from time import time
@@ -10,7 +10,7 @@ from geopy import GoogleV3
 from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from front_end.data_tables import StockedLakes, DerbyLake, Utility
+from front_end.data_tables import StockedLakes, DerbyLake, Utility, Base
 
 load_dotenv()
 
@@ -59,7 +59,8 @@ class DataBase:
       # add the lake to the table if it doesn't exist
       lake = StockedLakes(lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date'],
                           latitude=lake_data['latitude'], longitude=lake_data['longitude'],
-                          directions=lake_data['directions'], derby_participant=lake_data['derby_participant'])
+                          directions=lake_data['directions'], derby_participant=lake_data['derby_participant'],
+                          weight=lake_data['weight'], species=lake_data['species'], hatchery=lake_data['hatchery'])
 
       self.session.add(lake)
 
@@ -69,21 +70,27 @@ class DataBase:
   def back_up_database(self):
     all_stocked_lakes = self.session.query(StockedLakes).all()
 
-    backup_file = 'backup_data.txt'
-    with open(backup_file, 'w') as f:
+    backup_file_txt = '../backup_data.txt'
+    backup_file_sql = '../backup_data.sql'
+
+    if os.path.exists(backup_file_txt):
+      os.remove(backup_file_txt)
+    if os.path.exists(backup_file_sql):
+      os.remove(backup_file_sql)
+
+    with open(backup_file_txt, 'w') as f:
       for row in all_stocked_lakes:
         # Write each column value separated by a comma
         f.write(
-          f"{row.id},{row.lake},{row.stocked_fish},{row.date},{row.latitude},{row.longitude},{row.directions},{row.derby_participant}\n")
+          f"{row.id},{row.lake},{row.stocked_fish},{row.species},{row.weight},{row.hatchery},{row.date},{row.latitude},{row.longitude},{row.directions},{row.derby_participant}\n")
 
-    backup_file = 'backup_data.sql'
-    with open(backup_file, 'w') as f:
+    with open(backup_file_sql, 'w') as f:
       for row in all_stocked_lakes:
         # Write an INSERT INTO statement for each row
         f.write(
-          f"INSERT INTO stocked_lakes_table (id, lake, stocked_fish, date, latitude, longitude, directions, derby_participant) VALUES ({row.id}, '{row.lake}', {row.stocked_fish}, '{row.date}', '{row.latitude}', '{row.longitude}', '{row.directions}', {row.derby_participant});\n")
+          f"INSERT INTO stocked_lakes_table (id, lake, stocked_fish, species, weight, hatchery, date, latitude, longitude, directions, derby_participant) VALUES ({row.id}, '{row.lake}', {row.stocked_fish}, '{row.species}', {row.weight}, '{row.hatchery}', '{row.date}', '{row.latitude}', '{row.longitude}', '{row.directions}', {row.derby_participant});\n")
 
-    print(f"Database backed up to {backup_file}")
+    print(f"Database backed up to {backup_file_txt} and {backup_file_sql}")
 
 
 class Scraper:
@@ -108,6 +115,8 @@ class Scraper:
     self.stock_counts = self.scrape_stock_count()
     self.dates = self.scrape_date()
     self.species = self.scrape_species()
+    self.weights = self.scrape_weights()
+    self.hatcheries = self.scrape_hatcheries()
     self.df = self.make_df()
     self.derby_lake_names = self.scrape_derby_names()
 
@@ -156,6 +165,29 @@ class Scraper:
     # print("SPECIES", species_text_list)
     return species_text_list[1:]
 
+  # return list of Weights
+  def scrape_weights(self):
+    found_text = self.soup.findAll(class_="views-field views-field-fish-per-lb")
+
+    weights_float_list = []
+    for i in found_text:
+      try:
+        weight = float(i.text.strip())
+        weights_float_list.append(weight)
+      except ValueError:
+        # handle the error here, such as skipping the value or setting it to a default value
+        print(f"Could not convert {i.text.strip()} to float")
+    return weights_float_list
+
+  # return list of Weights
+  def scrape_hatcheries(self):
+    found_text = self.soup.findAll(class_="views-field views-field-hatchery")
+
+    hatcheries_text_list = [i.text.strip().title() for i in found_text]
+
+    # print("HATCHERIES", hatcheries_text_list)
+    return hatcheries_text_list[1:]
+
   # Return list of Scraped Dates
   def scrape_date(self):
     date_text = self.soup.findAll(class_="views-field views-field-stock-date")
@@ -199,13 +231,18 @@ class Scraper:
     lake_names = self.lake_names
     stock_count = self.stock_counts
     dates = self.dates
+    species = self.species
+    weights = self.weights
+    hatcheries = self.hatcheries
     amount_scraped = len(lake_names)
 
     # Create a list of dictionaries
     data = []
     for i in range(amount_scraped - 1):
       data.append(
-        {'lake': lake_names[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'latitude': "", 'longitude': "",
+        {'lake': lake_names[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'species': species[i],
+         'weight': weights[i], "hatchery": hatcheries[i],
+         'latitude': "", 'longitude': "",
          'directions': "", "derby_participant": False})
 
     data = self.get_lat_lon(data)  # ? side effect
@@ -234,10 +271,12 @@ class Scraper:
 
 
 def write_archived_data():
-  for i in range(2022, 2015, -1):
-    for j in range(7):
+  # ran only in a dev environment, used to get all the wdfw trout plant archives
+  for i in range(2022, 2015, -1):  # data goes back to 2015
+    for j in range(7):  # there are at most 7 pages to scrape
       data_base.write_data(scraper=Scraper(
         lake_url=f'https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/archive/{i}?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250&page={j}'))
+      print(f'updated year {i}, page {j}')
 
 
 # Run Once Every day

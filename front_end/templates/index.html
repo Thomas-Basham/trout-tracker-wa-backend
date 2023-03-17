@@ -40,11 +40,13 @@
                                         href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
         </h1>
         <div class="row p-2 mb-5  table-container" style="text-align: center;">
-            <table id="data" class="table table-striped rounded p-2">
+            <table id="data-table" class="table table-striped rounded p-2">
                 <thead>
                 <tr>
                     <th>Body of Water</th>
                     <th>Stocked Fish</th>
+                    <th>Species</th>
+                    <th>Fish per Pound</th>
                     <th>Date Stocked</th>
                     <th>Derby Participant</th>
                 </tr>
@@ -52,8 +54,10 @@
                 <tbody>
                 {% for td in most_recent_stocked[::-1] %}
                     <tr>
-                        <td>{{ td["lake"].title() }}</td>
+                        <td>{{ td["lake"] }}</td>
                         <td>{{ td["stocked_fish"] }}</td>
+                        <td>{{ td["species"] }}</td>
+                        <td>{{ td["weight"] }}</td>
                         <td>{{ td["date"] }}</td>
                         <td>{{ True if td["derby_participant"] else '' }}</td>
                     </tr>

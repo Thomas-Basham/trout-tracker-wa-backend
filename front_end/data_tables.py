@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, Boolean, Date, Float
+from sqlalchemy import Column, Integer, String, Boolean, Date, Float, func
 
 # Create a SQLAlchemy base
 Base = declarative_base()
@@ -12,6 +12,8 @@ class StockedLakes(Base):
   lake = Column(String)
   stocked_fish = Column(Integer)
   species = Column(String)
+  weight = Column(Float)
+  hatchery = Column(String)
   date = Column(Date)
   latitude = Column(Float)
   longitude = Column(Float)
