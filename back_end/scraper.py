@@ -117,15 +117,8 @@ class Scraper:
     self.species = self.scrape_species()
     self.weights = self.scrape_weights()
     self.hatcheries = self.scrape_hatcheries()
+    self.derby_lake_names = self.scrape_derby_names()
     self.df = self.make_df()
-
-    # The trout derby doesn't start until april 22. don't scrape names unless the derby is running
-    Trout_derby_start_date = datetime(2023, 4, 30)
-    today = datetime.now()
-    if today > Trout_derby_start_date:
-      self.derby_lake_names = self.scrape_derby_names()
-    else:
-      self.derby_lake_names = []
 
   def scrape_lake_names(self):
     ABBREVIATIONS = {
@@ -214,25 +207,32 @@ class Scraper:
 
   # Get the names of lakes that are in the state trout derby
   def scrape_derby_names(self):
-    url_string = "https://wdfw.wa.gov/fishing/contests/trout-derby/lakes"
 
-    # Reassign response and soup to new url
-    self.response = get(url_string)
-    self.soup = BeautifulSoup(self.response.content, "html.parser")
+    # The trout derby doesn't start until april 22. don't scrape names unless the derby is running
+    Trout_derby_start_date = datetime(2023, 4, 30)
+    today = datetime.now()
+    if today > Trout_derby_start_date:
+      url_string = "https://wdfw.wa.gov/fishing/contests/trout-derby/lakes"
 
-    # Scrape Names
-    text_list = []
-    found_text = self.soup.find("div", {"class": "derby-lakes-list"}).findAll("ul", recursive=False)
+      # Reassign response and soup to new url
+      self.response = get(url_string)
+      self.soup = BeautifulSoup(self.response.content, "html.parser")
 
-    for i in found_text:
-      text_list.append(i.find("li").text)
+      # Scrape Names
+      text_list = []
+      found_text = self.soup.find("div", {"class": "derby-lakes-list"}).findAll("ul", recursive=False)
 
-    # Clean up Names
-    text_lst_trimmed = []
-    for i in text_list:
-      text_lst_trimmed.append(i.replace("\n", ""))
-    text_lst_trimmed = [re.sub(r"\(.*?\)", '', text).title() for text in text_lst_trimmed]
-    return text_lst_trimmed
+      for i in found_text:
+        text_list.append(i.find("li").text)
+
+      # Clean up Names
+      text_lst_trimmed = []
+      for i in text_list:
+        text_lst_trimmed.append(i.replace("\n", ""))
+      text_lst_trimmed = [re.sub(r"\(.*?\)", '', text).title() for text in text_lst_trimmed]
+      return text_lst_trimmed
+    else:
+      return []
 
   def make_df(self):
     lake_names = self.lake_names
