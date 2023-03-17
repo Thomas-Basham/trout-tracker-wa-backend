@@ -31,16 +31,6 @@ interactive map
 
 * Google V3 Geolocator(To get lat/lon of lakes)
 
-[//]: # (![screenshot]&#40;static/screenshots/WaStockedTroutLakes1.png&#41;)
-
-[//]: # (![screenshot]&#40;static/screenshots/WaStockedTroutLakes2.png&#41;)
-
-[//]: # (![screenshot]&#40;static/screenshots/WaStockedTroutLakes3.png&#41;)
-
-[//]: # (![screenshot]&#40;static/screenshots/WaStockedTroutLakes4.png&#41;)
-
-[//]: # (![screenshot]&#40;static/screenshots/WaStockedTroutLakes5.png&#41;)
-
 ## Resources
 
 [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants)
