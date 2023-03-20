@@ -118,10 +118,19 @@ def index_view():
       StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
     ).order_by(StockedLakes.date).all()
 
-    # MAP AND CHART
+    filtered_total_stocked_by_hatchery = data_base.session.query(
+      StockedLakes.hatchery,
+      func.sum(StockedLakes.stocked_fish)
+    ).group_by(StockedLakes.hatchery).filter(
+      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), end_date.strftime('%b %d, %Y'))
+    ).order_by(desc(text('sum_1'))).all()
+
+    # MAP AND CHARTS
     folium_map = make_map(filtered_lakes_by_days)._repr_html_()
 
     total_stocked_by_date_chart = show_total_stocked_by_date_chart(filtered_total_stocked_by_date)
+
+    total_stocked_by_hatchery_chart = show_total_stocked_by_hatchery_chart(filtered_total_stocked_by_hatchery)
 
     most_recent_stocked = filtered_lakes_by_days
 
@@ -239,7 +248,7 @@ def show_total_stocked_by_date_chart(lakes):
     graph_html = f'<canvas id="total-stocked-by-date-chart"></canvas>\n<script>\nvar ctx = document.getElementById("total-stocked-by-date-chart").getContext("2d");\nvar myChart = new Chart(ctx, {{ type: "line", data: {chart_data_json}, options: {chart_options_json} }});\n</script>'
     return graph_html
   else:
-    return f'<canvas id="total-stocked-by-date-chart"></canvas>'
+    return f'<canvas id="total-stocked-by-date-chart">NO DATA</canvas>'
 
 
 def show_total_stocked_by_hatchery_chart(lakes):
@@ -255,7 +264,7 @@ def show_total_stocked_by_hatchery_chart(lakes):
           'borderColor': '#9fd3c7',
           'backgroundColor': '#9fd3c7',
           'borderWidth': 1,
-          'pointRadius': 2
+          'pointRadius': 3
         }
       ]
     }
@@ -276,7 +285,7 @@ def show_total_stocked_by_hatchery_chart(lakes):
     }
     chart_data_json = json.dumps(chart_data)
     chart_options_json = json.dumps(chart_options)
-    graph_html = f'<canvas id="myChart"></canvas>\n<script>\nvar ctx = document.getElementById("myChart").getContext("2d");\nvar myChart = new Chart(ctx, {{ type: "bar", data: {chart_data_json}, options: {chart_options_json} }});\n</script>'
+    graph_html = f'<canvas id="total-stocked-by-hatchery-chart"></canvas>\n<script>\nvar ctx = document.getElementById("total-stocked-by-hatchery-chart").getContext("2d");\nvar myChart = new Chart(ctx, {{ type: "bar", data: {chart_data_json}, options: {chart_options_json} }});\n</script>'
     return graph_html
   else:
-    return f'<canvas id="myChart"></canvas>'
+    return f'<canvas id="total-stocked-by-hatchery-chart"></canvas>'
