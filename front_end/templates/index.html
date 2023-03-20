@@ -21,25 +21,29 @@
         </form>
     </div>
 
-    <div id="interactive-map" style="padding-bottom: 1vh; width: 100%" class="container border-bottom mb-4">
+    <div id="interactive-map" style="padding-bottom: 1vh; width: 100%" class="container mb-4">
         <div class="d-flex justify-content-between align-text-bottom ">
             <h1 class="">Stocked Trout Lakes in Washington</h1>
             <a href="/fullscreen">View Larger Map<span class="glyphicon glyphicon-share"></span></a>
         </div>
         {{ folium_map | safe }}
     </div>
-    <div id="interactive-chart" class="container">
+    <div id="total-stocked-by-date-chart" class="container ">
 
         <h1>Total Trout Stocked By Date</h1>
-        <div>{{ chart | safe }}</div>
+        <div class=" bg-panel rounded p-2">
 
+            <div>{{ total_stocked_by_date_chart | safe }}</div>
+
+        </div>
     </div>
-    <div class="container border-bottom">
-
-        <h1 class="  mt-5">Data From <a class="dont-break-out"
-                                        href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants">https://wdfw.wa.gov/fishing/reports/stocking/trout-plants</a>
-        </h1>
-        <div class="row p-2 mb-5  table-container" style="text-align: center;">
+    <div class="container my-4 ">
+        <div class="d-flex justify-content-between align-text-bottom mt-5">
+            <h1>Most Recent Lakes Stocked in last <span class="text-muted">{{ days }}</span> days
+            </h1>
+            <p class="">Showing <span class="text-muted">{{ most_recent_stocked | length }}</span> entries</p>
+        </div>
+        <div class="row p-2 mb-5  bg-panel  rounded table-container" style="text-align: center;">
             <table id="data-table" class="table table-striped rounded p-2">
                 <thead>
                 <tr>
@@ -70,71 +74,84 @@
 
     <div style="margin: 0 auto" class="container row mt-5 pt-3">
         <div class="col section">
+            <div class="d-flex justify-content-between align-text-bottom ">
 
-            <h2 class="border-bottom">Trout Derby Lakes</h2>
-            <h3> (Shown On Map With red Pins)</h3>
-
-            <a href="https://wdfw.wa.gov/fishing/contests/trout-derby" target="_blank" rel="noreferrer">Learn more about
-                the Trout Derby <span class="glyphicon glyphicon-share"></span></a>
-
-            <br>
-            <br>
-            <div style="height: 250px;overflow: auto">
-
-                {% for lake in derby_lakes %}
-                    <div class="row">
-                        <p>{{ lake['lake'] }}</p>
-
-                    </div>
-                {% endfor %}
+                <h2>Trout Derby Lakes</h2>
+                <h3> (Shown On Map With red Pins)</h3>
             </div>
+            <div style="height: 250px;overflow: auto" class=" bg-panel rounded p-2">
 
-            {% if derby_lakes|length == 0 %}
+                <div>
 
-                <p>There are no recently Stocked lakes with derby trout. It's most likely all the derby trout have been
-                    caught already. Better luck next year!</p>
+                    {% for lake in derby_lakes %}
+                        <div class="row">
+                            <p>{{ lake['lake'] }}</p>
 
-            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if derby_lakes|length == 0 %}
+
+                    <p>There are no recently Stocked lakes with derby trout. It's most likely all the derby trout have
+                        been
+                        caught already. Better luck next year!</p>
+
+                {% endif %}
+            </div>
+            <a href="https://wdfw.wa.gov/fishing/contests/trout-derby" target="_blank" rel="noreferrer">Learn more
+                about
+                the Trout Derby <span class="glyphicon glyphicon-share"></span></a>
         </div>
 
-        <div class="col section" style="text-align: center">
-            <ul style="list-style: none">
-                <li><h2 class="border-bottom">Resources</h2></li>
-                <li><a href="https://fortress.wa.gov/dfw/erules/efishrules/" target="_blank">
-                    Emergency
-                    fishing rule changes<span class="glyphicon glyphicon-share"></span> </a></li>
-                <br>
-                <li><a href="https://www.eregulations.com/washington/fishing/" target="_blank">
-                    Sportfishing rules pamphlet<span class="glyphicon glyphicon-share"></span> </a></li>
-                <br>
-                <li><a href="https://wdfw.wa.gov/fishing/reports" target="_blank"> Fish stocking reports<span
-                        class="glyphicon glyphicon-share"></span> </a></li>
-                <br>
-                <li><a href="https://wdfw.wa.gov/fishing/regulations/app" target="_blank"> Fish Washington mobile
-                    app<span
+        <div class="col section ">
+            <h2>Resources</h2>
+
+            <div class=" bg-panel rounded p-2" style="height: 250px;overflow: auto">
+
+                <ul class="list-unstyled text-left">
+                    <li><a href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants" target="_blank">
+                        Trout stock plants <span class="glyphicon glyphicon-share"></span> </a></li>
+                    <br>
+                    <li><a href="https://fortress.wa.gov/dfw/erules/efishrules/" target="_blank">
+                        Emergency
+                        fishing rule changes <span class="glyphicon glyphicon-share"> </span> </a></li>
+                    <br>
+                    <li><a href="https://www.eregulations.com/washington/fishing/" target="_blank">
+                        Sportfishing rules pamphlet <span class="glyphicon glyphicon-share"></span> </a></li>
+                    <br>
+                    <li><a href="https://wdfw.wa.gov/fishing/reports" target="_blank"> Fish stocking reports <span
+                            class="glyphicon glyphicon-share"></span> </a></li>
+                    <br>
+                    <li><a href="https://wdfw.wa.gov/fishing/regulations/app" target="_blank"> Fish Washington mobile
+                        app <span
+                                class="glyphicon glyphicon-share"> </span> </a>
+                    </li>
+                    <br>
+
+                    <li><a href="https://fishhunt.dfw.wa.gov/#/application/help?tab=3&amp;subTab=-1"
+                           target="_blank"> Buy a fishing license <span class="glyphicon glyphicon-share"> </span> </a>
+                    </li>
+                    <br>
+                    <li><a href="https://www.discoverpass.wa.gov/" target="_blank"> Discover Pass <span
                             class="glyphicon glyphicon-share"></span> </a>
-                </li>
-                <br>
-
-                <li><a href="https://fishhunt.dfw.wa.gov/#/application/help?tab=3&amp;subTab=-1"
-                       target="_blank"> Buy a fishing license<span class="glyphicon glyphicon-share"></span> </a></li>
-                <br>
-                <li><a href="https://www.discoverpass.wa.gov/" target="_blank"> Discover Pass<span
-                        class="glyphicon glyphicon-share"></span> </a>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </div>
 
-        <div class="row mt-5" id="about">
-            <h1 class="border-bottom mb-3">About This Page</h1>
+
+    <div class="container mt-5 " id="about">
+        <h1 class=" mb-3">About This Page</h1>
+        <div class=" bg-panel rounded p-2">
 
             <p>
-
-
                 I created this app to help other anglers and wildlife enthusiasts connect to a valuable resource in
                 Washington State. The Washington Department of Fish and Wildlife was kind enough to display the fish
                 stocking reports in a table <a
-                    href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants " target="_blank" rel="noreferrer">here</a>.
+                    href="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants " target="_blank"
+                    rel="noreferrer">here</a>.
                 It's up to all of us to help preserve these valuable resources, and I am happy to provide this free tool
                 to help spread awareness of them.
 
@@ -179,5 +196,6 @@
         </div>
 
     </div>
+
 
 {% endblock %}

@@ -1,3 +1,23 @@
+body, html {
+    --color: #ececec;
+    --color-2: #9fd3c7;
+    --color-3: #385170;
+    --color-4: #142d4c;
+    --btn-color: #54ba4e;
+    --btn-color-2: #479fc8;
+    --text-color: #434343;
+    --text-color-secondary: #666;
+    --grey: #999;
+    --divider: #e8e8e8;
+    --lighter-grey: #ccc;
+    --darker-grey: #666;
+    --smoky-white: #f5f5f5;
+    --background: #dae3e7;
+    --heart: #fb866a;
+    --dm-background: #17191c;
+    --dm-text-color: rgba(256, 256, 256, 0.9);
+    --dm-text-color-secondary: rgba(256, 256, 256, 0.7);
+}
 
 .github-corner:hover .octo-arm {
     animation: octocat-wave 560ms ease-in-out
@@ -34,18 +54,18 @@ html {
 header {
     margin-bottom: 50px;
     padding: 20px 0 40px;
-    background: #53647B;
+    background: var(--color-3);
     border-bottom: 2px solid #FFD12C;
-    color: #fefefe
+    color: var(--color)
 }
 
 
 body {
-    background-color: #14213d;
+    background-color: var(--color-4);
 }
 
 main {
-    color: white;
+    color: var(--color);
 
 }
 
@@ -54,20 +74,29 @@ p {
 }
 
 a {
-    color: white;
+    color: var(--dm-text-color-secondary);
+
 }
 
 a:hover {
-    color: darkcyan;
+    color: var(--color-2);
+}
+
+tr {
+    border-radius: 10px !important;
+
 }
 
 
 tr:nth-child(even) {
-    background-color: #53647B !important;
+    background-color: var(--color-3) !important;
+    color: var(--color)
 }
 
 tr:hover {
-    background-color: darkcyan !important;
+    background-color: var(--color-2) !important;
+    color: var(--text-color) !important;
+
     cursor: default;
 }
 
@@ -86,12 +115,11 @@ table {
     width: 100%;
     position: relative;
     border-radius: 10px !important;
-    color: white;
+    color: var(--color);
 }
 
 th {
     border-top: none;
-
 }
 
 td:first-child, th:first-child {
@@ -106,8 +134,10 @@ td {
 }
 
 thead, th {
-    background-color: white;
-    color: #000;
+    border-radius: 10px !important;
+
+    background-color: var(--color);
+    color: var(--color-4);
     padding-block: 2.5rem 1rem !important;
     text-align: left;
     position: sticky;
@@ -124,8 +154,8 @@ thead, th {
 iframe {
     border-radius: 10px;
     /*max-height: 70vh;*/
-    background: #0B2B40 !important;
-    background-color: #0B2B40 !important;
+    background: var(--color-4) !important;
+    background-color: var(--color-4) !important;
     margin-bottom: 200px !important;
 }
 
@@ -137,13 +167,13 @@ iframe {
 footer {
     margin-top: 90px;
     padding: 20px 0 30px;
-    background: #53647B;
+    background: var(--color-3);
     border-top: 2px solid #FFD12C;
-    color: #fefefe
+    color: var(--color)
 }
 
 footer a {
-    color: white;
+    color: var(--color);
     bottom: 0;
 }
 
@@ -171,6 +201,10 @@ footer a {
     -webkit-hyphens: auto;
     hyphens: auto;
 
+}
+
+.bg-panel {
+    background-color: var(--color-3) !important;
 }
 
 
