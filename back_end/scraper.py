@@ -10,7 +10,7 @@ from geopy import GoogleV3
 from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from front_end.data_tables import StockedLakes, DerbyLake, Utility, Base
+from data_tables import StockedLakes, DerbyLake, Utility
 
 load_dotenv()
 
