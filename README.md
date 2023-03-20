@@ -31,6 +31,8 @@ interactive map
 
 * Google V3 Geolocator(To get lat/lon of lakes)
 
+![img](screenshot.png)
+
 ## Resources
 
 [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants)
