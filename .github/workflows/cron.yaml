@@ -33,7 +33,7 @@ jobs:
           SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
           OPEN_ROUTE_API_KEY: ${{ secrets.OPEN_ROUTE_API_KEY }}
       - name: run scraper
-        run: python ./back_end/scraper.py
+        run: python back_end/scraper.py
         env:
           GV3_API_KEY: ${{ secrets.GV3_API_KEY }}
           SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
