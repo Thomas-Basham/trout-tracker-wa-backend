@@ -31,7 +31,7 @@ interactive map
 
 * Google V3 Geolocator(To get lat/lon of lakes)
 
-![img](screenshot.png)
+![img](screenshot.webp)
 
 ## Resources
 
