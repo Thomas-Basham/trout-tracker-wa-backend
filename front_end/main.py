@@ -6,7 +6,7 @@ from flask import Flask, render_template, request
 from folium import Map, Popup, Icon, Marker, raster_layers, LayerControl
 from folium.plugins import MarkerCluster, Fullscreen
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, func, text
+from sqlalchemy import create_engine, func, text, desc
 from data_tables import StockedLakes, DerbyLake, Utility
 
 load_dotenv()
@@ -32,7 +32,7 @@ class DataBase:
     self.start_date = self.end_date - timedelta(days=365)
 
   def get_stocked_lakes_data(self):
-    stocked_lakes = data_base.session.query(
+    stocked_lakes = self.session.query(
       StockedLakes.date,
       StockedLakes.lake,
       StockedLakes.stocked_fish,
@@ -47,6 +47,15 @@ class DataBase:
       StockedLakes.date.between(self.start_date.strftime('%b %d, %Y'), self.end_date.strftime('%b %d, %Y'))
     ).order_by(StockedLakes.date).all()
     return stocked_lakes
+
+  def get_hatchery_totals(self):
+    hatchery_totals = data_base.session.query(
+      StockedLakes.hatchery,
+      func.sum(StockedLakes.stocked_fish)
+    ).group_by(StockedLakes.hatchery).filter(
+      StockedLakes.date.between(self.start_date.strftime('%b %d, %Y'), self.end_date.strftime('%b %d, %Y'))
+    ).order_by(desc(text('sum_1'))).all()
+    return hatchery_totals
 
   def get_derby_lakes_data(self):
     derby_lakes = self.conn.execute(text("SELECT * FROM derby_lakes_table")).fetchall()
@@ -65,40 +74,12 @@ class DataBase:
     last_updated = self.session.query(Utility).order_by(Utility.id.desc()).first()
     return last_updated.updated
 
-  def get_all_data(self):
-
-    stocked_lakes = data_base.session.query(
-      StockedLakes.date,
-      StockedLakes.lake,
-      StockedLakes.stocked_fish,
-      StockedLakes.species,
-      StockedLakes.hatchery,
-      StockedLakes.weight,
-      StockedLakes.latitude,
-      StockedLakes.longitude,
-      StockedLakes.directions,
-      StockedLakes.derby_participant
-    ).filter(
-      StockedLakes.date.between(self.start_date.strftime('%b %d, %Y'), self.end_date.strftime('%b %d, %Y'))
-    ).order_by(StockedLakes.date).all()
-    derby_lakes = self.conn.execute(text("SELECT * FROM derby_lakes_table")).fetchall()
-
-    total_stocked_by_date = self.session.query(
-      StockedLakes.date,
-      func.sum(StockedLakes.stocked_fish)
-    ).group_by(StockedLakes.date).filter(
-      StockedLakes.date.between(self.start_date.strftime('%b %d, %Y'), self.end_date.strftime('%b %d, %Y'))
-    ).order_by(StockedLakes.date).all()
-
-    utility = self.session.query(Utility).order_by(Utility.id.desc()).first()
-    return {"stocked_lakes": stocked_lakes, "derby_lakes": derby_lakes, "total_stocked_by_date": total_stocked_by_date,
-            "utility": utility}
-
 
 data_base = DataBase()
 stocked_lakes_data = data_base.get_stocked_lakes_data()
 derby_lakes_data = data_base.get_derby_lakes_data()
 total_stocked_by_date_data = data_base.get_total_stocked_by_date_data()
+total_stocked_by_hatchery_data = data_base.get_hatchery_totals()
 date_data_updated = data_base.get_date_data_updated()
 
 
@@ -149,17 +130,16 @@ def index_view():
 
     total_stocked_by_date_chart = show_total_stocked_by_date_chart(total_stocked_by_date_data)
 
+    total_stocked_by_hatchery_chart = show_total_stocked_by_hatchery_chart(total_stocked_by_hatchery_data)
+
     folium_map = make_map(stocked_lakes_data)._repr_html_()
 
     most_recent_stocked = stocked_lakes_data
 
   return render_template('index.html', folium_map=folium_map, total_stocked_by_date_chart=total_stocked_by_date_chart,
+                         total_stocked_by_hatchery_chart=total_stocked_by_hatchery_chart,
                          derby_lakes=derby_lakes_data, most_recent_stocked=most_recent_stocked, days=days,
-                         date_data_updated=date_data_updated, chicken=chicken)
-
-
-def chicken():
-  return 'CHICKEN'
+                         date_data_updated=date_data_updated)
 
 
 @app.route('/fullscreen')
@@ -238,6 +218,12 @@ def show_total_stocked_by_date_chart(lakes):
     }
     chart_options = {
       'scales': {
+        'y': {
+          'ticks': {'color': '#ececec', 'beginAtZero': True}
+        },
+        'x': {
+          'ticks': {'color': '#ececec'}
+        },
         'xAxes': [{
           'type': 'time',
           'time': {
@@ -250,7 +236,47 @@ def show_total_stocked_by_date_chart(lakes):
     }
     chart_data_json = json.dumps(chart_data)
     chart_options_json = json.dumps(chart_options)
-    graph_html = f'<canvas id="myChart"></canvas>\n<script>\nvar ctx = document.getElementById("myChart").getContext("2d");\nvar myChart = new Chart(ctx, {{ type: "line", data: {chart_data_json}, options: {chart_options_json} }});\n</script>'
+    graph_html = f'<canvas id="total-stocked-by-date-chart"></canvas>\n<script>\nvar ctx = document.getElementById("total-stocked-by-date-chart").getContext("2d");\nvar myChart = new Chart(ctx, {{ type: "line", data: {chart_data_json}, options: {chart_options_json} }});\n</script>'
+    return graph_html
+  else:
+    return f'<canvas id="total-stocked-by-date-chart"></canvas>'
+
+
+def show_total_stocked_by_hatchery_chart(lakes):
+  if lakes:
+    hatcheries, total_stocked_fish = zip(*lakes)
+    chart_data = {
+      'labels': hatcheries,
+      'datasets': [
+        {
+          'label': 'Total Stocked Trout by Hatchery',
+          'data': total_stocked_fish,
+          'color': '#ececec',
+          'borderColor': '#9fd3c7',
+          'backgroundColor': '#9fd3c7',
+          'borderWidth': 1,
+          'pointRadius': 2
+        }
+      ]
+    }
+    chart_options = {
+      'scales': {
+        'y': {
+          'ticks': {'color': '#ececec', 'beginAtZero': True}
+        },
+        'x': {
+          'ticks': {'color': '#ececec'}
+        },
+        'color': '#ececec',
+        'tickColor': '#ececec',
+        'xAxes': [{
+          'type': 'text',
+        }]
+      }
+    }
+    chart_data_json = json.dumps(chart_data)
+    chart_options_json = json.dumps(chart_options)
+    graph_html = f'<canvas id="myChart"></canvas>\n<script>\nvar ctx = document.getElementById("myChart").getContext("2d");\nvar myChart = new Chart(ctx, {{ type: "bar", data: {chart_data_json}, options: {chart_options_json} }});\n</script>'
     return graph_html
   else:
     return f'<canvas id="myChart"></canvas>'

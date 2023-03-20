@@ -28,12 +28,21 @@
         </div>
         {{ folium_map | safe }}
     </div>
-    <div id="total-stocked-by-date-chart" class="container ">
+    <div id="total-stocked-by-date-chart-container" class="container ">
 
-        <h1>Total Trout Stocked By Date</h1>
+        <h1>Total Trout Stocked By Date in last {{ days }} days </h1>
         <div class=" bg-panel rounded p-2">
 
             <div>{{ total_stocked_by_date_chart | safe }}</div>
+
+        </div>
+    </div>
+    <div id="total-stocked-by-hatchery-chart-container" class="container my-4 mt-5">
+
+        <h1>Total Trout Stocked By Hatchery in last {{ days }} days </h1>
+        <div class=" bg-panel rounded p-2">
+
+            <div>{{ total_stocked_by_hatchery_chart | safe }}</div>
 
         </div>
     </div>
@@ -72,8 +81,8 @@
     </div>
 
 
-    <div style="margin: 0 auto" class="container row mt-5 pt-3">
-        <div class="col section">
+    <div style="margin: 0 auto" class="container row mt-5 pt-3 g-0">
+        <div class="col section me-4">
             <div class="d-flex justify-content-between align-text-bottom ">
 
                 <h2>Trout Derby Lakes</h2>
@@ -143,7 +152,7 @@
 
 
     <div class="container mt-5 " id="about">
-        <h1 class=" mb-3">About This Page</h1>
+        <h1 class="mb-3">About This Page</h1>
         <div class=" bg-panel rounded p-2">
 
             <p>
