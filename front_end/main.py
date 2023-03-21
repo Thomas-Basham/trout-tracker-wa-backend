@@ -7,7 +7,7 @@ from folium import Map, Popup, Icon, Marker, raster_layers, LayerControl
 from folium.plugins import MarkerCluster, Fullscreen
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, func, text, desc
-from data_tables import StockedLakes, DerbyLake, Utility
+from front_end.data_tables import StockedLakes, DerbyLake, Utility
 
 load_dotenv()
 app = Flask(__name__.split('.')[0])
