@@ -3,15 +3,14 @@
 
 {% block content %}
     <div class="container mb-4">
-
         <p>Data last updated: {{ date_data_updated }}</p>
     </div>
 
     <div class="container mb-4">
-        <form method="POST" class="form-inline">
-            <div class="form-group ">
+        <form method="POST" class="form-inline w-25">
+            <div class="form-group">
                 <label for="days">Show data from the last</label>
-                <input type="number" name="days" class="form-control mx-2 w-25" id="days" min="1" max="650"
+                <input type="number" name="days" class="form-control mx-2 " id="days" min="1" max="650"
                        value={{ days }}>
                 <label for="days">days</label>
             </div>
@@ -22,13 +21,13 @@
     <div id="interactive-map" style="padding-bottom: 1vh; width: 100%" class="container mb-4">
         <div class="d-flex justify-content-between align-text-bottom ">
             <h2 class="">Stocked Trout Lakes in Washington</h2>
-            <a href="/fullscreen">View Larger Map<span class="glyphicon glyphicon-share"></span></a>
+            <a href="/fullscreen">View Larger Map<span class="glyphicon glyphicon-share-alt"></span></a>
         </div>
         {{ folium_map | safe }}
     </div>
     <div id="total-stocked-by-date-chart-container" class="container ">
 
-        <h2>Total Trout Stocked By Date in last {{ days }} days </h2>
+        <h2>Total Trout Stocked By Date in last <span class="text-muted">{{ days }}</span> days </h2>
         <div class=" bg-panel rounded p-2">
 
             <div>{{ total_stocked_by_date_chart | safe }}</div>
@@ -37,7 +36,7 @@
     </div>
     <div id="total-stocked-by-hatchery-chart-container" class="container my-4 mt-5">
 
-        <h2>Total Trout Stocked By Hatchery in last {{ days }} days </h2>
+        <h2>Total Trout Stocked By Hatchery in last <span class="text-muted">{{ days }}</span> days </h2>
         <div class=" bg-panel rounded p-2">
 
             <div>{{ total_stocked_by_hatchery_chart | safe }}</div>
