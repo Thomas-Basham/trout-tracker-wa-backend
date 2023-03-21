@@ -87,11 +87,17 @@ tr {
 
 }
 
+td {
+    color: var(--color) !important
+
+}
+
 
 tr:nth-child(even) {
     background-color: var(--color-3) !important;
     color: var(--color)
 }
+
 
 tr:hover {
     background-color: var(--color-2) !important;

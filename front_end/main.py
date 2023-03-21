@@ -232,15 +232,7 @@ def show_total_stocked_by_date_chart(lakes):
         },
         'x': {
           'ticks': {'color': '#ececec'}
-        },
-        'xAxes': [{
-          'type': 'time',
-          'time': {
-            'unit': 'day',
-            'parser': date_format,
-            'tooltipFormat': 'll'
-          }
-        }]
+        }
       }
     }
     chart_data_json = json.dumps(chart_data)
@@ -275,12 +267,7 @@ def show_total_stocked_by_hatchery_chart(lakes):
         },
         'x': {
           'ticks': {'color': '#ececec'}
-        },
-        'color': '#ececec',
-        'tickColor': '#ececec',
-        'xAxes': [{
-          'type': 'text',
-        }]
+        }
       }
     }
     chart_data_json = json.dumps(chart_data)
