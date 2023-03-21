@@ -144,7 +144,7 @@ td {
 }
 
 thead, th {
-    border-radius: 10px !important;
+    /*border-radius: 10px !important;*/
 
     background-color: var(--color);
     color: var(--color-4);
