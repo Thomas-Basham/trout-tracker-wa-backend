@@ -18,9 +18,9 @@ class DataBase:
     self.session = self.Session()
 
     self.end_date = datetime.now()
-    self.start_date = self.end_date - timedelta(days=365)
 
-  def get_stocked_lakes_data(self):
+  def get_stocked_lakes_data(self, days=365):
+    start_date = self.end_date - timedelta(days=days)
     stocked_lakes = self.session.query(
       StockedLakes.date,
       StockedLakes.lake,
@@ -33,16 +33,18 @@ class DataBase:
       StockedLakes.directions,
       StockedLakes.derby_participant
     ).filter(
-      StockedLakes.date.between(self.start_date.strftime('%b %d, %Y'), self.end_date.strftime('%b %d, %Y'))
+      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), self.end_date.strftime('%b %d, %Y'))
     ).order_by(StockedLakes.date).all()
     return stocked_lakes
 
-  def get_hatchery_totals(self):
+  def get_hatchery_totals(self, days=365):
+    start_date = self.end_date - timedelta(days=days)
+
     hatchery_totals = self.session.query(
       StockedLakes.hatchery,
       func.sum(StockedLakes.stocked_fish)
     ).group_by(StockedLakes.hatchery).filter(
-      StockedLakes.date.between(self.start_date.strftime('%b %d, %Y'), self.end_date.strftime('%b %d, %Y'))
+      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), self.end_date.strftime('%b %d, %Y'))
     ).order_by(desc(text('sum_1'))).all()
     return hatchery_totals
 
@@ -50,12 +52,14 @@ class DataBase:
     derby_lakes = self.conn.execute(text("SELECT * FROM derby_lakes_table")).fetchall()
     return derby_lakes
 
-  def get_total_stocked_by_date_data(self):
+  def get_total_stocked_by_date_data(self, days=365):
+    start_date = self.end_date - timedelta(days=days)
+
     total_stocked_by_date = self.session.query(
       StockedLakes.date,
       func.sum(StockedLakes.stocked_fish)
     ).group_by(StockedLakes.date).filter(
-      StockedLakes.date.between(self.start_date.strftime('%b %d, %Y'), self.end_date.strftime('%b %d, %Y'))
+      StockedLakes.date.between(start_date.strftime('%b %d, %Y'), self.end_date.strftime('%b %d, %Y'))
     ).order_by(StockedLakes.date).all()
     return total_stocked_by_date
 
