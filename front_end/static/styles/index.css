@@ -142,6 +142,8 @@ table {
 
 th {
     border-top: none;
+    cursor: pointer;
+
 }
 
 td:first-child, th:first-child {
@@ -169,7 +171,6 @@ thead, th {
 
 table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
     content: " \25B4\25BE";
-    cursor: pointer;
 }
 
 .folium-map {
