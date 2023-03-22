@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-
 {% block content %}
     <div class="container mb-4">
         <p>Data last updated: {{ date_data_updated }}</p>
@@ -14,7 +13,7 @@
                        value={{ days }}>
                 <label for="days">days</label>
             </div>
-            <button type="submit" class="btn btn-primary mx-2 mt-2">Update</button>
+            <button type="submit" class="btn mx-2 mt-2">Update</button>
         </form>
     </div>
 
@@ -50,15 +49,15 @@
             <p class="">Showing <span class="text-muted">{{ most_recent_stocked | length }}</span> entries</p>
         </div>
         <div class="row p-2 mb-5  bg-panel  rounded table-container" style="text-align: center;">
-            <table id="data-table" class="table table-striped rounded p-2">
+            <table id="data-table" class="table table-striped sortable rounded p-2">
                 <thead>
                 <tr>
-                    <th>Body of Water</th>
-                    <th>Amount Stocked</th>
-                    <th>Species</th>
-                    <th>Fish per Pound</th>
-                    <th>Date Stocked</th>
-                    <th>Derby Participant</th>
+                    <th data-sortable="true">Body of Water</th>
+                    <th data-sortable="true">Amount Stocked</th>
+                    <th data-sortable="true">Species</th>
+                    <th data-sortable="true">Fish per Pound</th>
+                    <th data-sortable="true">Date Stocked</th>
+                    <th data-sortable="true">Derby Participant</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -74,6 +73,13 @@
                 {% endfor %}
                 </tbody>
             </table>
+
+            <script>
+                $(document).ready(function () {
+
+                    console.log(bootstrapTable())
+                });
+            </script>
         </div>
     </div>
 

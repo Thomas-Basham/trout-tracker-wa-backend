@@ -19,6 +19,18 @@ body, html {
     --dm-text-color-secondary: rgba(256, 256, 256, 0.7);
 }
 
+.btn {
+    background-color: var(--color-3) !important;
+    border-color: var(--color-2) !important;
+    color: var(--color) !important;
+
+}
+
+.btn:hover {
+    background-color: var(--color-4) !important;
+
+}
+
 .text-muted {
     color: var(--text-color-secondary) !important;
 }
@@ -59,7 +71,7 @@ header {
     margin-bottom: 50px;
     padding: 20px 0 40px;
     background: var(--color-3);
-    border-bottom: 2px solid #FFD12C;
+    border-bottom: 2px solid var(--color-2);
     color: var(--color)
 }
 
@@ -155,6 +167,10 @@ thead, th {
     top: -5px; /* Don't forget this, required for the stickiness */
 }
 
+table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
+    content: " \25B4\25BE";
+    cursor: pointer;
+}
 
 .folium-map {
     text-align: center;
@@ -178,7 +194,7 @@ footer {
     margin-top: 90px;
     padding: 20px 0 30px;
     background: var(--color-3);
-    border-top: 2px solid #FFD12C;
+    border-top: 2px solid var(--color-2);
     color: var(--color)
 }
 
