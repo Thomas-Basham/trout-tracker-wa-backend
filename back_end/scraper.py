@@ -270,8 +270,8 @@ class Scraper:
           data[i]['longitude'] = float(geocode.point[1])
           data[i]['directions'] = f"https://www.google.com/maps/search/?api=1&query={lake}"
         else:
-          data[i]['latitude'] = float('')
-          data[i]['longitude'] = float('')
+          data[i]['latitude'] = float(0.0)
+          data[i]['longitude'] = float(0.0)
           data[i]['directions'] = f"https://www.google.com/maps/search/?api=1&query={lake}"
     # print(data)
     return data
