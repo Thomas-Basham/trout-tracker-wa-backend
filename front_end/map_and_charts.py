@@ -45,10 +45,10 @@ def make_map(lakes):
     raster_layers.TileLayer('Stamen Terrain').add_to(folium_map)
     LayerControl().add_to(folium_map)
 
-    return folium_map
+    return folium_map._repr_html_()
   else:
     # return a blank map if there is no data
-    return Map(location=[47.7511, -120.7401], zoom_start=7)
+    return Map(location=[47.7511, -120.7401], zoom_start=7)._repr_html_()
 
 
 def show_total_stocked_by_date_chart(lakes):

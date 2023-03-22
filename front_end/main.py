@@ -6,10 +6,10 @@ from map_and_charts import make_map, show_total_stocked_by_date_chart, show_tota
 load_dotenv()
 app = Flask(__name__.split('.')[0])
 app.app_context().push()
-
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 data_base = DataBase()
+
 stocked_lakes_data = data_base.get_stocked_lakes_data()
 derby_lakes_data = data_base.get_derby_lakes_data()
 total_stocked_by_date_data = data_base.get_total_stocked_by_date_data()
@@ -32,7 +32,7 @@ def index_view():
     filtered_total_stocked_by_hatchery = data_base.get_hatchery_totals(days=days)
 
     # MAP AND CHARTS
-    folium_map = make_map(filtered_lakes_by_days)._repr_html_()
+    folium_map = make_map(filtered_lakes_by_days)
     total_stocked_by_date_chart = show_total_stocked_by_date_chart(filtered_total_stocked_by_date)
     total_stocked_by_hatchery_chart = show_total_stocked_by_hatchery_chart(filtered_total_stocked_by_hatchery)
     most_recent_stocked = filtered_lakes_by_days
@@ -42,7 +42,7 @@ def index_view():
 
     total_stocked_by_date_chart = show_total_stocked_by_date_chart(total_stocked_by_date_data)
     total_stocked_by_hatchery_chart = show_total_stocked_by_hatchery_chart(total_stocked_by_hatchery_data)
-    folium_map = make_map(stocked_lakes_data)._repr_html_()
+    folium_map = make_map(stocked_lakes_data)
     most_recent_stocked = stocked_lakes_data
 
   return render_template('index.html', folium_map=folium_map, total_stocked_by_date_chart=total_stocked_by_date_chart,
@@ -54,6 +54,6 @@ def index_view():
 @app.route('/fullscreen')
 def map_full_screen_view():
   global stocked_lakes_data
-  folium_map = make_map(stocked_lakes_data)._repr_html_()
+  folium_map = make_map(stocked_lakes_data)
 
   return render_template('map_full_screen.html', folium_map=folium_map)
