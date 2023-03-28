@@ -44,7 +44,6 @@ def make_map(lakes):
           Marker(location=location, tooltip=lake["lake"], popup=popup,
                  icon=Icon(color='blue', icon='info', prefix='fa')).add_to(
             marker_cluster)
-
     raster_layers.TileLayer('OpenStreetMap').add_to(folium_map)
     LayerControl().add_to(folium_map)
 
