@@ -17,13 +17,45 @@
         </form>
     </div>
 
-    <div id="interactive-map" style="padding-bottom: 1vh; width: 100%" class="container mb-4">
+    <div id="interactive-map" class="container mb-4 pb-1">
         <div class="d-flex justify-content-between align-text-bottom ">
             <h2 class="">Stocked Trout Lakes in Washington</h2>
-            <a href="/fullscreen">View Larger Map<span class="glyphicon glyphicon-share-alt"></span></a>
+            <a id="expand-button" href="#">View larger map<span class="glyphicon glyphicon-share-alt"></span></a>
         </div>
         {{ folium_map | safe }}
     </div>
+    <script>
+        let expanded = false
+        let expandButton = $("#expand-button")
+        $(document).ready(function () {
+
+            $("a[href='#']").click(function (event) {
+                event.preventDefault(); // prevent the link from navigating to the fullscreen page
+
+                let container = $("#interactive-map");
+                let iframe = container.find("iframe");
+
+                if (expanded) {
+                    iframe.css("width", "100%");
+                    iframe.css("height", "100%");
+                    container.css("height", "100%")
+                    expandButton.text("View larger map")
+                    expanded = false
+                } else {
+                    iframe.css("width", "90vw")
+                    iframe.css("height", "90vh");
+                    iframe.css("margin-inline", "auto");
+
+                    container.css("width", "95vw")
+                    container.css("height", "95vh");
+                    container.css("text-align", "left")
+
+                    expandButton.text("View smaller map")
+                    expanded = true
+                }
+            });
+        });
+    </script>
     <div id="total-stocked-by-date-chart-container" class="container ">
 
         <h2>Total Trout Stocked By Date in last <span class="text-muted">{{ days }}</span> days </h2>

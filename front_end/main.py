@@ -49,11 +49,3 @@ def index_view():
                          total_stocked_by_hatchery_chart=total_stocked_by_hatchery_chart,
                          derby_lakes=derby_lakes_data, most_recent_stocked=most_recent_stocked, days=days,
                          date_data_updated=date_data_updated)
-
-
-@app.route('/fullscreen')
-def map_full_screen_view():
-  global stocked_lakes_data
-  folium_map = make_map(stocked_lakes_data)
-
-  return render_template('map_full_screen.html', folium_map=folium_map)

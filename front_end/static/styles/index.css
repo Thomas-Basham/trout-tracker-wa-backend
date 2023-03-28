@@ -51,15 +51,6 @@ body, html {
     }
 }
 
-@media (max-width: 500px) {
-    .github-corner:hover .octo-arm {
-        animation: none
-    }
-
-    .github-corner .octo-arm {
-        animation: octocat-wave 560ms ease-in-out
-    }
-}
 
 html {
     line-height: 1.15;
@@ -183,7 +174,6 @@ iframe {
     /*max-height: 70vh;*/
     background: var(--color-4) !important;
     background-color: var(--color-4) !important;
-    margin-bottom: 200px !important;
 }
 
 .leaflet-popup-content {
@@ -234,4 +224,27 @@ footer a {
     background-color: var(--color-3) !important;
 }
 
+@media (max-width: 500px) {
+    #interactive-map {
+        min-height: max-content !important;
+        margin-bottom: 60vh !important;
+    }
 
+    #interactive-map div, #interactive-map div div {
+        min-height: fit-content !important;
+        height: fit-content !important;
+    }
+
+
+    #interactive-map {
+        margin-bottom: 20rem !important;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: none
+    }
+
+    .github-corner .octo-arm {
+        animation: octocat-wave 560ms ease-in-out
+    }
+}

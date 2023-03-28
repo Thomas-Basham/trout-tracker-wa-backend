@@ -10,7 +10,9 @@ def make_map(lakes):
     longitudes = [lake["longitude"] for lake in lakes if lake["longitude"] != 0.0]
 
     location = [sum(latitudes) / len(latitudes), sum(longitudes) / len(longitudes)]
-    folium_map = Map(width="100%", max_width="100%", max_height="100%", location=location, zoom_start=7)
+    folium_map = Map(width="100%", height="100%", max_width="100%", min_height="100%", location=location,
+                     allowFullScreen=True,
+                     zoom_start=7, tiles="Stamen Terrain")
 
     marker_cluster = MarkerCluster().add_to(folium_map)
     Fullscreen(
@@ -42,7 +44,7 @@ def make_map(lakes):
                  icon=Icon(color='blue', icon='info', prefix='fa')).add_to(
             marker_cluster)
 
-    raster_layers.TileLayer('Stamen Terrain').add_to(folium_map)
+    raster_layers.TileLayer('OpenStreetMap').add_to(folium_map)
     LayerControl().add_to(folium_map)
 
     return folium_map._repr_html_()
