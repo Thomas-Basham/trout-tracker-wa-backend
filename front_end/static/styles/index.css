@@ -115,7 +115,7 @@ tr:hover {
 
 .table-container {
     overflow-y: auto; /* make the table scrollable if height is more than 200 px  */
-    height: 40vh; /* gives an initial height of 200px to the table */
+    height: 55vh;
 }
 
 .table-container thead th {

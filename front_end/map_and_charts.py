@@ -11,7 +11,7 @@ def make_map(lakes):
 
     location = [sum(latitudes) / len(latitudes), sum(longitudes) / len(longitudes)]
     folium_map = Map(width="100%", height="100%", max_width="100%", min_height="100%", location=location,
-                     allowFullScreen=True,
+                     allowFullScreen="True",
                      zoom_start=7, tiles="Stamen Terrain")
 
     marker_cluster = MarkerCluster().add_to(folium_map)
@@ -25,22 +25,23 @@ def make_map(lakes):
     for lake in lakes:
       if lake["latitude"] != 0.0:
         html = f'''
-          <h3 >{lake["lake"].title()}<h3/>
+          <h5 >{lake["lake"]}</h5>
           <p style="color:red">Date Stocked: {lake["date"]}</p>
-          <p style="color:green">Stocked Amount: {lake["stocked_fish"]}<p/>
-          <p style="color:orange">Hatchery: {lake["hatchery"]}<p/>
-          <a style="color:blue" href="{lake["directions"]}" target="_blank">Directions via Googlemaps <a/>
+          <p style="color:green">Stocked Amount: {lake["stocked_fish"]}</p>
+          <p style="color:cyan">Species: {lake["species"]}</p>
+          <p style="color:orange">Hatchery: {lake["hatchery"]}</p>
+          <a style="color:blue" href="{lake["directions"]}" target="_blank">Directions via Googlemaps </a>
           '''
 
-        popup = Popup(html, max_width=400)
+        popup = Popup(html, max_width=400, lazy=True)
         location = (lake["latitude"], lake["longitude"])
 
         if lake["derby_participant"]:
-          Marker(location=location, tooltip=lake["lake"].title(), popup=popup,
+          Marker(location=location, tooltip=lake["lake"], popup=popup,
                  icon=Icon(color='red', icon='trophy', prefix='fa')).add_to(
             folium_map)
         else:
-          Marker(location=location, tooltip=lake["lake"].title(), popup=popup,
+          Marker(location=location, tooltip=lake["lake"], popup=popup,
                  icon=Icon(color='blue', icon='info', prefix='fa')).add_to(
             marker_cluster)
 

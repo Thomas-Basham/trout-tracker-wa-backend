@@ -29,7 +29,7 @@
         let expandButton = $("#expand-button")
         $(document).ready(function () {
 
-            $("a[href='#']").click(function (event) {
+            expandButton.click(function (event) {
                 event.preventDefault(); // prevent the link from navigating to the fullscreen page
 
                 let container = $("#interactive-map");
@@ -38,17 +38,17 @@
                 if (expanded) {
                     iframe.css("width", "100%");
                     iframe.css("height", "100%");
+
+                    container.css("width", "100%")
                     container.css("height", "100%")
                     expandButton.text("View larger map")
                     expanded = false
                 } else {
                     iframe.css("width", "90vw")
                     iframe.css("height", "90vh");
-                    iframe.css("margin-inline", "auto");
 
                     container.css("width", "95vw")
                     container.css("height", "95vh");
-                    container.css("text-align", "left")
 
                     expandButton.text("View smaller map")
                     expanded = true
@@ -94,7 +94,7 @@
                 </thead>
                 <tbody>
                 {% for td in most_recent_stocked[::-1] %}
-                    <tr>
+                    <tr id="{{ td["lake"].lower().replace(" ", "-" ) }}">
                         <td>{{ td["lake"] }}</td>
                         <td>{{ td["stocked_fish"] }}</td>
                         <td>{{ td["species"] }}</td>
@@ -106,12 +106,7 @@
                 </tbody>
             </table>
 
-            <script>
-                $(document).ready(function () {
 
-                    console.log(bootstrapTable())
-                });
-            </script>
         </div>
     </div>
 
