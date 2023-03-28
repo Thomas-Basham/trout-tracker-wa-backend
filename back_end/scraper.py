@@ -10,6 +10,7 @@ from geopy import GoogleV3
 from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+
 from front_end.data_tables import StockedLakes, DerbyLake, Utility
 
 load_dotenv()
@@ -26,6 +27,7 @@ class DataBase:
     self.conn = self.engine.connect()
     self.Session = sessionmaker(bind=self.engine)
     self.session = self.Session()
+    self.insert_counter = 0
 
   def write_data(self, scraper):
     # Base.metadata.drop_all(self.engine)  # TODO: Remove in production
@@ -63,6 +65,10 @@ class DataBase:
                           weight=lake_data['weight'], species=lake_data['species'], hatchery=lake_data['hatchery'])
 
       self.session.add(lake)
+
+      self.insert_counter += 1
+
+    print(f'There were {self.insert_counter} entries added to {str(StockedLakes.__tablename__)}')
 
   def write_utility_data(self):
     self.session.add(Utility(updated=datetime.now().date()))
@@ -205,7 +211,7 @@ class Scraper:
 
     return date_list[1:]
 
-  # Get the names of lakes that are in the state trout derby
+  # Return a list of names of lakes that are in the state trout derby
   def scrape_derby_names(self):
 
     # The trout derby doesn't start until april 22. don't scrape names unless the derby is running
@@ -277,8 +283,8 @@ class Scraper:
     return data
 
 
+# ran only in a dev environment, used to get all the wdfw trout plant archives
 def write_archived_data():
-  # ran only in a dev environment, used to get all the wdfw trout plant archives
   for i in range(2022, 2015, -1):  # data goes back to 2015
     for j in range(7):  # there are at most 7 pages to scrape
       data_base.write_data(scraper=Scraper(
@@ -291,8 +297,11 @@ if __name__ == "__main__":
   start_time = time()
 
   data_base = DataBase()
-  data_base.write_data(scraper=Scraper(
-    lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"))
+  scraper = Scraper(
+    lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"
+  )
+
+  data_base.write_data(scraper=scraper)
 
   if getenv('ENVIRONMENT') and getenv('ENVIRONMENT') == 'testing':
     data_base.back_up_database()
