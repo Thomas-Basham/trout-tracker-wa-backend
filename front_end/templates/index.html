@@ -5,18 +5,6 @@
         <p>Data last updated: {{ date_data_updated }}</p>
     </div>
 
-    <div class="container mb-4">
-        <form method="POST" class="form-inline w-25">
-            <div class="form-group">
-                <label for="days">Show data from the last</label>
-                <input type="number" name="days" class="form-control mx-2 " id="days" min="1" max="650"
-                       value={{ days }}>
-                <label for="days">days</label>
-            </div>
-            <button type="submit" class="btn mx-2 mt-2">Update</button>
-        </form>
-    </div>
-
     <div id="interactive-map" class="container mb-4 pb-1">
         <div class="d-flex justify-content-between align-text-bottom ">
             <h2 class="">Stocked Trout Lakes in Washington</h2>
@@ -39,14 +27,19 @@
                     iframe.css("width", "100%");
                     iframe.css("height", "100%");
 
+                    container.addClass('container')
+                    container.removeClass('container-fluid')
                     container.css("width", "100%")
                     container.css("height", "100%")
                     expandButton.text("View larger map")
                     expanded = false
                 } else {
-                    iframe.css("width", "90vw")
-                    iframe.css("height", "90vh");
+                    iframe.css("width", "93vw")
+                    iframe.css("height", "93vh");
+                    iframe.css("margin-inline", "auto");
 
+                    container.removeClass('container')
+                    container.addClass('container-fluid')
                     container.css("width", "95vw")
                     container.css("height", "95vh");
 
@@ -74,7 +67,7 @@
 
         </div>
     </div>
-    <div class="container my-4 ">
+    <div id="most-recent-stocked-lakes-table" class="container my-4 ">
         <div class="d-flex justify-content-between align-text-bottom mt-5">
             <h2>Most Recent Lakes Stocked in last <span class="text-muted">{{ days }}</span> days
             </h2>
@@ -112,7 +105,7 @@
 
 
     <div style="margin: 0 auto" class="container row mt-5 pt-3 g-0">
-        <div class="col section me-4">
+        <div id="derby-lakes" class="col section me-4">
             <div class="d-flex justify-content-between align-text-bottom ">
 
                 <h2>Trout Derby Lakes</h2>
@@ -143,7 +136,7 @@
                 the Trout Derby <span class="glyphicon glyphicon-share"></span></a>
         </div>
 
-        <div class="col section ">
+        <div id="resources" class="col section ">
             <h2>Resources</h2>
 
             <div class=" bg-panel rounded p-2" style="height: 250px;overflow: auto">

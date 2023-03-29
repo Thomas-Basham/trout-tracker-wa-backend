@@ -19,11 +19,22 @@ body, html {
     --dm-text-color-secondary: rgba(256, 256, 256, 0.7);
 }
 
+#sidebar-toggle {
+    position: fixed !important;
+    top: 2rem !important;
+    left: 2rem !important;
+
+}
+
+svg {
+    fill: whitesmoke;
+}
+
 .btn {
     background-color: var(--color-3) !important;
     border-color: var(--color-2) !important;
     color: var(--color) !important;
-
+    width: fit-content;
 }
 
 .btn:hover {
@@ -55,15 +66,6 @@ body, html {
 html {
     line-height: 1.15;
     -webkit-text-size-adjust: 100%
-}
-
-
-header {
-    margin-bottom: 50px;
-    padding: 20px 0 40px;
-    background: var(--color-3);
-    border-bottom: 2px solid var(--color-2);
-    color: var(--color)
 }
 
 
@@ -160,6 +162,10 @@ thead, th {
     top: -5px; /* Don't forget this, required for the stickiness */
 }
 
+button {
+    z-index: 1000;
+}
+
 table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
     content: " \25B4\25BE";
 }
@@ -171,7 +177,6 @@ table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sor
 
 iframe {
     border-radius: 10px;
-    /*max-height: 70vh;*/
     background: var(--color-4) !important;
     background-color: var(--color-4) !important;
 }
@@ -181,12 +186,17 @@ iframe {
     height: 100px !important;
 }
 
+header {
+    border-bottom: 2px solid var(--color-2);
+
+}
+
 footer {
-    margin-top: 90px;
     padding: 20px 0 30px;
     background: var(--color-3);
     border-top: 2px solid var(--color-2);
-    color: var(--color)
+    color: var(--color);
+    margin-top: 4rem;
 }
 
 footer a {
@@ -224,21 +234,38 @@ footer a {
     background-color: var(--color-3) !important;
 }
 
+#interactive-map div, #interactive-map div div {
+    min-height: fit-content !important;
+    height: fit-content !important;
+    width: 100% !important;
+    margin-inline: auto !important;
+    margin: 0 auto !important;
+}
+
+
+#interactive-map {
+    min-height: max-content !important;
+    margin-bottom: 3rem !important;
+}
+
+@media (min-width: 1200px) {
+    .offcanvas {
+        width: 15% !important;
+    }
+}
+
 @media (max-width: 500px) {
     #interactive-map {
-        min-height: max-content !important;
-        margin-bottom: 60vh !important;
+        margin-bottom: 5rem !important;
     }
 
-    #interactive-map div, #interactive-map div div {
-        min-height: fit-content !important;
-        height: fit-content !important;
+    #sidebar-toggle {
+        position: fixed !important;
+        top: 5rem !important;
+        left: 2rem !important;
+
     }
 
-
-    #interactive-map {
-        margin-bottom: 20rem !important;
-    }
 
     .github-corner:hover .octo-arm {
         animation: none
