@@ -2,24 +2,25 @@ from dotenv import load_dotenv
 from flask import Flask, render_template, request
 from data_base import DataBase
 from map_and_charts import make_map, show_total_stocked_by_date_chart, show_total_stocked_by_hatchery_chart
+from time import time
 
 load_dotenv()
 app = Flask(__name__.split('.')[0])
 app.app_context().push()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-data_base = DataBase()
-
-stocked_lakes_data = data_base.get_stocked_lakes_data()
-derby_lakes_data = data_base.get_derby_lakes_data()
-total_stocked_by_date_data = data_base.get_total_stocked_by_date_data()
-total_stocked_by_hatchery_data = data_base.get_hatchery_totals()
-date_data_updated = data_base.get_date_data_updated()
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index_view():
-  global data_base, stocked_lakes_data, derby_lakes_data
+  data_base = DataBase()
+
+  start_time = time()
+
+  stocked_lakes_data = data_base.get_stocked_lakes_data()
+  derby_lakes_data = data_base.get_derby_lakes_data()
+  total_stocked_by_date_data = data_base.get_total_stocked_by_date_data()
+  total_stocked_by_hatchery_data = data_base.get_hatchery_totals()
+  date_data_updated = data_base.get_date_data_updated()
   days = 365
 
   if request.method == 'POST':
@@ -45,6 +46,8 @@ def index_view():
     folium_map = make_map(stocked_lakes_data)
     most_recent_stocked = stocked_lakes_data
 
+  end_time = time()
+  print(f"It took {end_time - start_time:.2f} seconds to compute")
   return render_template('index.html', folium_map=folium_map, total_stocked_by_date_chart=total_stocked_by_date_chart,
                          total_stocked_by_hatchery_chart=total_stocked_by_hatchery_chart,
                          derby_lakes=derby_lakes_data, most_recent_stocked=most_recent_stocked, days=days,

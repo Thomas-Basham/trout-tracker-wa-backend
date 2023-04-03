@@ -1,19 +1,32 @@
 from folium import Map, Popup, Icon, Marker, raster_layers, LayerControl
 from folium.plugins import MarkerCluster, Fullscreen
 import json
+import numpy as np
 
 
 # Make the Map with Folium
 def make_map(lakes):
-  if lakes:
-    latitudes = [lake["latitude"] for lake in lakes if lake["latitude"] != 0.0]
-    longitudes = [lake["longitude"] for lake in lakes if lake["longitude"] != 0.0]
+  if len(lakes) > 1:
+    # Create NumPy arrays for latitude and longitude values.
+    latitudes = np.array([lake["latitude"] for lake in lakes if lake["latitude"] != 0.0])
+    longitudes = np.array([lake["longitude"] for lake in lakes if lake["longitude"] != 0.0])
 
-    location = [sum(latitudes) / len(latitudes), sum(longitudes) / len(longitudes)]
-    folium_map = Map(width="100%", height="100%", max_width="100%", min_height="100%", location=location,
-                     allowFullScreen="True",
-                     zoom_start=7, tiles="Stamen Terrain")
+    # Calculate the average latitude and longitude values using NumPy's `mean` function.
+    location = [np.mean(latitudes), np.mean(longitudes)]
 
+    # Create the map with the calculated location.
+    folium_map = Map(
+      width="100%",
+      height="100%",
+      max_width="100%",
+      min_height="100%",
+      location=location,
+      allowFullScreen="True",
+      zoom_start=7,
+      tiles="Stamen Terrain"
+    )
+
+    # Add marker cluster and fullscreen plugin to the map.
     marker_cluster = MarkerCluster().add_to(folium_map)
     Fullscreen(
       position='topright',
@@ -22,28 +35,32 @@ def make_map(lakes):
       force_separate_button=False
     ).add_to(folium_map)
 
+    # Iterate through the lakes and add markers to the map.
     for lake in lakes:
       if lake["latitude"] != 0.0:
         html = f'''
-          <h5 >{lake["lake"]}</h5>
-          <p style="color:red">Date Stocked: {lake["date"]}</p>
-          <p style="color:green">Stocked Amount: {lake["stocked_fish"]}</p>
-          <p style="color:cyan">Species: {lake["species"]}</p>
-          <p style="color:orange">Hatchery: {lake["hatchery"]}</p>
-          <a style="color:blue" href="{lake["directions"]}" target="_blank">Directions via Googlemaps </a>
-          '''
+                <h5 >{lake["lake"]}</h5>
+                <p style="color:red">Date Stocked: {lake["date"]}</p>
+                <p style="color:green">Stocked Amount: {lake["stocked_fish"]}</p>
+                <p style="color:cyan">Species: {lake["species"]}</p>
+                <p style="color:orange">Hatchery: {lake["hatchery"]}</p>
+                <a style="color:blue" href="{lake["directions"]}" target="_blank">Directions via Googlemaps </a>
+            '''
 
         popup = Popup(html, max_width=400, lazy=True)
         location = (lake["latitude"], lake["longitude"])
 
         if lake["derby_participant"]:
-          Marker(location=location, tooltip=lake["lake"], popup=popup,
-                 icon=Icon(color='red', icon='trophy', prefix='fa')).add_to(
-            folium_map)
+          marker = Marker(location=location, tooltip=lake["lake"], popup=popup,
+                          icon=Icon(color='red', icon='trophy', prefix='fa'))
         else:
-          Marker(location=location, tooltip=lake["lake"], popup=popup,
-                 icon=Icon(color='blue', icon='info', prefix='fa')).add_to(
-            marker_cluster)
+          marker = Marker(location=location, tooltip=lake["lake"], popup=popup,
+                          icon=Icon(color='blue', icon='info', prefix='fa'))
+
+        # Add the marker to the map.
+        marker.add_to(marker_cluster)
+
+    # Add OpenStreetMap layer and LayerControl to the map.
     raster_layers.TileLayer('OpenStreetMap').add_to(folium_map)
     LayerControl().add_to(folium_map)
 
@@ -54,7 +71,7 @@ def make_map(lakes):
 
 
 def show_total_stocked_by_date_chart(lakes):
-  if lakes:
+  if len(lakes) > 0:
     date_format = '%Y-%m-%d'
     dates, total_stocked_fish = zip(*lakes)
     date_strings = [date.strftime(date_format) for date in dates]
@@ -91,7 +108,7 @@ def show_total_stocked_by_date_chart(lakes):
 
 
 def show_total_stocked_by_hatchery_chart(lakes):
-  if lakes:
+  if len(lakes) > 0:
     hatcheries, total_stocked_fish = zip(*lakes)
     chart_data = {
       'labels': hatcheries,
