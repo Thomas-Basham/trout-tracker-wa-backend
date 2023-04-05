@@ -13,14 +13,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 @app.route('/', methods=['GET', 'POST'])
 def index_view():
   data_base = DataBase()
-
-  start_time = time()
-
-  stocked_lakes_data = data_base.get_stocked_lakes_data()
-  derby_lakes_data = data_base.get_derby_lakes_data()
-  total_stocked_by_date_data = data_base.get_total_stocked_by_date_data()
-  total_stocked_by_hatchery_data = data_base.get_hatchery_totals()
-  date_data_updated = data_base.get_date_data_updated()
   days = 365
 
   if request.method == 'POST':
@@ -28,26 +20,18 @@ def index_view():
     days = int(form['days'])
 
     # DATA QUERIES
-    filtered_lakes_by_days = data_base.get_stocked_lakes_data(days=days)
-    filtered_total_stocked_by_date = data_base.get_total_stocked_by_date_data(days=days)
-    filtered_total_stocked_by_hatchery = data_base.get_hatchery_totals(days=days)
+  filtered_lakes_by_days = data_base.get_stocked_lakes_data(days=days)
+  filtered_total_stocked_by_date = data_base.get_total_stocked_by_date_data(days=days)
+  filtered_total_stocked_by_hatchery = data_base.get_hatchery_totals(days=days)
+  date_data_updated = data_base.get_date_data_updated()
+  derby_lakes_data = data_base.get_derby_lakes_data()
 
-    # MAP AND CHARTS
-    folium_map = make_map(filtered_lakes_by_days)
-    total_stocked_by_date_chart = show_total_stocked_by_date_chart(filtered_total_stocked_by_date)
-    total_stocked_by_hatchery_chart = show_total_stocked_by_hatchery_chart(filtered_total_stocked_by_hatchery)
-    most_recent_stocked = filtered_lakes_by_days
+  # MAP AND CHARTS
+  folium_map = make_map(filtered_lakes_by_days)
+  total_stocked_by_date_chart = show_total_stocked_by_date_chart(filtered_total_stocked_by_date)
+  total_stocked_by_hatchery_chart = show_total_stocked_by_hatchery_chart(filtered_total_stocked_by_hatchery)
+  most_recent_stocked = filtered_lakes_by_days
 
-  else:
-    # if request.method == 'GET':
-
-    total_stocked_by_date_chart = show_total_stocked_by_date_chart(total_stocked_by_date_data)
-    total_stocked_by_hatchery_chart = show_total_stocked_by_hatchery_chart(total_stocked_by_hatchery_data)
-    folium_map = make_map(stocked_lakes_data)
-    most_recent_stocked = stocked_lakes_data
-
-  end_time = time()
-  print(f"It took {end_time - start_time:.2f} seconds to compute")
   return render_template('index.html', folium_map=folium_map, total_stocked_by_date_chart=total_stocked_by_date_chart,
                          total_stocked_by_hatchery_chart=total_stocked_by_hatchery_chart,
                          derby_lakes=derby_lakes_data, most_recent_stocked=most_recent_stocked, days=days,
