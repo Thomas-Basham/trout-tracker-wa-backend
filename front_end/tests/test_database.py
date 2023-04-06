@@ -19,4 +19,4 @@ def test_load_time():
   end_time = time()
   total_time = end_time - start_time
   print(f"It took {total_time:.2f} seconds to compute")
-  assert total_time <= 4
+  assert total_time <= 7

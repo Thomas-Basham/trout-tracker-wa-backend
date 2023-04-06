@@ -1,6 +1,6 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, func, text, desc
-from front_end.data_tables import StockedLakes, DerbyLake, Utility
+from data_tables import StockedLakes, DerbyLake, Utility
 from datetime import datetime, timedelta
 import os
 
