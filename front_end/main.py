@@ -19,7 +19,7 @@ def index_view():
     form = request.form
     days = int(form['days'])
 
-    # DATA QUERIES
+  # DATA QUERIES
   filtered_lakes_by_days = data_base.get_stocked_lakes_data(days=days)
   filtered_total_stocked_by_date = data_base.get_total_stocked_by_date_data(days=days)
   filtered_total_stocked_by_hatchery = data_base.get_hatchery_totals(days=days)

@@ -1,8 +1,7 @@
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, func, text, desc
-from data_tables import StockedLakes, DerbyLake, Utility
+from front_end.data_tables import StockedLakes, DerbyLake, Utility
 from datetime import datetime, timedelta
-from sqlalchemy.sql.expression import select
 import os
 
 

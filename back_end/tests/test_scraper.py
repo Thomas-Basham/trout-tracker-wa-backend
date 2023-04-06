@@ -2,8 +2,6 @@ import os
 from dotenv import load_dotenv
 from geopy import GoogleV3
 from back_end.scraper import Scraper
-from front_end.data_base import DataBase
-from time import time
 
 scraper = Scraper(
   lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"
