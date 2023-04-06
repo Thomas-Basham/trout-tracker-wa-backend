@@ -1,4 +1,4 @@
-from front_end.data_base import DataBase
+from data_base import DataBase
 from time import time
 from dotenv import load_dotenv
 
