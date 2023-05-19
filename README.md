@@ -61,6 +61,10 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 
 [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants)
 
-[SqAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/)
+[Flask](https://flask.palletsprojects.com/)
+
+[Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+
+[SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/)
 
 ![Washington Trout Stats Screenshot](screenshot.webp)
