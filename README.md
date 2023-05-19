@@ -40,12 +40,13 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 - Fork this repository
 - Clone to your machine
 - Open in IDE
-- Create a Python virtual environment
 
 - Then either:
 
   - Run these CLI commands:
 
+  - Create a Python virtual environment
+  
         pip install -r back_end/requirements.txt
 
         pip install -r front_end/requirements.txt
