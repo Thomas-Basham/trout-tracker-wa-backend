@@ -41,21 +41,17 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 - Clone to your machine
 - Open in IDE
 
-- Then either:
+- Create a Python virtual environment
 
-  - Run these CLI commands:
+            pip install -r back_end/requirements.txt
 
-  - Create a Python virtual environment
-  
-        pip install -r back_end/requirements.txt
-
-        pip install -r front_end/requirements.txt
+            pip install -r front_end/requirements.txt
 
   - To run development server:
 
-           python front_end/wsgi.py
+            python front_end/wsgi.py
 
-  Or With Docker:
+- Or With Docker:
 
         docker-compose build
         docker-compose up -d
