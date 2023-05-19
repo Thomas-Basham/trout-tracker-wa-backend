@@ -36,3 +36,24 @@ def index_view():
                          total_stocked_by_hatchery_chart=total_stocked_by_hatchery_chart,
                          derby_lakes=derby_lakes_data, most_recent_stocked=most_recent_stocked, days=days,
                          date_data_updated=date_data_updated)
+
+
+@app.route('/cache-me')
+def cache():
+	return "nginx will cache this response"
+
+@app.route('/info')
+def info():
+
+	resp = {
+		'connecting_ip': request.headers['X-Real-IP'],
+		'proxy_ip': request.headers['X-Forwarded-For'],
+		'host': request.headers['Host'],
+		'user-agent': request.headers['User-Agent']
+	}
+
+	return jsonify(resp)
+
+@app.route('/flask-health-check')
+def flask_health_check():
+	return "success"
