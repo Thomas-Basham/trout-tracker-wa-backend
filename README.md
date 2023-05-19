@@ -51,6 +51,12 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 
          python front_end/wsgi.py -->
 
+Or With Docker:
+
+      docker-compose build
+      docker-compose up -d
+      
+
 ## Resources
 
 [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants)
