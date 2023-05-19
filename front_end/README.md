@@ -2,7 +2,7 @@
 
 **Author:** Thomas Basham
 
-[washington-trout-stats-bashamtg.vercel.app](https://washington-trout-stats-bashamtg.vercel.app)
+[washington-trout-stats.vercel.app](https://washington-trout-stats.vercel.app)
 
 ![Python application](https://img.shields.io/badge/Flask-23daaf?style=for-the-badge&logo=flask&logoColor=white)
 ![Python application](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
