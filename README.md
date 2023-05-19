@@ -1,4 +1,4 @@
-# Trout Finder
+# Washington Trout Stats
 
 **Author:** Thomas Basham
 
