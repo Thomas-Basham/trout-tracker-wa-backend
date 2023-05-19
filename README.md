@@ -35,27 +35,29 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 
 - Google V3 Geolocator(To get lat/lon of lakes)
 
-<!-- ## Get started Contributing -->
+## Get started Contributing
 
-<!-- - Fork this repository
+- Fork this repository
 - Clone to your machine
 - Open in IDE
 - Create a Python virtual environment
-- Run these CLI commands:
 
-      pip install -r back_end/requirements.txt
+- Then either:
+  - Run these CLI commands:
 
-      pip install -r front_end/requirements.txt
+        pip install -r back_end/requirements.txt
 
-- To run development server:
+        pip install -r front_end/requirements.txt
 
-         python front_end/wsgi.py -->
+  - To run development server:
 
-Or With Docker:
+           python front_end/wsgi.py
 
-      docker-compose build
-      docker-compose up -d
-      
+  Or With Docker:
+
+        docker-compose build
+        docker-compose up -d
+        docker-compose up
 
 ## Resources
 
