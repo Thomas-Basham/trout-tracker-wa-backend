@@ -2,15 +2,15 @@
 
 **Author:** Thomas Basham
 
-[trout-finder.vercel.app](https://trout-finder.vercel.app)
+[washington-trout-stats-bashamtg.vercel.app](https://washington-trout-stats-bashamtg.vercel.app)
 
 ![Python application](https://img.shields.io/badge/Flask-23daaf?style=for-the-badge&logo=flask&logoColor=white)
 ![Python application](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Python application](https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=Vercel&logoColor=white)
 
-[![Python application](https://github.com/Thomas-Basham/trout-finder/actions/workflows/python-app.yml/badge.svg)](https://github.com/Thomas-Basham/trout-finder/actions/workflows/python-app.yml)
+[![Python application](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/python-app.yml/badge.svg)](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/python-app.yml)
 
-[![daily-cron](https://github.com/Thomas-Basham/trout-finder/actions/workflows/cron.yaml/badge.svg)](https://github.com/Thomas-Basham/trout-finder/actions/workflows/cron.yaml)
+[![daily-cron](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml/badge.svg)](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml)
 
 A Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an
 interactive map
@@ -43,6 +43,7 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 - Create a Python virtual environment
 
 - Then either:
+
   - Run these CLI commands:
 
         pip install -r back_end/requirements.txt

@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "Wa Stocked Trout Finder"
+name = "Washington Trout Stats"
 version = "0.2.0"
-description = ""
+description = "A Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an interactive map"
 authors = ["Thomas-Basham <bashamtg@gmail.com"]
 
 [tool.poetry.dependencies]
