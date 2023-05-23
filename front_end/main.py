@@ -1,8 +1,10 @@
+import sys
+sys.path.append('/data_base')
 from dotenv import load_dotenv
+
+from data_base.database import DataBase
 from flask import Flask, render_template, request, jsonify
-from data_base import DataBase
 from map_and_charts import make_map, show_total_stocked_by_date_chart, show_total_stocked_by_hatchery_chart
-from time import time
 
 load_dotenv()
 app = Flask(__name__.split('.')[0])
