@@ -2,6 +2,8 @@
 
 **Author:** Thomas Basham
 
+**Version:** 3.1.2
+
 [washington-trout-stats.vercel.app](https://washington-trout-stats.vercel.app)
 
 ![Python application](https://img.shields.io/badge/Flask-23daaf?style=for-the-badge&logo=flask&logoColor=white)
@@ -12,8 +14,8 @@
 
 [![daily-cron](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml/badge.svg)](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml)
 
-A Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an
-interactive map
+**A Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an
+interactive map.**
 
 ## Problem Domain
 
@@ -29,33 +31,13 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 
 - SQLAlchemy
 
-- Postgres Database
+- PostgreSQL Database
 
-- Cron Job(To schedule webscraping daily)
+- [GitHub Cron Job](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/python-app.yml) (To schedule webscraping daily)
 
 - Google V3 Geolocator(To get lat/lon of lakes)
 
-## Get started Contributing
-
-- Fork this repository
-- Clone to your machine
-- Open in IDE
-
-- Create a Python virtual environment
-
-            pip install -r back_end/requirements.txt
-
-            pip install -r front_end/requirements.txt
-
-  - To run development server:
-
-            python front_end/wsgi.py
-
-- Or With Docker:
-
-        docker-compose build
-        docker-compose up -d
-        docker-compose up
+## [Get started Contributing](./CONTRIBUTING)
 
 ## Resources
 
@@ -66,5 +48,7 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 
 [SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/)
+
+[Docker and NGINX](https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask)
 
 ![Washington Trout Stats Screenshot](screenshot.webp)
