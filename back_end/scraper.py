@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
-from front_end.data_tables import StockedLakes, DerbyLake, Utility
+from front_end.data_tables import StockedLakes, DerbyLake, Utility, Base
 
 load_dotenv()
 
@@ -22,7 +22,7 @@ class DataBase:
     if getenv("SQLALCHEMY_DATABASE_URI"):
       self.engine = create_engine(getenv("SQLALCHEMY_DATABASE_URI"))
     else:
-      self.engine = create_engine('sqlite:///')
+      self.engine = create_engine('sqlite:///front_end/sqlite.db')
 
     self.conn = self.engine.connect()
     self.Session = sessionmaker(bind=self.engine)
@@ -30,8 +30,10 @@ class DataBase:
     self.insert_counter = 0
 
   def write_data(self, scraper):
-    # Base.metadata.drop_all(self.engine)  # TODO: Remove in production
-    # Base.metadata.create_all(self.engine)  # TODO: Remove in production
+    if str(self.engine) == "Engine(sqlite:///front_end/sqlite.db)":
+        Base.metadata.drop_all(self.engine)
+        Base.metadata.create_all(self.engine)
+        
     self.write_derby_data(scraper)
     self.write_lake_data(scraper)
     self.write_utility_data()
@@ -76,8 +78,8 @@ class DataBase:
   def back_up_database(self):
     all_stocked_lakes = self.session.query(StockedLakes).all()
 
-    backup_file_txt = '../backup_data.txt'
-    backup_file_sql = '../backup_data.sql'
+    backup_file_txt = 'back_end/backup_data.txt'
+    backup_file_sql = 'back_end/backup_data.sql'
 
     if os.path.exists(backup_file_txt):
       os.remove(backup_file_txt)
