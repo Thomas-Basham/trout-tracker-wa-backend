@@ -1,6 +1,6 @@
 # Washington Trout Stats
 
-**Author:** Thomas Basham
+**Authors:** Thomas Basham
 
 **Version:** 3.1.2
 
