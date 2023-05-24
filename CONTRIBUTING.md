@@ -32,17 +32,22 @@
 
 - ### To run WebScraper
 
-      python -m back_end.scraper
+  - copy/paste the `back_end/sample.env` contents into a new file named `.env`
+  - Get a [Google Geolocator API key](https://developers.google.com/maps/documentation/geolocation/overview)
+  - Update the environmental variable `GV3_API_KEY` with your API Key
+  - Then run:
+
+          python -m back_end.scraper
 
 - ### To run development server (Flask)
-
-        python -m front_end.wsgi
+        cd front_end
+        python -m wsgi
 
 ## Or with Docker
 
             docker-compose build
             docker-compose up -d
-            docker-compose up 
+            docker-compose up
         Open in web browser: http://localhost:8000/
 
 [NGINX Reverse Proxy -> WSGI -> Python/Flask Backend](https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask#nginx-reverse-proxy---wsgi---pythonflask-backend)
