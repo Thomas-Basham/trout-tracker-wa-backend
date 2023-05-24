@@ -33,7 +33,7 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 
 - PostgreSQL Database
 
-- [GitHub Cron Job](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/python-app.yml) (To schedule webscraping daily)
+- [GitHub Cron Job](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml) (To schedule webscraping daily)
 
 - Google V3 Geolocator(To get lat/lon of lakes)
 
