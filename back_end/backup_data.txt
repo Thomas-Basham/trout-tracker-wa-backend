@@ -1,0 +1,249 @@
+1,Aldrich Lake Mason County,155,Rainbow,2.35,Eells Springs,2023-05-22,47.4326978,-123.0821129,https://www.google.com/maps/search/?api=1&query=Aldrich Lake Mason County,False
+2,Clara Lake Mason County,260,Rainbow,2.35,Eells Springs,2023-05-22,47.4251146,-123.1951376,https://www.google.com/maps/search/?api=1&query=Clara Lake Mason County,False
+3,Howell Lake Mason County,110,Rainbow,2.35,Eells Springs,2023-05-22,47.4304204,-122.9917343,https://www.google.com/maps/search/?api=1&query=Howell Lake Mason County,False
+4,Lake Maggie Mason County,300,Rainbow,2.35,Eells Springs,2023-05-22,47.4251146,-123.1951376,https://www.google.com/maps/search/?api=1&query=Lake Maggie Mason County,False
+5,Lake Wooten Mason County,1300,Rainbow,2.47,Eells Springs,2023-05-22,47.4672457,-122.9828726,https://www.google.com/maps/search/?api=1&query=Lake Wooten Mason County,False
+6,Mission Lake Kitsap County,870,Rainbow,2.35,Eells Springs,2023-05-22,47.6476607,-122.6412583,https://www.google.com/maps/search/?api=1&query=Mission Lake Kitsap County,False
+7,Noel Cole Pond Lewis County,25,Rainbow,0.32,Lk Aberdeen Hatchery,2023-05-22,46.6195461,-122.4554639,https://www.google.com/maps/search/?api=1&query=Noel Cole Pond Lewis County,False
+8,Noel Cole Pond Lewis County,300,Rainbow,2.2,Lk Aberdeen Hatchery,2023-05-22,46.6195461,-122.4554639,https://www.google.com/maps/search/?api=1&query=Noel Cole Pond Lewis County,False
+9,Panther Lake Kitsap County,1300,Rainbow,2.47,Eells Springs,2023-05-22,47.5275536,-122.8509537,https://www.google.com/maps/search/?api=1&query=Panther Lake Kitsap County,False
+10,Robbins Lake Mason County,255,Rainbow,2.35,Eells Springs,2023-05-22,47.42747809999999,-123.0812794,https://www.google.com/maps/search/?api=1&query=Robbins Lake Mason County,False
+11,Spencer Lake Mason County,2725,Rainbow,2.35,Eells Springs,2023-05-22,47.2613076,-122.9852011,https://www.google.com/maps/search/?api=1&query=Spencer Lake Mason County,False
+12,Swift Power Canal Skamania County,3570,Rainbow,2.38,Speelyai Hatchery,2023-05-22,45.9428524,-121.8962257,https://www.google.com/maps/search/?api=1&query=Swift Power Canal Skamania County,False
+13,Swift Res Skamania County,36920,Rainbow,2.38,Speelyai Hatchery,2023-05-22,45.9428524,-121.8962257,https://www.google.com/maps/search/?api=1&query=Swift Res Skamania County,False
+14,Tiger Lake Mason County,1090,Rainbow,2.35,Eells Springs,2023-05-22,47.4251146,-123.1951376,https://www.google.com/maps/search/?api=1&query=Tiger Lake Mason County,False
+15,Wildcat Lake Kitsap County,1220,Rainbow,2.47,Eells Springs,2023-05-22,47.60453769999999,-122.7668162,https://www.google.com/maps/search/?api=1&query=Wildcat Lake Kitsap County,False
+16,Beaver Lks T24King County,1000,Rainbow,1.6,Issaquah Hatchery,2023-05-19,47.7510741,-120.7401386,https://www.google.com/maps/search/?api=1&query=Beaver Lks T24King County,False
+17,Benson Lake Mason County,1000,Rainbow,2.37,Eells Springs,2023-05-19,47.3370695,-122.9234023,https://www.google.com/maps/search/?api=1&query=Benson Lake Mason County,True
+18,Franks Pond Chelan County,240,Rainbow,2.5,Chelan Pud Hatchery,2023-05-19,47.9445331,-120.6749068,https://www.google.com/maps/search/?api=1&query=Franks Pond Chelan County,False
+19,Phillips Lake Mason County,1000,Rainbow,2.37,Eells Springs,2023-05-19,47.2514694,-122.9598127,https://www.google.com/maps/search/?api=1&query=Phillips Lake Mason County,False
+20,Summit Lake Thurston County,5000,Rainbow,2.37,Eells Springs,2023-05-19,47.0541913,-123.103266,https://www.google.com/maps/search/?api=1&query=Summit Lake Thurston County,False
+21,Thurston County Derbythurston County,200,Rainbow,2.5,Eells Springs,2023-05-19,46.8645747,-122.7695986,https://www.google.com/maps/search/?api=1&query=Thurston County Derbythurston County,False
+22,Thurston County Derbythurston County,3,Rainbow,0.2,Eells Springs,2023-05-19,46.8645747,-122.7695986,https://www.google.com/maps/search/?api=1&query=Thurston County Derbythurston County,False
+23,Auburn Pk Lake King County,300,Rainbow,2.6,Puyallup Hatchery,2023-05-18,47.30732279999999,-122.2284532,https://www.google.com/maps/search/?api=1&query=Auburn Pk Lake King County,False
+24,Blue Lake Columbia County,2550,Rainbow,2.5,Tucannon Hatchery,2023-05-18,46.2775138,-117.814262,https://www.google.com/maps/search/?api=1&query=Blue Lake Columbia County,True
+25,Gissburg Pond North Snohomish County,1034,Rainbow,2.2,Arlington Hatchery,2023-05-18,48.0329979,-121.8339472,https://www.google.com/maps/search/?api=1&query=Gissburg Pond North Snohomish County,False
+26,Mayfield Res Lewis County,5000,Rainbow,2.5,Mossyrock Hatchery,2023-05-18,46.50871859999999,-122.569279,https://www.google.com/maps/search/?api=1&query=Mayfield Res Lewis County,False
+27,Rainbow Lake Columbia County,2550,Rainbow,2.5,Tucannon Hatchery,2023-05-18,46.2775138,-117.814262,https://www.google.com/maps/search/?api=1&query=Rainbow Lake Columbia County,False
+28,Spring Lake Columbia County,2550,Rainbow,2.5,Tucannon Hatchery,2023-05-18,46.2775138,-117.814262,https://www.google.com/maps/search/?api=1&query=Spring Lake Columbia County,False
+29,Bennington Lake Walla Walla County,6000,Rainbow,2.5,Tucannon Hatchery,2023-05-17,46.0651146,-118.260109,https://www.google.com/maps/search/?api=1&query=Bennington Lake Walla Walla County,True
+30,Canyon Creek  Clark County,2875,Rainbow,2.5,Mossyrock Hatchery,2023-05-17,45.745534,-122.43761,https://www.google.com/maps/search/?api=1&query=Canyon Creek  Clark County,False
+31,Canyon Creek  Clark County,3000,Rainbow,2.7,Goldendale Hatchery,2023-05-17,45.745534,-122.43761,https://www.google.com/maps/search/?api=1&query=Canyon Creek  Clark County,False
+32,Holmes Derby Pond Island County,748,Rainbow,2.2,Arlington Hatchery,2023-05-17,48.19765,-122.579457,https://www.google.com/maps/search/?api=1&query=Holmes Derby Pond Island County,False
+33,Old Fishing Hole Pond King County,1500,Rainbow,2.5,Puyallup Hatchery,2023-05-17,47.3769922,-122.2691246,https://www.google.com/maps/search/?api=1&query=Old Fishing Hole Pond King County,False
+34,Bennington Lake Walla Walla County,6000,Rainbow,2.5,Tucannon Hatchery,2023-05-16,46.0651146,-118.260109,https://www.google.com/maps/search/?api=1&query=Bennington Lake Walla Walla County,True
+35,Bradley Lake Pierce County,1500,Rainbow,2.5,Puyallup Hatchery,2023-05-16,47.1609442,-122.2842865,https://www.google.com/maps/search/?api=1&query=Bradley Lake Pierce County,False
+36,Carney Lake Pierce County,1000,Rainbow,2.1,Chambers Cr Hatchery,2023-05-16,47.4029761,-122.7610455,https://www.google.com/maps/search/?api=1&query=Carney Lake Pierce County,False
+37,Cases Pond Pacific County,87,Rainbow,0.25,Forks Creek Hatchery,2023-05-16,46.6766688,-123.7173851,https://www.google.com/maps/search/?api=1&query=Cases Pond Pacific County,False
+38,Fio Rito Laken Kittitas County,200,Rainbow,0.8,Naches Hatchery,2023-05-16,46.938561,-120.50463,https://www.google.com/maps/search/?api=1&query=Fio Rito Laken Kittitas County,False
+39,Fio Rito Laken Kittitas County,3000,Rainbow,2.4,Naches Hatchery,2023-05-16,46.938561,-120.50463,https://www.google.com/maps/search/?api=1&query=Fio Rito Laken Kittitas County,False
+40,Jackson Lake Pierce County,550,Rainbow,2.1,Chambers Cr Hatchery,2023-05-16,47.2905148,-122.7765446,https://www.google.com/maps/search/?api=1&query=Jackson Lake Pierce County,False
+41,Lake Kapowsin Pierce County,4250,Rainbow,2.5,Puyallup Hatchery,2023-05-16,46.98031839999999,-122.2223004,https://www.google.com/maps/search/?api=1&query=Lake Kapowsin Pierce County,False
+42,Mattoon Lake Kittitas County,3000,Rainbow,2.4,Naches Hatchery,2023-05-16,46.9781076,-120.5530429,https://www.google.com/maps/search/?api=1&query=Mattoon Lake Kittitas County,False
+43,Mill Pond Pacific County,137,Rainbow,1.6,Forks Creek Hatchery,2023-05-16,46.5180824,-123.8264512,https://www.google.com/maps/search/?api=1&query=Mill Pond Pacific County,False
+44,Sarge Hubbard Pond Yakima County,720,Rainbow,2.4,Naches Hatchery,2023-05-16,46.6015053,-120.4748382,https://www.google.com/maps/search/?api=1&query=Sarge Hubbard Pond Yakima County,False
+45,Bennington Lake Walla Walla County,525,Rainbow,0.67,Tucannon Hatchery,2023-05-15,46.0651146,-118.260109,https://www.google.com/maps/search/?api=1&query=Bennington Lake Walla Walla County,True
+46,Black Lake Pacific County,2000,Rainbow,2.14,Nemah Hatchery,2023-05-15,46.5180824,-123.8264512,https://www.google.com/maps/search/?api=1&query=Black Lake Pacific County,True
+47,Chain Lake Snohomish County,1050,Rainbow,2.3,Tokul Cr Hatchery,2023-05-15,47.8821481,-121.9693838,https://www.google.com/maps/search/?api=1&query=Chain Lake Snohomish County,False
+48,Easton Pond Kittitas County,2004,Rainbow,2.4,Naches Hatchery,2023-05-15,47.2349964,-121.1695993,https://www.google.com/maps/search/?api=1&query=Easton Pond Kittitas County,False
+49,Kiwanas Pond Kittitas County,600,Rainbow,2.4,Naches Hatchery,2023-05-15,47.17495479999999,-120.9319411,https://www.google.com/maps/search/?api=1&query=Kiwanas Pond Kittitas County,False
+50,Lake Aberdeen Grays Harbor County,225,Rainbow,0.32,Lk Aberdeen Hatchery,2023-05-15,46.9834021,-123.7422743,https://www.google.com/maps/search/?api=1&query=Lake Aberdeen Grays Harbor County,False
+51,Lake Aberdeen Grays Harbor County,1250,Rainbow,2.2,Lk Aberdeen Hatchery,2023-05-15,46.9834021,-123.7422743,https://www.google.com/maps/search/?api=1&query=Lake Aberdeen Grays Harbor County,False
+52,Lake Kapowsin Pierce County,3500,Rainbow,2.5,Puyallup Hatchery,2023-05-15,46.98031839999999,-122.2223004,https://www.google.com/maps/search/?api=1&query=Lake Kapowsin Pierce County,False
+53,Lake Kapowsin Pierce County,6000,Rainbow,2.6,Puyallup Hatchery,2023-05-15,46.98031839999999,-122.2223004,https://www.google.com/maps/search/?api=1&query=Lake Kapowsin Pierce County,False
+54,Lake Lawrence Thurston County,5000,Rainbow,1.85,Chambers Cr Hatchery,2023-05-15,46.8538459,-122.5705849,https://www.google.com/maps/search/?api=1&query=Lake Lawrence Thurston County,False
+55,Lake St Clair Thurston County,5000,Rainbow,2.1,Chambers Cr Hatchery,2023-05-15,47.0140937,-122.6986787,https://www.google.com/maps/search/?api=1&query=Lake St Clair Thurston County,False
+56,Snag Lake Pacific County,500,Rainbow,2.14,Nemah Hatchery,2023-05-15,46.4194831,-123.8147843,https://www.google.com/maps/search/?api=1&query=Snag Lake Pacific County,False
+57,Tanwax Lake Pierce County,1000,Rainbow,2.5,Puyallup Hatchery,2023-05-15,46.9496031,-122.2662229,https://www.google.com/maps/search/?api=1&query=Tanwax Lake Pierce County,False
+58,Tims Pond Yakima County,1044,Rainbow,2.4,Naches Hatchery,2023-05-15,46.7318642,-120.7967565,https://www.google.com/maps/search/?api=1&query=Tims Pond Yakima County,False
+59,Western Lake Pacific County,500,Rainbow,2.14,Nemah Hatchery,2023-05-15,46.42314229999999,-123.8212321,https://www.google.com/maps/search/?api=1&query=Western Lake Pacific County,False
+60,Grays Hrbr Kids Evnt Grays Harbor County,200,Rainbow,2.6,Lk Aberdeen Hatchery,2023-05-13,46.93972649242301,-123.9940261888556,https://www.google.com/maps/search/?api=1&query=Grays Hrbr Kids Evnt Grays Harbor County,False
+61,American Lake Pierce County,2000,Rainbow,2.1,Chambers Cr Hatchery,2023-05-12,47.1335423,-122.5648657,https://www.google.com/maps/search/?api=1&query=American Lake Pierce County,True
+62,Duck Lake    Grays Harbor County,300,Rainbow,0.28,Satsop Springs Ponds,2023-05-12,46.9706131,-124.1399412,https://www.google.com/maps/search/?api=1&query=Duck Lake    Grays Harbor County,True
+63,Lewis County Park Ponds Lewis County,40,Rainbow,0.13,Goldendale Hatchery,2023-05-12,46.6195461,-122.4554639,https://www.google.com/maps/search/?api=1&query=Lewis County Park Ponds Lewis County,False
+64,Lewis County Park Ponds Lewis County,160,Rainbow,0.31,Goldendale Hatchery,2023-05-12,46.6195461,-122.4554639,https://www.google.com/maps/search/?api=1&query=Lewis County Park Ponds Lewis County,False
+65,Silver Lake T28Snohomish County,1500,Rainbow,2.5,Arlington Hatchery,2023-05-12,48.0329979,-121.8339472,https://www.google.com/maps/search/?api=1&query=Silver Lake T28Snohomish County,False
+66,Battle Ground Lake Clark County,3000,Rainbow,2.5,Goldendale Hatchery,2023-05-11,45.803864,-122.4907989,https://www.google.com/maps/search/?api=1&query=Battle Ground Lake Clark County,True
+67,Franks Pond Chelan County,30,Rainbow,1.0,Chelan Pud Hatchery,2023-05-11,47.9445331,-120.6749068,https://www.google.com/maps/search/?api=1&query=Franks Pond Chelan County,False
+68,Franks Pond Chelan County,400,Rainbow,2.5,Chelan Pud Hatchery,2023-05-11,47.9445331,-120.6749068,https://www.google.com/maps/search/?api=1&query=Franks Pond Chelan County,False
+69,Lewis County Park Ponds Lewis County,4160,Rainbow,2.6,Mossyrock Hatchery,2023-05-11,46.6195461,-122.4554639,https://www.google.com/maps/search/?api=1&query=Lewis County Park Ponds Lewis County,False
+70,Lewisclark St Park Pond Lewis County,1000,Rainbow,2.5,Mossyrock Hatchery,2023-05-11,46.5218909,-122.8144805,https://www.google.com/maps/search/?api=1&query=Lewisclark St Park Pond Lewis County,False
+71,Bear Lake Spokane County,502,Rainbow,2.5,Spokane Hatchery,2023-05-10,47.925462,-117.3550015,https://www.google.com/maps/search/?api=1&query=Bear Lake Spokane County,False
+72,Clear Lake Yakima County,3240,Rainbow,2.7,Mossyrock Hatchery,2023-05-10,46.62736659999999,-121.2785791,https://www.google.com/maps/search/?api=1&query=Clear Lake Yakima County,False
+73,Duck Lake    Grays Harbor County,200,Rainbow,0.25,Humptulips Hatchery,2023-05-10,46.9706131,-124.1399412,https://www.google.com/maps/search/?api=1&query=Duck Lake    Grays Harbor County,True
+74,Fish Lake Chelan County,3340,Rainbow,2.6,Chelan Pud Hatchery,2023-05-10,47.8386373,-120.7091801,https://www.google.com/maps/search/?api=1&query=Fish Lake Chelan County,False
+75,Flowing Lake Snohomish County,4018,Rainbow,2.11,Tokul Cr Hatchery,2023-05-10,47.9476839,-121.9872642,https://www.google.com/maps/search/?api=1&query=Flowing Lake Snohomish County,False
+76,Gissburg Pond North Snohomish County,500,Rainbow,2.5,Arlington Hatchery,2023-05-10,48.0329979,-121.8339472,https://www.google.com/maps/search/?api=1&query=Gissburg Pond North Snohomish County,False
+77,Gissburg Pond South Snohomish County,1000,Rainbow,2.5,Arlington Hatchery,2023-05-10,48.0329979,-121.8339472,https://www.google.com/maps/search/?api=1&query=Gissburg Pond South Snohomish County,False
+78,Hatch Lake Stevens County,1504,Rainbow,2.5,Spokane Hatchery,2023-05-10,48.4974622,-117.8065455,https://www.google.com/maps/search/?api=1&query=Hatch Lake Stevens County,False
+79,Hog Lake Spokane County,2502,Rainbow,2.5,Spokane Hatchery,2023-05-10,47.37745839999999,-117.8024979,https://www.google.com/maps/search/?api=1&query=Hog Lake Spokane County,False
+80,Jumpoff Joe Lake Stevens County,4567,Rainbow,2.5,Spokane Hatchery,2023-05-10,48.1369895,-117.6905945,https://www.google.com/maps/search/?api=1&query=Jumpoff Joe Lake Stevens County,False
+81,Roses Lake Chelan County,3250,Rainbow,2.6,Chelan Pud Hatchery,2023-05-10,47.9045409,-120.155072,https://www.google.com/maps/search/?api=1&query=Roses Lake Chelan County,False
+82,Ballinger Lake Snohomish County,3850,Rainbow,2.5,Whitehorse Pond,2023-05-09,47.7820803,-122.3276873,https://www.google.com/maps/search/?api=1&query=Ballinger Lake Snohomish County,True
+83,Beehive Res Chelan County,3175,Rainbow,2.6,Chelan Pud Hatchery,2023-05-09,47.3228027,-120.3955096,https://www.google.com/maps/search/?api=1&query=Beehive Res Chelan County,False
+84,Blackmans Lake Snohomish County,4150,Rainbow,2.15,Tokul Cr Hatchery,2023-05-09,47.9323373,-122.0940261,https://www.google.com/maps/search/?api=1&query=Blackmans Lake Snohomish County,False
+85,Crescent Lake T22Pierce County,1675,Rainbow,2.5,Puyallup Hatchery,2023-05-09,47.0675877,-122.1295269,https://www.google.com/maps/search/?api=1&query=Crescent Lake T22Pierce County,False
+86,Duck Lake    Grays Harbor County,2000,Rainbow,2.1,Humptulips Hatchery,2023-05-09,46.9706131,-124.1399412,https://www.google.com/maps/search/?api=1&query=Duck Lake    Grays Harbor County,True
+87,Firing Center Pond Yakima County,240,Rainbow,2.4,Naches Hatchery,2023-05-09,46.6757257,-120.4113526,https://www.google.com/maps/search/?api=1&query=Firing Center Pond Yakima County,False
+88,Fish Lake Chelan County,4160,Rainbow,2.6,Chelan Pud Hatchery,2023-05-09,47.8386373,-120.7091801,https://www.google.com/maps/search/?api=1&query=Fish Lake Chelan County,False
+89,Grandy Lake Skagit County,1300,Rainbow,2.5,Whitehorse Pond,2023-05-09,48.565539,-121.8001659,https://www.google.com/maps/search/?api=1&query=Grandy Lake Skagit County,False
+90,Lake Sawyer King County,3000,Rainbow,2.6,Puyallup Hatchery,2023-05-09,47.3339715,-122.0367083,https://www.google.com/maps/search/?api=1&query=Lake Sawyer King County,False
+91,Old Fishing Hole Pond King County,200,Rainbow,2.6,Puyallup Hatchery,2023-05-09,47.3769922,-122.2691246,https://www.google.com/maps/search/?api=1&query=Old Fishing Hole Pond King County,False
+92,Silver Lake T28Snohomish County,3313,Rainbow,2.5,Whitehorse Pond,2023-05-09,48.0329979,-121.8339472,https://www.google.com/maps/search/?api=1&query=Silver Lake T28Snohomish County,False
+93,Wapato Lake Pierce County,2700,Rainbow,2.5,Puyallup Hatchery,2023-05-09,47.19481,-122.4565584,https://www.google.com/maps/search/?api=1&query=Wapato Lake Pierce County,False
+94,Horsethief Lake Klickitat County,3000,Rainbow,2.5,Goldendale Hatchery,2023-05-08,45.6456938,-121.1026484,https://www.google.com/maps/search/?api=1&query=Horsethief Lake Klickitat County,False
+95,Lake Aberdeen Grays Harbor County,1250,Rainbow,2.6,Lk Aberdeen Hatchery,2023-05-08,46.9834021,-123.7422743,https://www.google.com/maps/search/?api=1&query=Lake Aberdeen Grays Harbor County,False
+96,Lake Aberdeen Grays Harbor County,225,Rainbow,0.32,Lk Aberdeen Hatchery,2023-05-08,46.9834021,-123.7422743,https://www.google.com/maps/search/?api=1&query=Lake Aberdeen Grays Harbor County,False
+97,Lake Alice King County,1021,Rainbow,2.15,Tokul Cr Hatchery,2023-05-08,47.5543939,-121.8897048,https://www.google.com/maps/search/?api=1&query=Lake Alice King County,False
+98,Loomis Lake Pacific County,1000,Rainbow,2.25,Nemah Hatchery,2023-05-08,46.4338882,-124.0427692,https://www.google.com/maps/search/?api=1&query=Loomis Lake Pacific County,False
+99,Lost Lake Yakima County,2040,Rainbow,2.4,Naches Hatchery,2023-05-08,46.6446015,-121.0699814,https://www.google.com/maps/search/?api=1&query=Lost Lake Yakima County,False
+100,Milk Pond Kittitas County,300,Rainbow,2.4,Naches Hatchery,2023-05-08,46.9865889,-121.0614108,https://www.google.com/maps/search/?api=1&query=Milk Pond Kittitas County,False
+101,Shadow Lake King County,4450,Rainbow,2.5,Whitehorse Pond,2023-05-08,47.411387,-122.0847069,https://www.google.com/maps/search/?api=1&query=Shadow Lake King County,False
+102,Sylvia Lake Grays Harbor County,100,Rainbow,0.32,Lk Aberdeen Hatchery,2023-05-08,46.9977042,-123.5922925,https://www.google.com/maps/search/?api=1&query=Sylvia Lake Grays Harbor County,False
+103,Vance Creek Adlt Pond Grays Harbor County,100,Rainbow,0.32,Lk Aberdeen Hatchery,2023-05-08,47.0272912,-123.4205771,https://www.google.com/maps/search/?api=1&query=Vance Creek Adlt Pond Grays Harbor County,False
+104,Vance Creek Jv Pond Grays Harbor County,100,Rainbow,0.32,Lk Aberdeen Hatchery,2023-05-08,47.0272912,-123.4205771,https://www.google.com/maps/search/?api=1&query=Vance Creek Jv Pond Grays Harbor County,False
+105,Beehive Res Chelan County,150,Rainbow,1.0,Chelan Pud Hatchery,2023-05-05,47.3228027,-120.3955096,https://www.google.com/maps/search/?api=1&query=Beehive Res Chelan County,False
+106,Beehive Res Chelan County,7800,Rainbow,2.6,Chelan Pud Hatchery,2023-05-05,47.3228027,-120.3955096,https://www.google.com/maps/search/?api=1&query=Beehive Res Chelan County,False
+107,Clear Lake Spokane County,1102,Rainbow,2.5,Spokane Hatchery,2023-05-05,47.5240522,-117.6944704,https://www.google.com/maps/search/?api=1&query=Clear Lake Spokane County,False
+108,Clear Lake Spokane County,300,Rainbow,0.33,Spokane Hatchery,2023-05-05,47.5240522,-117.6944704,https://www.google.com/maps/search/?api=1&query=Clear Lake Spokane County,False
+109,Clear Lake Spokane County,5393,Rainbow,3.0,Ford Hatchery,2023-05-05,47.5240522,-117.6944704,https://www.google.com/maps/search/?api=1&query=Clear Lake Spokane County,False
+110,Steel Lake King County,2000,Rainbow,2.4,Puyallup Hatchery,2023-05-05,47.3275971,-122.3023278,https://www.google.com/maps/search/?api=1&query=Steel Lake King County,False
+111,Beehive Res Chelan County,4125,Rainbow,2.75,Chelan Pud Hatchery,2023-05-04,47.3228027,-120.3955096,https://www.google.com/maps/search/?api=1&query=Beehive Res Chelan County,False
+112,Beehive Res Chelan County,3900,Rainbow,2.6,Chelan Pud Hatchery,2023-05-04,47.3228027,-120.3955096,https://www.google.com/maps/search/?api=1&query=Beehive Res Chelan County,False
+113,Ferry Lake Ferry County,2587,Rainbow,2.5,Spokane Hatchery,2023-05-04,48.5217855,-118.8132615,https://www.google.com/maps/search/?api=1&query=Ferry Lake Ferry County,False
+114,Fish Lake Ferry County,451,Rainbow,2.5,Spokane Hatchery,2023-05-04,48.4718375,-118.4974069,https://www.google.com/maps/search/?api=1&query=Fish Lake Ferry County,False
+115,Franks Pond Chelan County,200,Rainbow,2.5,Chelan Pud Hatchery,2023-05-04,47.9445331,-120.6749068,https://www.google.com/maps/search/?api=1&query=Franks Pond Chelan County,False
+116,Jennings Park Pond Snohomish County,1525,Rainbow,2.5,Arlington Hatchery,2023-05-04,48.059178,-122.1598068,https://www.google.com/maps/search/?api=1&query=Jennings Park Pond Snohomish County,False
+117,Mayfield Res Lewis County,5200,Rainbow,2.6,Mossyrock Hatchery,2023-05-04,46.50871859999999,-122.569279,https://www.google.com/maps/search/?api=1&query=Mayfield Res Lewis County,False
+118,American Lake Pierce County,8500,Rainbow,2.5,Puyallup Hatchery,2023-05-03,47.1335423,-122.5648657,https://www.google.com/maps/search/?api=1&query=American Lake Pierce County,True
+119,Clear Lake Chelan County,7700,Rainbow,2.75,Chelan Pud Hatchery,2023-05-03,47.9445331,-120.6749068,https://www.google.com/maps/search/?api=1&query=Clear Lake Chelan County,False
+120,Clear Lake Chelan County,100,Rainbow,1.0,Chelan Pud Hatchery,2023-05-03,47.9445331,-120.6749068,https://www.google.com/maps/search/?api=1&query=Clear Lake Chelan County,False
+121,Firing Center Pond Yakima County,360,Rainbow,2.4,Naches Hatchery,2023-05-03,46.6757257,-120.4113526,https://www.google.com/maps/search/?api=1&query=Firing Center Pond Yakima County,False
+122,Fish Lake King County,1500,Rainbow,2.5,Puyallup Hatchery,2023-05-03,47.5480339,-121.9836029,https://www.google.com/maps/search/?api=1&query=Fish Lake King County,False
+123,Holm Lake King County,1700,Rainbow,2.5,Puyallup Hatchery,2023-05-03,47.30958680000001,-122.1274635,https://www.google.com/maps/search/?api=1&query=Holm Lake King County,False
+124,Kress Lake Cowlitz County,1560,Rainbow,2.6,Goldendale Hatchery,2023-05-03,46.0465158,-122.8532292,https://www.google.com/maps/search/?api=1&query=Kress Lake Cowlitz County,False
+125,Kress Lake Cowlitz County,1460,Rainbow,2.7,Goldendale Hatchery,2023-05-03,46.0465158,-122.8532292,https://www.google.com/maps/search/?api=1&query=Kress Lake Cowlitz County,False
+126,Lake Loma Snohomish County,1500,Rainbow,2.5,Whitehorse Pond,2023-05-03,48.1340453,-122.2530298,https://www.google.com/maps/search/?api=1&query=Lake Loma Snohomish County,False
+127,Lake Sacajawea Cowlitz County,2500,Rainbow,2.5,Mossyrock Hatchery,2023-05-03,46.1292008,-122.9455072,https://www.google.com/maps/search/?api=1&query=Lake Sacajawea Cowlitz County,False
+128,Martha Lake Snohomish County,3000,Rainbow,2.5,Whitehorse Pond,2023-05-03,47.8509302,-122.239297,https://www.google.com/maps/search/?api=1&query=Martha Lake Snohomish County,False
+129,Mccabe Pond Kittitas County,1008,Rainbow,2.4,Naches Hatchery,2023-05-03,47.17495479999999,-120.9319411,https://www.google.com/maps/search/?api=1&query=Mccabe Pond Kittitas County,False
+130,Mill Pond King County,1000,Rainbow,2.5,Puyallup Hatchery,2023-05-03,47.2631664,-122.2180495,https://www.google.com/maps/search/?api=1&query=Mill Pond King County,False
+131,Rotary Lake Yakima County,2004,Rainbow,2.4,Naches Hatchery,2023-05-03,46.6280541,-120.50943,https://www.google.com/maps/search/?api=1&query=Rotary Lake Yakima County,False
+132,Snoqualmie Police Pds King County,540,Rainbow,2.3,Tokul Cr Hatchery,2023-05-03,47.5287132,-121.8253906,https://www.google.com/maps/search/?api=1&query=Snoqualmie Police Pds King County,False
+133,Tieton Ranger Pond Yakima County,1008,Rainbow,2.4,Naches Hatchery,2023-05-03,46.7020685,-120.7553504,https://www.google.com/maps/search/?api=1&query=Tieton Ranger Pond Yakima County,False
+134,Tims Pond Yakima County,768,Rainbow,2.4,Naches Hatchery,2023-05-03,46.7318642,-120.7967565,https://www.google.com/maps/search/?api=1&query=Tims Pond Yakima County,False
+135,Battle Ground Lake Clark County,3000,Rainbow,2.6,Goldendale Hatchery,2023-05-02,45.803864,-122.4907989,https://www.google.com/maps/search/?api=1&query=Battle Ground Lake Clark County,True
+136,Bay Lake Pierce County,4000,Rainbow,2.5,Puyallup Hatchery,2023-05-02,47.0675877,-122.1295269,https://www.google.com/maps/search/?api=1&query=Bay Lake Pierce County,False
+137,Blackmans Lake Snohomish County,4700,Rainbow,2.5,Whitehorse Pond,2023-05-02,47.9323373,-122.0940261,https://www.google.com/maps/search/?api=1&query=Blackmans Lake Snohomish County,False
+138,Clear Lake Yakima County,5100,Rainbow,2.4,Naches Hatchery,2023-05-02,46.62736659999999,-121.2785791,https://www.google.com/maps/search/?api=1&query=Clear Lake Yakima County,False
+139,Deep Lake King County,4000,Rainbow,2.5,Puyallup Hatchery,2023-05-02,47.5480339,-121.9836029,https://www.google.com/maps/search/?api=1&query=Deep Lake King County,True
+140,Deer Lake Columbia County,688,Rainbow,2.5,Tucannon Hatchery,2023-05-02,46.2775138,-117.814262,https://www.google.com/maps/search/?api=1&query=Deer Lake Columbia County,True
+141,Failor Lake Grays Harbor County,200,Rainbow,0.24,Humptulips Hatchery,2023-05-02,47.108716,-123.9584045,https://www.google.com/maps/search/?api=1&query=Failor Lake Grays Harbor County,False
+142,Failor Lake Grays Harbor County,500,Rainbow,2.0,Humptulips Hatchery,2023-05-02,47.108716,-123.9584045,https://www.google.com/maps/search/?api=1&query=Failor Lake Grays Harbor County,False
+143,Fivemile Lake King County,3200,Rainbow,2.5,Puyallup Hatchery,2023-05-02,47.2725089,-122.2859969,https://www.google.com/maps/search/?api=1&query=Fivemile Lake King County,False
+144,Golf Course Pond Asotin County,2650,Rainbow,2.5,Tucannon Hatchery,2023-05-02,46.4143753,-117.0876922,https://www.google.com/maps/search/?api=1&query=Golf Course Pond Asotin County,True
+145,Heritage Lake Stevens County,4018,Rainbow,2.5,Spokane Hatchery,2023-05-02,48.0028579,-122.1063239,https://www.google.com/maps/search/?api=1&query=Heritage Lake Stevens County,False
+146,Island Lake Kitsap County,246,Rainbow,1.2,Lakewood Hatchery,2023-05-02,47.6817048,-122.6605745,https://www.google.com/maps/search/?api=1&query=Island Lake Kitsap County,True
+147,Jefferson Park Pond Walla Walla County,750,Rainbow,2.5,Tucannon Hatchery,2023-05-02,46.0556166,-118.3450028,https://www.google.com/maps/search/?api=1&query=Jefferson Park Pond Walla Walla County,False
+148,Lily Lake Chelan County,100,Rainbow,1.0,Chelan Pud Hatchery,2023-05-02,47.2945898,-120.3176387,https://www.google.com/maps/search/?api=1&query=Lily Lake Chelan County,False
+149,Lily Lake Chelan County,9000,Rainbow,2.5,Chelan Pud Hatchery,2023-05-02,47.2945898,-120.3176387,https://www.google.com/maps/search/?api=1&query=Lily Lake Chelan County,False
+150,Lake Leo Pend Oreille County,2282,Rainbow,2.5,Spokane Hatchery,2023-05-02,48.6489244,-117.4945304,https://www.google.com/maps/search/?api=1&query=Lake Leo Pend Oreille County,False
+151,Nahwatzel Lake Mason County,4902,Rainbow,1.2,Lakewood Hatchery,2023-05-02,47.24214749999999,-123.3310181,https://www.google.com/maps/search/?api=1&query=Nahwatzel Lake Mason County,False
+152,Nahwatzel Lake Mason County,462,Rainbow,0.96,Lakewood Hatchery,2023-05-02,47.24214749999999,-123.3310181,https://www.google.com/maps/search/?api=1&query=Nahwatzel Lake Mason County,False
+153,Naneum Pond Kittitas County,1008,Rainbow,2.4,Naches Hatchery,2023-05-02,47.0040473,-120.4639663,https://www.google.com/maps/search/?api=1&query=Naneum Pond Kittitas County,False
+154,Rainbow Lake Columbia County,2550,Rainbow,2.5,Tucannon Hatchery,2023-05-02,46.2775138,-117.814262,https://www.google.com/maps/search/?api=1&query=Rainbow Lake Columbia County,False
+155,Squalicum Lake Whatcom County,1500,Rainbow,2.9,Kendall Cr Hatchery,2023-05-02,48.7977959,-122.3506959,https://www.google.com/maps/search/?api=1&query=Squalicum Lake Whatcom County,False
+156,Squalicum Lake Whatcom County,100,Rainbow,0.8,Kendall Cr Hatchery,2023-05-02,48.7977959,-122.3506959,https://www.google.com/maps/search/?api=1&query=Squalicum Lake Whatcom County,False
+157,Tye Lake Snohomish County,1035,Rainbow,2.3,Tokul Cr Hatchery,2023-05-02,48.0329979,-121.8339472,https://www.google.com/maps/search/?api=1&query=Tye Lake Snohomish County,False
+158,Watson Lake Columbia County,3100,Rainbow,2.5,Tucannon Hatchery,2023-05-02,46.2775138,-117.814262,https://www.google.com/maps/search/?api=1&query=Watson Lake Columbia County,False
+159,Carter Lake Pierce County,1000,Rainbow,2.36,Eells Springs,2023-05-01,47.0675877,-122.1295269,https://www.google.com/maps/search/?api=1&query=Carter Lake Pierce County,False
+160,Carter Lake Pierce County,53,Rainbow,0.2,Eells Springs,2023-05-01,47.0675877,-122.1295269,https://www.google.com/maps/search/?api=1&query=Carter Lake Pierce County,False
+161,Cooks Lake Pend Oreille County,350,Rainbow,0.33,Spokane Hatchery,2023-05-01,48.34325820000001,-117.1725898,https://www.google.com/maps/search/?api=1&query=Cooks Lake Pend Oreille County,False
+162,Dayton Jv Pond Columbia County,200,Rainbow,2.5,Tucannon Hatchery,2023-05-01,46.3237525,-117.9724367,https://www.google.com/maps/search/?api=1&query=Dayton Jv Pond Columbia County,False
+163,Dayton Jv Pond Columbia County,25,Rainbow,0.67,Tucannon Hatchery,2023-05-01,46.3237525,-117.9724367,https://www.google.com/maps/search/?api=1&query=Dayton Jv Pond Columbia County,False
+164,Donnie Lake Columbia County,400,Rainbow,2.5,Tucannon Hatchery,2023-05-01,46.2775138,-117.814262,https://www.google.com/maps/search/?api=1&query=Donnie Lake Columbia County,False
+165,Horseshoe Lake Kitsap County,600,Rainbow,2.42,Eells Springs,2023-05-01,47.407051,-122.6667175,https://www.google.com/maps/search/?api=1&query=Horseshoe Lake Kitsap County,True
+166,Leland Lake Jefferson County,7120,Rainbow,2.39,Eells Springs,2023-05-01,47.8964392,-122.8824815,https://www.google.com/maps/search/?api=1&query=Leland Lake Jefferson County,True
+167,Lake Roesiger Snohomish County,3075,Rainbow,2.5,Whitehorse Pond,2023-05-01,47.9834331,-121.9292931,https://www.google.com/maps/search/?api=1&query=Lake Roesiger Snohomish County,False
+168,Lost Lake Mason County,2436,Rainbow,1.2,Lakewood Hatchery,2023-05-01,47.16325339999999,-123.2522244,https://www.google.com/maps/search/?api=1&query=Lost Lake Mason County,False
+169,Pine Tree Lake Lincoln County,200,Rainbow,3.0,Ford Hatchery,2023-05-01,47.2873447,-117.9129342,https://www.google.com/maps/search/?api=1&query=Pine Tree Lake Lincoln County,False
+170,Rainbow Lake Columbia County,25,Rainbow,0.67,Tucannon Hatchery,2023-05-01,46.2775138,-117.814262,https://www.google.com/maps/search/?api=1&query=Rainbow Lake Columbia County,False
+171,Spearfish Lake Klickitat County,3000,Rainbow,2.5,Goldendale Hatchery,2023-05-01,45.62801779999999,-121.1309036,https://www.google.com/maps/search/?api=1&query=Spearfish Lake Klickitat County,False
+172,W Evans Pond Asotin County,2550,Rainbow,2.5,Tucannon Hatchery,2023-05-01,46.4188117,-117.1147994,https://www.google.com/maps/search/?api=1&query=W Evans Pond Asotin County,False
+173,Grays Hrbr Kids Evnt Grays Harbor County,104,Rainbow,2.5,Lk Aberdeen Hatchery,2023-04-30,46.93972649242301,-123.9940261888556,https://www.google.com/maps/search/?api=1&query=Grays Hrbr Kids Evnt Grays Harbor County,False
+174,Tye Lake Snohomish County,1913,Rainbow,2.5,Arlington Hatchery,2023-04-29,48.0329979,-121.8339472,https://www.google.com/maps/search/?api=1&query=Tye Lake Snohomish County,False
+175,Columbus Park Pond Thurston County,200,Rainbow,2.08,Eells Springs,2023-04-28,46.996525,-122.982374,https://www.google.com/maps/search/?api=1&query=Columbus Park Pond Thurston County,False
+176,Columbus Park Pond Thurston County,1500,Rainbow,2.43,Eells Springs,2023-04-28,46.996525,-122.982374,https://www.google.com/maps/search/?api=1&query=Columbus Park Pond Thurston County,False
+177,Columbus Park Pond Thurston County,8,Rainbow,0.2,Eells Springs,2023-04-28,46.996525,-122.982374,https://www.google.com/maps/search/?api=1&query=Columbus Park Pond Thurston County,False
+178,Franks Pond Chelan County,20,Rainbow,1.0,Chelan Pud Hatchery,2023-04-28,47.9445331,-120.6749068,https://www.google.com/maps/search/?api=1&query=Franks Pond Chelan County,False
+179,Franks Pond Chelan County,200,Rainbow,2.5,Chelan Pud Hatchery,2023-04-28,47.9445331,-120.6749068,https://www.google.com/maps/search/?api=1&query=Franks Pond Chelan County,False
+180,Garfield Pond Whitman County,1500,Rainbow,2.5,Tucannon Hatchery,2023-04-28,47.0079487,-117.1410073,https://www.google.com/maps/search/?api=1&query=Garfield Pond Whitman County,True
+181,Garfield Pond Whitman County,25,Rainbow,0.7,Tucannon Hatchery,2023-04-28,47.0079487,-117.1410073,https://www.google.com/maps/search/?api=1&query=Garfield Pond Whitman County,True
+182,Lake Sacajawea Cowlitz County,2500,Rainbow,2.7,Mossyrock Hatchery,2023-04-28,46.1292008,-122.9455072,https://www.google.com/maps/search/?api=1&query=Lake Sacajawea Cowlitz County,False
+183,Lake Sacajawea Cowlitz County,150,Rainbow,0.33,Goldendale Hatchery,2023-04-28,46.1292008,-122.9455072,https://www.google.com/maps/search/?api=1&query=Lake Sacajawea Cowlitz County,False
+184,Lake Sacajawea Cowlitz County,40,Rainbow,0.14,Goldendale Hatchery,2023-04-28,46.1292008,-122.9455072,https://www.google.com/maps/search/?api=1&query=Lake Sacajawea Cowlitz County,False
+185,Pampa Pond Whitman County,100,Rainbow,0.7,Tucannon Hatchery,2023-04-28,46.7807897,-117.9455371,https://www.google.com/maps/search/?api=1&query=Pampa Pond Whitman County,False
+186,Pampa Pond Whitman County,1000,Rainbow,2.5,Tucannon Hatchery,2023-04-28,46.7807897,-117.9455371,https://www.google.com/maps/search/?api=1&query=Pampa Pond Whitman County,False
+187,Quarry Pond Walla Walla County,25,Rainbow,0.7,Tucannon Hatchery,2023-04-28,46.1491961,-118.9423366,https://www.google.com/maps/search/?api=1&query=Quarry Pond Walla Walla County,False
+188,Quarry Pond Walla Walla County,1375,Rainbow,2.5,Tucannon Hatchery,2023-04-28,46.1491961,-118.9423366,https://www.google.com/maps/search/?api=1&query=Quarry Pond Walla Walla County,False
+189,Clear Lake Thurston County,4000,Rainbow,2.9,Puyallup Hatchery,2023-04-27,46.8223558,-122.4742636,https://www.google.com/maps/search/?api=1&query=Clear Lake Thurston County,False
+190,Dalton Lake Franklin County,15,Rainbow,0.67,Tucannon Hatchery,2023-04-27,46.2971514,-118.7997286,https://www.google.com/maps/search/?api=1&query=Dalton Lake Franklin County,True
+191,Dalton Lake Franklin County,85,Rainbow,0.7,Tucannon Hatchery,2023-04-27,46.2971514,-118.7997286,https://www.google.com/maps/search/?api=1&query=Dalton Lake Franklin County,True
+192,Dalton Lake Franklin County,1000,Rainbow,2.5,Tucannon Hatchery,2023-04-27,46.2971514,-118.7997286,https://www.google.com/maps/search/?api=1&query=Dalton Lake Franklin County,True
+193,Mayfield Res Lewis County,5400,Rainbow,2.7,Mossyrock Hatchery,2023-04-27,46.50871859999999,-122.569279,https://www.google.com/maps/search/?api=1&query=Mayfield Res Lewis County,False
+194,Spring Lake King County,3840,Rainbow,3.0,Arlington Hatchery,2023-04-27,47.5480339,-121.9836029,https://www.google.com/maps/search/?api=1&query=Spring Lake King County,False
+195,Trout Lake T21King County,2190,Rainbow,3.0,Arlington Hatchery,2023-04-27,45.9973427,-121.528137,https://www.google.com/maps/search/?api=1&query=Trout Lake T21King County,False
+196,Uncle Johns Pond Pierce County,300,Rainbow,2.9,Puyallup Hatchery,2023-04-27,47.0675877,-122.1295269,https://www.google.com/maps/search/?api=1&query=Uncle Johns Pond Pierce County,False
+197,Bitter Lake King County,1500,Rainbow,3.0,Arlington Hatchery,2023-04-26,47.7195811,-122.3495153,https://www.google.com/maps/search/?api=1&query=Bitter Lake King County,False
+198,Blue Lake Columbia County,2675,Rainbow,2.5,Tucannon Hatchery,2023-04-26,46.2775138,-117.814262,https://www.google.com/maps/search/?api=1&query=Blue Lake Columbia County,True
+199,Dayton Jv Pond Columbia County,180,Rainbow,2.4,Lyons Ferry Hatchery,2023-04-26,46.3237525,-117.9724367,https://www.google.com/maps/search/?api=1&query=Dayton Jv Pond Columbia County,False
+200,Echo Lake King County,1050,Rainbow,3.0,Arlington Hatchery,2023-04-26,47.7700682,-122.3351243,https://www.google.com/maps/search/?api=1&query=Echo Lake King County,False
+201,Green Lake King County,4890,Rainbow,3.0,Arlington Hatchery,2023-04-26,47.6798338,-122.3257826,https://www.google.com/maps/search/?api=1&query=Green Lake King County,False
+202,Haller Lake King County,1455,Rainbow,3.0,Arlington Hatchery,2023-04-26,47.7232536,-122.3341781,https://www.google.com/maps/search/?api=1&query=Haller Lake King County,False
+203,Hood Park Pond Walla Walla County,975,Rainbow,2.5,Tucannon Hatchery,2023-04-26,46.2145152,-119.0131341,https://www.google.com/maps/search/?api=1&query=Hood Park Pond Walla Walla County,False
+204,Hood Park Pond Walla Walla County,200,Rainbow,0.67,Tucannon Hatchery,2023-04-26,46.2145152,-119.0131341,https://www.google.com/maps/search/?api=1&query=Hood Park Pond Walla Walla County,False
+205,Kress Lake Cowlitz County,2800,Brown Trout,2.8,Mossyrock Hatchery,2023-04-26,46.0465158,-122.8532292,https://www.google.com/maps/search/?api=1&query=Kress Lake Cowlitz County,False
+206,Lake Fenwick King County,1800,Rainbow,3.0,Arlington Hatchery,2023-04-26,47.3656881,-122.2711345,https://www.google.com/maps/search/?api=1&query=Lake Fenwick King County,False
+207,Lake Killarney King County,2595,Rainbow,3.0,Arlington Hatchery,2023-04-26,47.2866017,-122.2909305,https://www.google.com/maps/search/?api=1&query=Lake Killarney King County,False
+208,Offutt Lake Thurston County,4500,Rainbow,2.9,Puyallup Hatchery,2023-04-26,46.9103763,-122.8256879,https://www.google.com/maps/search/?api=1&query=Offutt Lake Thurston County,False
+209,Rainbow Lake Columbia County,3100,Rainbow,2.5,Tucannon Hatchery,2023-04-26,46.2775138,-117.814262,https://www.google.com/maps/search/?api=1&query=Rainbow Lake Columbia County,False
+210,Rapjohn Lake Pierce County,2000,Rainbow,2.9,Puyallup Hatchery,2023-04-26,46.9050638,-122.3425229,https://www.google.com/maps/search/?api=1&query=Rapjohn Lake Pierce County,False
+211,Dalton Lake Franklin County,1080,Rainbow,2.4,Lyons Ferry Hatchery,2023-04-25,46.2971514,-118.7997286,https://www.google.com/maps/search/?api=1&query=Dalton Lake Franklin County,True
+212,Hatchery Creek Grant County,500,Rainbow,2.41,Columbia Basin Hatchery,2023-04-25,47.3248105,-119.4610939,https://www.google.com/maps/search/?api=1&query=Hatchery Creek Grant County,False
+213,Lions Park Pond Walla Walla County,25,Rainbow,0.67,Tucannon Hatchery,2023-04-25,46.0410125,-118.3757303,https://www.google.com/maps/search/?api=1&query=Lions Park Pond Walla Walla County,False
+214,Lions Park Pond Walla Walla County,400,Rainbow,2.5,Tucannon Hatchery,2023-04-25,46.0410125,-118.3757303,https://www.google.com/maps/search/?api=1&query=Lions Park Pond Walla Walla County,False
+215,Lake Boren King County,1650,Rainbow,3.0,Arlington Hatchery,2023-04-25,47.5326663,-122.1651913,https://www.google.com/maps/search/?api=1&query=Lake Boren King County,False
+216,Lake Campbell Skagit County,1600,Rainbow,2.9,Kendall Cr Hatchery,2023-04-25,48.4412954,-122.6140601,https://www.google.com/maps/search/?api=1&query=Lake Campbell Skagit County,False
+217,Lake Dolloff King County,2205,Rainbow,3.0,Arlington Hatchery,2023-04-25,47.3273152,-122.2875487,https://www.google.com/maps/search/?api=1&query=Lake Dolloff King County,False
+218,Star Lake King County,3300,Rainbow,3.0,Arlington Hatchery,2023-04-25,47.3578777,-122.291511,https://www.google.com/maps/search/?api=1&query=Star Lake King County,False
+219,Angle Lake King County,6435,Rainbow,3.0,Arlington Hatchery,2023-04-24,47.42739539999999,-122.2862921,https://www.google.com/maps/search/?api=1&query=Angle Lake King County,False
+220,Easton Pond Kittitas County,2040,Rainbow,2.4,Naches Hatchery,2023-04-24,47.2349964,-121.1695993,https://www.google.com/maps/search/?api=1&query=Easton Pond Kittitas County,False
+221,Granger Pond Yakima County,600,Rainbow,2.4,Naches Hatchery,2023-04-24,46.3420741,-120.1872727,https://www.google.com/maps/search/?api=1&query=Granger Pond Yakima County,False
+222,Lake Meridian King County,3885,Rainbow,3.0,Arlington Hatchery,2023-04-24,47.36272109999999,-122.1515039,https://www.google.com/maps/search/?api=1&query=Lake Meridian King County,False
+223,Blue Lake Columbia County,1125,Rainbow,2.5,Tucannon Hatchery,2023-04-21,46.2775138,-117.814262,https://www.google.com/maps/search/?api=1&query=Blue Lake Columbia County,True
+224,Blue Lake Grant County,2610,Rainbow,2.41,Columbia Basin Hatchery,2023-04-21,47.5622165,-119.4526374,https://www.google.com/maps/search/?api=1&query=Blue Lake Grant County,True
+225,Cases Pond Pacific County,800,Rainbow,2.2,Forks Creek Hatchery,2023-04-21,46.6766688,-123.7173851,https://www.google.com/maps/search/?api=1&query=Cases Pond Pacific County,False
+226,Cases Pond Pacific County,200,Rainbow,0.3,Forks Creek Hatchery,2023-04-21,46.6766688,-123.7173851,https://www.google.com/maps/search/?api=1&query=Cases Pond Pacific County,False
+227,Fortson Pds Snohomish County,1000,Rainbow,2.5,Whitehorse Pond,2023-04-21,48.268441,-121.7273533,https://www.google.com/maps/search/?api=1&query=Fortson Pds Snohomish County,False
+228,Franks Pond Chelan County,50,Rainbow,1.0,Chelan Pud Hatchery,2023-04-21,47.9445331,-120.6749068,https://www.google.com/maps/search/?api=1&query=Franks Pond Chelan County,False
+229,Franks Pond Chelan County,300,Rainbow,2.5,Chelan Pud Hatchery,2023-04-21,47.9445331,-120.6749068,https://www.google.com/maps/search/?api=1&query=Franks Pond Chelan County,False
+230,Horsethief Lake Klickitat County,100,Rainbow,0.27,Goldendale Hatchery,2023-04-21,45.6456938,-121.1026484,https://www.google.com/maps/search/?api=1&query=Horsethief Lake Klickitat County,False
+231,Lost Lake Mason County,325,Rainbow,0.33,Satsop Springs Ponds,2023-04-21,47.16325339999999,-123.2522244,https://www.google.com/maps/search/?api=1&query=Lost Lake Mason County,False
+232,Nahwatzel Lake Mason County,370,Rainbow,0.33,Satsop Springs Ponds,2023-04-21,47.24214749999999,-123.3310181,https://www.google.com/maps/search/?api=1&query=Nahwatzel Lake Mason County,False
+233,Pit Lake Douglas County,2000,Rainbow,2.5,Chelan Pud Hatchery,2023-04-21,47.3762619,-120.1404212,https://www.google.com/maps/search/?api=1&query=Pit Lake Douglas County,False
+234,Pit Lake Douglas County,100,Rainbow,1.0,Chelan Pud Hatchery,2023-04-21,47.3762619,-120.1404212,https://www.google.com/maps/search/?api=1&query=Pit Lake Douglas County,False
+235,Quarry Pond Walla Walla County,2625,Rainbow,2.5,Tucannon Hatchery,2023-04-21,46.1491961,-118.9423366,https://www.google.com/maps/search/?api=1&query=Quarry Pond Walla Walla County,False
+236,Sylvia Lake Grays Harbor County,140,Rainbow,0.33,Satsop Springs Ponds,2023-04-21,46.9977042,-123.5922925,https://www.google.com/maps/search/?api=1&query=Sylvia Lake Grays Harbor County,False
+237,Vance Creek Adlt Pond Grays Harbor County,370,Rainbow,0.33,Satsop Springs Ponds,2023-04-21,47.0272912,-123.4205771,https://www.google.com/maps/search/?api=1&query=Vance Creek Adlt Pond Grays Harbor County,False
+238,Vance Creek Jv Pond Grays Harbor County,310,Rainbow,0.33,Satsop Springs Ponds,2023-04-21,47.0272912,-123.4205771,https://www.google.com/maps/search/?api=1&query=Vance Creek Jv Pond Grays Harbor County,False
+239,W Evans Pond Asotin County,50,Rainbow,0.67,Tucannon Hatchery,2023-04-21,46.4188117,-117.1147994,https://www.google.com/maps/search/?api=1&query=W Evans Pond Asotin County,False
+240,W Evans Pond Asotin County,2550,Rainbow,2.5,Tucannon Hatchery,2023-04-21,46.4188117,-117.1147994,https://www.google.com/maps/search/?api=1&query=W Evans Pond Asotin County,False
+241,Bainbridge Isl Pond Kitsap County,10,Rainbow,0.2,Eells Springs,2023-04-20,47.62487910000001,-122.5210008,https://www.google.com/maps/search/?api=1&query=Bainbridge Isl Pond Kitsap County,False
+242,Bainbridge Isl Pond Kitsap County,300,Rainbow,2.5,Eells Springs,2023-04-20,47.62487910000001,-122.5210008,https://www.google.com/maps/search/?api=1&query=Bainbridge Isl Pond Kitsap County,False
+243,Black Lake Pacific County,150,Rainbow,0.24,Nemah Hatchery,2023-04-20,46.5180824,-123.8264512,https://www.google.com/maps/search/?api=1&query=Black Lake Pacific County,True
+244,Columbia Park Pond Benton County,5740,Rainbow,1.1,Meseberg Hatchery,2023-04-20,46.2189837,-119.1436266,https://www.google.com/maps/search/?api=1&query=Columbia Park Pond Benton County,False
+245,Failor Lake Grays Harbor County,610,Rainbow,0.33,Satsop Springs Ponds,2023-04-20,47.108716,-123.9584045,https://www.google.com/maps/search/?api=1&query=Failor Lake Grays Harbor County,False
+246,Florence Lake Pierce County,4000,Rainbow,2.6,Puyallup Hatchery,2023-04-20,47.0675877,-122.1295269,https://www.google.com/maps/search/?api=1&query=Florence Lake Pierce County,False
+247,Fort Borst Park Lake Lewis County,2970,Rainbow,2.7,Mossyrock Hatchery,2023-04-20,46.7234729,-122.9831072,https://www.google.com/maps/search/?api=1&query=Fort Borst Park Lake Lewis County,False
+248,Gorst Pond Kitsap County,50,Rainbow,0.2,Eells Springs,2023-04-20,47.5253721,-122.704863,https://www.google.com/maps/search/?api=1&query=Gorst Pond Kitsap County,False
+249,Gorst Pond Kitsap County,1200,Rainbow,2.5,Eells Springs,2023-04-20,47.5253721,-122.704863,https://www.google.com/maps/search/?api=1&query=Gorst Pond Kitsap County,False
