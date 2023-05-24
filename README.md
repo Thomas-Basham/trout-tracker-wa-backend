@@ -6,9 +6,9 @@
 
 [washington-trout-stats.vercel.app](https://washington-trout-stats.vercel.app)
 
-![Python application](https://img.shields.io/badge/Flask-23daaf?style=for-the-badge&logo=flask&logoColor=white)
-![Python application](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![Python application](https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=Vercel&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-23daaf?style=for-the-badge&logo=flask&logoColor=white)
+![Postgresql](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=Vercel&logoColor=white)
 
 [![Python application](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/python-app.yml/badge.svg)](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/python-app.yml)
 
@@ -36,6 +36,8 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 - [GitHub Cron Job](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/python-app.yml) (To schedule webscraping daily)
 
 - Google V3 Geolocator(To get lat/lon of lakes)
+
+- Docker
 
 ## [Get started Contributing](./CONTRIBUTING)
 
