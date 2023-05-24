@@ -39,7 +39,7 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 
 - Docker
 
-## [Get started Contributing](./CONTRIBUTING)
+## [Get started Contributing](./CONTRIBUTING.md)
 
 ## Resources
 
