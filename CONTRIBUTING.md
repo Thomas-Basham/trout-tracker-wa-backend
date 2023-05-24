@@ -42,6 +42,7 @@
 
             docker-compose build
             docker-compose up -d
-            docker-compose up
+            docker-compose up 
+        Open in web browser: http://localhost:8000/
 
 [NGINX Reverse Proxy -> WSGI -> Python/Flask Backend](https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask#nginx-reverse-proxy---wsgi---pythonflask-backend)
