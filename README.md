@@ -14,8 +14,7 @@
 
 [![daily-cron](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml/badge.svg)](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml)
 
-**A Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an
-interactive map.**
+**A Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an interactive map.**
 
 ## Problem Domain
 
@@ -35,7 +34,7 @@ The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw
 
 - [GitHub Cron Job](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml) (To schedule webscraping daily)
 
-- Google V3 Geolocator(To get lat/lon of lakes)
+- Google Geolocation API (To get lat/lon of lakes)
 
 - Docker
 
