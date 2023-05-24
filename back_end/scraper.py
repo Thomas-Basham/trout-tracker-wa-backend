@@ -1,7 +1,6 @@
 # from geopy.geocoders import Nominatim
 import os
 import re
-from os import getenv
 from time import time
 from requests import get
 from datetime import datetime
@@ -19,8 +18,8 @@ load_dotenv()
 class DataBase:
   def __init__(self):
     # Load Database
-    if getenv("SQLALCHEMY_DATABASE_URI"):
-      self.engine = create_engine(getenv("SQLALCHEMY_DATABASE_URI"))
+    if os.getenv("SQLALCHEMY_DATABASE_URI"):
+      self.engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
     else:
       self.engine = create_engine('sqlite:///front_end/sqlite.db')
 
@@ -267,7 +266,7 @@ class Scraper:
   # Get the latitude and longitude of the lake names and update the df
   @staticmethod
   def get_lat_lon(data):
-    locator = GoogleV3(api_key=getenv('GV3_API_KEY'))
+    locator = GoogleV3(api_key=os.getenv('GV3_API_KEY'))
 
     for i in range(len(data)):
       lake = data[i]['lake']
@@ -305,7 +304,7 @@ if __name__ == "__main__":
 
   data_base.write_data(scraper=scraper)
 
-  if getenv('ENVIRONMENT') and getenv('ENVIRONMENT') == 'testing':
+  if os.getenv('ENVIRONMENT') and os.getenv('ENVIRONMENT') == 'testing':
     data_base.back_up_database()
 
   end_time = time()

@@ -8,7 +8,7 @@ import os
 class DataBase:
   def __init__(self):
     # Load Database
-    if os.getenv("SQLALCHEMY_DATABASE_URI"):
+    if ("SQLALCHEMY_DATABASE_URI"):
       self.engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
     else:
       self.engine = create_engine('sqlite:///sqlite.db', connect_args={"check_same_thread": False},)
