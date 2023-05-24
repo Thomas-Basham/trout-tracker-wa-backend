@@ -8,23 +8,35 @@
 - Create a pull request
 - Star this repository
 
-## Create a Python virtual environment
+## **There are two ways to run this app in a development environment**
+
+## With a Python Virtual Environment
+
+- ### Create a Python virtual environment
+
+            python -m venv .venv
+
+- ### Activate virtual environment
+
+            source .venv/bin/activate
+
+- ### Install packages
 
             pip install -r back_end/requirements.txt
 
             pip install -r front_end/requirements.txt
 
-## To run tests
+- ### To run tests
 
-    pytest
+      pytest
 
-## To run WebScraper
+- ### To run WebScraper
 
       python -m back_end.scraper
 
-## To run development server
+- ### To run development server (Flask)
 
-        python -m front_end.wsgi.py
+        python -m front_end.wsgi
 
 ## Or with Docker
 
