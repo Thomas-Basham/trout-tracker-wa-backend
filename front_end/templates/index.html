@@ -87,7 +87,7 @@
                 </thead>
                 <tbody>
                 {% for td in most_recent_stocked[::-1] %}
-                    <tr id="{{ td["lake"].lower().replace(" ", "-" ) }}">
+                    <tr id={{ td["lake"].lower().replace(" ", "-" ) }}>
                         <td>{{ td["lake"] }}</td>
                         <td>{{ td["stocked_fish"] }}</td>
                         <td>{{ td["species"] }}</td>
