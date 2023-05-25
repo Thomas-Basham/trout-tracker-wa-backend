@@ -33,7 +33,7 @@
 - ### To run WebScraper
 
   - copy/paste the `back_end/sample.env` contents into a new file named `.env`
-  - Get a [Google Geolocator API key](https://developers.google.com/maps/documentation/geolocation/overview)
+  - Get a [Google Geocoding API key](https://developers.google.com/maps/documentation/geolocation/overview)
   - Update the environmental variable `GV3_API_KEY` with your API Key
   - Then run:
 
@@ -46,7 +46,6 @@
 ## Or with Docker
 
             docker-compose build
-            docker-compose up -d
             docker-compose up
         Open in web browser: http://localhost:8000/
 

@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
-from data_base import DataBase
-from map_and_charts import make_map, show_total_stocked_by_date_chart, show_total_stocked_by_hatchery_chart
+from front_end.data_base import DataBase
+from front_end.map_and_charts import make_map, show_total_stocked_by_date_chart, show_total_stocked_by_hatchery_chart
 from time import time
 
 load_dotenv()
@@ -13,7 +13,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 @app.route('/', methods=['GET', 'POST'])
 def index_view():
   data_base = DataBase()
-  days = 365
+  days = 60
 
   if request.method == 'POST':
     form = request.form
