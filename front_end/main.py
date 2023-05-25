@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, jsonify
-from front_end.data_base import DataBase
+from front_end.database import DataBase
 from front_end.map_and_charts import make_map, show_total_stocked_by_date_chart, show_total_stocked_by_hatchery_chart
 from time import time
 
