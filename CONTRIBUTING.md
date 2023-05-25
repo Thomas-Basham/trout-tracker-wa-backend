@@ -32,7 +32,7 @@
 
 - ### To run WebScraper
 
-  - copy/paste the `back_end/sample.env` contents into a new file named `.env`
+  - copy/paste the `sample.env` contents into a new file named `.env`
   - Get a [Google Geocoding API key](https://developers.google.com/maps/documentation/geolocation/overview)
   - Update the environmental variable `GV3_API_KEY` with your API Key
   - Then run:
@@ -40,8 +40,8 @@
           python -m back_end.scraper
 
 - ### To run development server (Flask)
-        cd front_end
-        python -m wsgi
+
+            python -m front_end.wsgi
 
 ## Or with Docker
 
