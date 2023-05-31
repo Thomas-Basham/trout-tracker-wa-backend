@@ -45,6 +45,13 @@
 
 ## Or with Docker
 
+### To Run Scraper
+
+            docker-compose -f scraper.yaml build
+            docker-compose -f scraper.yaml up
+
+### To run development server (flask)
+
             docker-compose build
             docker-compose up
         Open in web browser: http://localhost:8000/
