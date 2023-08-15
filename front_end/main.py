@@ -9,10 +9,10 @@ app = Flask(__name__.split('.')[0])
 app.app_context().push()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+db = DataBase()
 
 @app.route('/', methods=['GET', 'POST'])
 def index_view():
-  data_base = DataBase()
   days = 60
 
   if request.method == 'POST':
@@ -20,11 +20,11 @@ def index_view():
     days = int(form['days'])
 
   # DATA QUERIES
-  filtered_lakes_by_days = data_base.get_stocked_lakes_data(days=days)
-  filtered_total_stocked_by_date = data_base.get_total_stocked_by_date_data(days=days)
-  filtered_total_stocked_by_hatchery = data_base.get_hatchery_totals(days=days)
-  date_data_updated = data_base.get_date_data_updated()
-  derby_lakes_data = data_base.get_derby_lakes_data()
+  filtered_lakes_by_days = db.get_stocked_lakes_data(days=days)
+  filtered_total_stocked_by_date = db.get_total_stocked_by_date_data(days=days)
+  filtered_total_stocked_by_hatchery = db.get_hatchery_totals(days=days)
+  date_data_updated = db.get_date_data_updated()
+  derby_lakes_data = db.get_derby_lakes_data()
 
   # MAP AND CHARTS
   folium_map = make_map(filtered_lakes_by_days)
@@ -37,6 +37,44 @@ def index_view():
                          derby_lakes=derby_lakes_data, most_recent_stocked=most_recent_stocked, days=days,
                          date_data_updated=date_data_updated)
 
+# Route for retrieving stocked lakes data
+@app.route('/stocked_lakes_data', methods=['GET'])
+def get_stocked_lakes_data():
+    days = int(request.args.get('days', default=30))
+    stocked_lakes = db.get_stocked_lakes_data(days)
+    print(stocked_lakes)
+    stocked_lakes = [dict(row) for row in stocked_lakes]
+    return jsonify(stocked_lakes)
+
+# Route for retrieving hatchery totals
+@app.route('/hatchery_totals', methods=['GET'])
+def get_hatchery_totals():
+    days = 365
+    hatchery_totals = db.get_hatchery_totals(days)
+    hatchery_totals = [{'hatchery': row[0], 'sum_1': row[1]} for row in hatchery_totals]
+    return jsonify(hatchery_totals)
+
+# Route for retrieving derby lakes data
+@app.route('/derby_lakes_data', methods=['GET'])
+def get_derby_lakes_data():
+    derby_lakes = db.get_derby_lakes_data()
+    derby_lakes = [dict(row) for row in derby_lakes]
+    return jsonify(derby_lakes)
+
+# Route for retrieving total stocked by date data
+@app.route('/total_stocked_by_date_data', methods=['GET'])
+def get_total_stocked_by_date_data():
+    days = 365
+    total_stocked_by_date = db.get_total_stocked_by_date_data(days)
+    total_stocked_by_date = [(str(date), stocked_fish) for date, stocked_fish in total_stocked_by_date]
+    return jsonify(total_stocked_by_date)
+
+# Route for retrieving the date data was last updated
+@app.route('/date_data_updated', methods=['GET'])
+def get_date_data_updated():
+    last_updated = db.get_date_data_updated()
+    last_updated = str(last_updated)
+    return jsonify(last_updated)
 
 @app.route('/cache-me')
 def cache():
