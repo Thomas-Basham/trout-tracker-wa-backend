@@ -14,11 +14,13 @@
 
 [![daily-cron](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml/badge.svg)](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml)
 
-**A Flask Web App used for displaying the most recent lakes that were stocked with trout in Washington State on an interactive map.**
+**A web application used for displaying the most recent lakes that were stocked with trout in Washington State on an interactive map and charts.**
 
 ## Problem Domain
 
 The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants) is excellent if you want to view data from clunky tables with endless amounts of pages to click through. That equates to one request for each page click, multiplied by an unanticipated amount of users, creates an unnecessary amount of web traffic that inevitably costs we the taxpayers more money. What if we had all of this data in one place, where a single computer could connect to the [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants) each day and provide all of the data they need in one convenient page, offloading the WDFW's bandwidth at the same time?
+
+That's why I created Washington Trout Stats, to make this public data that anglers pay for by buying fishing licenses more easily accessible. All of the data that you see in the WDFW stock reports page gets scraped and stored in a cloud database. This app also functions as an API that serves the data in JSON format, creating endless opportunities for mobile and desktop apps in the future.
 
 ## Tech Used
 
