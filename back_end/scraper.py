@@ -141,19 +141,22 @@ class Scraper:
 
       # Scrape Names
       text_list = []
-      found_text = self.soup.find("div", {"class": "derby-lakes-list"}).findAll("ul", recursive=False)
+      found_text = self.soup.find("div", {"class": "derby-lakes-list"})
+      if found_text:
+        found_text = found_text.findAll("ul", recursive=False)
 
-      for i in found_text:
-        text_list.append(i.find("li").text)
+        for i in found_text:
+          text_list.append(i.find("li").text)
 
-      # Clean up Names
-      text_lst_trimmed = []
-      for i in text_list:
-        text_lst_trimmed.append(i.replace("\n", ""))
-      text_lst_trimmed = [re.sub(r"\(.*?\)", '', text).title() for text in text_lst_trimmed]
-      return text_lst_trimmed
-    else:
-      return []
+        # Clean up Names
+        text_lst_trimmed = []
+        for i in text_list:
+          text_lst_trimmed.append(i.replace("\n", ""))
+        text_lst_trimmed = [re.sub(r"\(.*?\)", '', text).title() for text in text_lst_trimmed]
+        return text_lst_trimmed
+      else:
+        # TODO: if there is no derby lakes aka derby isn't running, clear all derby participants from stocked lake table
+        return []
 
   def make_df(self):
     lake_names = self.lake_names
