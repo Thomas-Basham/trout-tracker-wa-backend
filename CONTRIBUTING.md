@@ -28,7 +28,7 @@
 
 - ### To run tests
 
-      pytest
+      python -m pytest
 
 - ### To run WebScraper
 
