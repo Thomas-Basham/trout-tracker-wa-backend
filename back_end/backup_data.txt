@@ -9941,3 +9941,50 @@
 9941,Mayfield Res Lewis County,2420,Rainbow,1.21,Eells Springs,2023-08-23,46.5087186,-122.569279,https://www.google.com/maps/search/?api=1&query=Mayfield Res Lewis County,False
 9942,Hatchery Creek Grant County,750,Rainbow,1.4,Columbia Basin Hatchery,2023-08-18,47.3248105,-119.4610939,https://www.google.com/maps/search/?api=1&query=Hatchery Creek Grant County,False
 9943,Bonaparte Lake Okanogan County,469,Rainbow,1.3,Wells Hatchery,2023-06-08,48.8009819,-119.054227,https://www.google.com/maps/search/?api=1&query=Bonaparte Lake Okanogan County,False
+9944,Kitsap Lake Kitsap County,376,Rainbow,0.29,Eells Springs,2023-11-06,47.5828719,-122.7084779,https://www.google.com/maps/search/?api=1&query=Kitsap Lake Kitsap County,False
+9945,Kress Lake Cowlitz County,9,Steelhead,0.1,Kalama Falls Hatchery,2023-11-06,46.0465158,-122.8532292,https://www.google.com/maps/search/?api=1&query=Kress Lake Cowlitz County,False
+9946,Lake Kokanee Mason County,20,Rainbow,0.8,Eells Springs,2023-11-06,47.4021276,-123.2045661,https://www.google.com/maps/search/?api=1&query=Lake Kokanee Mason County,False
+9947,Kress Lake Cowlitz County,15,Steelhead,0.1,Kalama Falls Hatchery,2023-11-03,46.0465158,-122.8532292,https://www.google.com/maps/search/?api=1&query=Kress Lake Cowlitz County,False
+9948,Putters Pond Douglas County,5750,Rainbow,2.5,Chelan Pud Hatchery,2023-10-31,47.7790617,-119.7474606,https://www.google.com/maps/search/?api=1&query=Putters Pond Douglas County,False
+9949,Big Bow Pond Douglas County,3750,Rainbow,2.5,Chelan Pud Hatchery,2023-10-30,47.7790617,-119.7474606,https://www.google.com/maps/search/?api=1&query=Big Bow Pond Douglas County,False
+9950,Clear Lake T34Skagit County,204,Rainbow,1.7,Marblemount Hatchery,2023-10-30,48.4642735,-122.2340447,https://www.google.com/maps/search/?api=1&query=Clear Lake T34Skagit County,False
+9951,Clear Lake T34Skagit County,468,Rainbow,0.6,Marblemount Hatchery,2023-10-30,48.4642735,-122.2340447,https://www.google.com/maps/search/?api=1&query=Clear Lake T34Skagit County,False
+9952,Putters Pond Douglas County,3250,Rainbow,2.5,Chelan Pud Hatchery,2023-10-30,47.7790617,-119.7474606,https://www.google.com/maps/search/?api=1&query=Putters Pond Douglas County,False
+9953,Sylvia Lake Grays Harbor County,1100,Rainbow,1.0,Lk Aberdeen Hatchery,2023-10-30,47.0012413,-123.5899848,https://www.google.com/maps/search/?api=1&query=Sylvia Lake Grays Harbor County,False
+9954,Vance Creek Adlt Pond Grays Harbor County,800,Rainbow,1.0,Lk Aberdeen Hatchery,2023-10-30,47.0272912,-123.4205771,https://www.google.com/maps/search/?api=1&query=Vance Creek Adlt Pond Grays Harbor County,False
+9955,Big Bow Pond Douglas County,3250,Rainbow,2.5,Chelan Pud Hatchery,2023-10-27,47.7790617,-119.7474606,https://www.google.com/maps/search/?api=1&query=Big Bow Pond Douglas County,False
+9956,Davis Lake Ferry County,250,Rainbow,0.9,Ford Hatchery,2023-10-27,48.7208264,-118.2420699,https://www.google.com/maps/search/?api=1&query=Davis Lake Ferry County,False
+9957,Mattoon Lake Kittitas County,33,Rainbow,0.1,Goldendale Hatchery,2023-10-27,46.9781076,-120.5530429,https://www.google.com/maps/search/?api=1&query=Mattoon Lake Kittitas County,False
+9958,Mattoon Lake Kittitas County,117,Rainbow,0.2,Goldendale Hatchery,2023-10-27,46.9781076,-120.5530429,https://www.google.com/maps/search/?api=1&query=Mattoon Lake Kittitas County,False
+9959,Pit Lake Douglas County,2000,Rainbow,2.5,Chelan Pud Hatchery,2023-10-27,47.3762619,-120.1404212,https://www.google.com/maps/search/?api=1&query=Pit Lake Douglas County,False
+9960,Fio Rito Laken Kittitas County,33,Rainbow,0.1,Goldendale Hatchery,2023-10-26,46.9399474,-120.5062846,https://www.google.com/maps/search/?api=1&query=Fio Rito Laken Kittitas County,False
+9961,Fio Rito Laken Kittitas County,23,Rainbow,0.2,Goldendale Hatchery,2023-10-26,46.9399474,-120.5062846,https://www.google.com/maps/search/?api=1&query=Fio Rito Laken Kittitas County,False
+9962,Green Lake King County,1539,Rainbow,0.9,Whitehorse Pond,2023-10-25,47.6798338,-122.3257826,https://www.google.com/maps/search/?api=1&query=Green Lake King County,False
+9963,Green Lake King County,1375,Rainbow,0.9,Whitehorse Pond,2023-10-24,47.6798338,-122.3257826,https://www.google.com/maps/search/?api=1&query=Green Lake King County,False
+9964,Jameson Lake Douglas County,7590,Rainbow,2.7,Chelan Pud Hatchery,2023-10-24,47.6837211,-119.6224262,https://www.google.com/maps/search/?api=1&query=Jameson Lake Douglas County,False
+9965,Silver Lake T28Snohomish County,1517,Rainbow,0.9,Whitehorse Pond,2023-10-24,47.8934651,-122.2153023,https://www.google.com/maps/search/?api=1&query=Silver Lake T28Snohomish County,False
+9966,Ballinger Lake Snohomish County,1476,Rainbow,0.9,Whitehorse Pond,2023-10-23,47.7820803,-122.3276873,https://www.google.com/maps/search/?api=1&query=Ballinger Lake Snohomish County,False
+9967,Gissburg Pond South Snohomish County,945,Rainbow,0.9,Whitehorse Pond,2023-10-23,48.0329979,-121.8339472,https://www.google.com/maps/search/?api=1&query=Gissburg Pond South Snohomish County,False
+9968,Jameson Lake Douglas County,4590,Rainbow,2.7,Chelan Pud Hatchery,2023-10-23,47.6837211,-119.6224262,https://www.google.com/maps/search/?api=1&query=Jameson Lake Douglas County,False
+9969,Lake Chelan Chelan County,1890,Rainbow,2.7,Chelan Pud Hatchery,2023-10-23,48.0269741,-120.3377317,https://www.google.com/maps/search/?api=1&query=Lake Chelan Chelan County,False
+9970,Wapato Lake Chelan County,5000,Rainbow,2.7,Chelan Pud Hatchery,2023-10-23,47.9166719,-120.1600674,https://www.google.com/maps/search/?api=1&query=Wapato Lake Chelan County,False
+9971,Lost Lake Ltl Pend Oreille County,111,Rainbow,1.0,Ford Hatchery,2023-10-20,48.8132869,-117.4421343,https://www.google.com/maps/search/?api=1&query=Lost Lake Ltl Pend Oreille County,False
+9972,Fio Rito Laken Kittitas County,94,Rainbow,0.2,Goldendale Hatchery,2023-10-19,46.9399474,-120.5062846,https://www.google.com/maps/search/?api=1&query=Fio Rito Laken Kittitas County,False
+9973,Roses Lake Chelan County,1584,Rainbow,2.64,Chelan Hatchery,2023-10-19,47.9045409,-120.155072,https://www.google.com/maps/search/?api=1&query=Roses Lake Chelan County,False
+9974,Hatch Lake Stevens County,130,Rainbow,1.0,Ford Hatchery,2023-10-18,48.4974622,-117.8065455,https://www.google.com/maps/search/?api=1&query=Hatch Lake Stevens County,False
+9975,Hood Park Pond Walla Walla County,2505,Rainbow,3.0,Lyons Ferry Hatchery,2023-10-18,46.2145152,-119.0131341,https://www.google.com/maps/search/?api=1&query=Hood Park Pond Walla Walla County,False
+9976,Leader Lake Okanogan County,500,Rainbow,2.4,Chelan Hatchery,2023-10-18,48.3612135,-119.6838895,https://www.google.com/maps/search/?api=1&query=Leader Lake Okanogan County,False
+9977,Twin Lks Ltl Stevens County,260,Rainbow,1.0,Ford Hatchery,2023-10-18,48.4558249,-117.9059909,https://www.google.com/maps/search/?api=1&query=Twin Lks Ltl Stevens County,False
+9978,Sarge Hubbard Pond Yakima County,8,Rainbow,0.1,Goldendale Hatchery,2023-10-10,46.6015053,-120.4748382,https://www.google.com/maps/search/?api=1&query=Sarge Hubbard Pond Yakima County,False
+9979,Sarge Hubbard Pond Yakima County,42,Rainbow,0.2,Goldendale Hatchery,2023-10-10,46.6015053,-120.4748382,https://www.google.com/maps/search/?api=1&query=Sarge Hubbard Pond Yakima County,False
+9980,Tims Pond Yakima County,40,Rainbow,0.2,Goldendale Hatchery,2023-10-10,46.7318642,-120.7967565,https://www.google.com/maps/search/?api=1&query=Tims Pond Yakima County,False
+9981,Tims Pond Yakima County,10,Rainbow,0.1,Goldendale Hatchery,2023-10-10,46.7318642,-120.7967565,https://www.google.com/maps/search/?api=1&query=Tims Pond Yakima County,False
+9982,Blue Lake Grant County,53120,Rainbow,2.56,Columbia Basin Hatchery,2023-10-09,47.5622165,-119.4526374,https://www.google.com/maps/search/?api=1&query=Blue Lake Grant County,False
+9983,Rowland Lake Klickitat County,1105,Rainbow,0.87,Goldendale Hatchery,2023-10-09,45.7078648,-121.3768711,https://www.google.com/maps/search/?api=1&query=Rowland Lake Klickitat County,False
+9984,Bonaparte Lake Okanogan County,1500,Brown Trout,2.1,Chelan Hatchery,2023-10-05,48.8009819,-119.054227,https://www.google.com/maps/search/?api=1&query=Bonaparte Lake Okanogan County,False
+9985,Park Lake Grant County,34548,Rainbow,2.46,Columbia Basin Hatchery,2023-10-05,47.5817068,-119.4113862,https://www.google.com/maps/search/?api=1&query=Park Lake Grant County,False
+9986,Leader Lake Okanogan County,1260,Brown Trout,2.1,Chelan Hatchery,2023-10-04,48.3612135,-119.6838895,https://www.google.com/maps/search/?api=1&query=Leader Lake Okanogan County,False
+9987,Leader Lake Okanogan County,2500,Tiger Trout,3.0,Chelan Hatchery,2023-10-04,48.3612135,-119.6838895,https://www.google.com/maps/search/?api=1&query=Leader Lake Okanogan County,False
+9988,Putters Pond Douglas County,240,Brown Trout,2.8,Chelan Hatchery,2023-10-04,47.7790617,-119.7474606,https://www.google.com/maps/search/?api=1&query=Putters Pond Douglas County,False
+9989,Roses Lake Chelan County,104,Brown Trout,2.8,Chelan Hatchery,2023-10-04,47.9045409,-120.155072,https://www.google.com/maps/search/?api=1&query=Roses Lake Chelan County,False
+9990,Roses Lake Chelan County,330,Tiger Trout,3.0,Chelan Hatchery,2023-10-04,47.9045409,-120.155072,https://www.google.com/maps/search/?api=1&query=Roses Lake Chelan County,False
