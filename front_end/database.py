@@ -90,7 +90,7 @@ class DataBase:
       ORDER BY sum_1 DESC
       """
       
-      hatchery_totals = self.conn.execute(text(query),  parameters=dict(start_date=start_date, end_date=self.end_date)).fetchall()
+      hatchery_totals = self.conn.execute(text(query),  start_date=start_date, end_date=self.end_date).fetchall()
       return hatchery_totals
 
   def get_derby_lakes_data(self):
@@ -109,9 +109,8 @@ class DataBase:
     ORDER BY date
     """
     
-    total_stocked_by_date = self.conn.execute(text(query),  parameters=dict(start_date=start_date, end_date=self.end_date)).fetchall()
+    total_stocked_by_date = self.conn.execute(text(query),  start_date= start_date, end_date= self.end_date).fetchall()
     
-    # 
     if str(self.engine) == "Engine(sqlite:///front_end/sqlite.db)":
       total_stocked_by_date = [(datetime.strptime(date_str, "%Y-%m-%d"), stocked_fish) for date_str, stocked_fish in total_stocked_by_date]
     
