@@ -7,9 +7,10 @@ import numpy as np
 # Make the Map with Folium
 def make_map(lakes):
   if len(lakes) > 1:
+    
     # Create NumPy arrays for latitude and longitude values.
-    latitudes = np.array([lake["latitude"] for lake in lakes if lake["latitude"] != 0.0])
-    longitudes = np.array([lake["longitude"] for lake in lakes if lake["longitude"] != 0.0])
+    latitudes = np.array([lake.latitude for lake in lakes if lake.latitude != 0.0])    
+    longitudes = np.array([lake.longitude for lake in lakes if lake.longitude != 0.0])    
 
     # Calculate the average latitude and longitude values using NumPy's `mean` function.
     location = [np.mean(latitudes), np.mean(longitudes)]
@@ -23,7 +24,7 @@ def make_map(lakes):
       location=location,
       allowFullScreen="True",
       zoom_start=7,
-      tiles="Stamen Terrain"
+      # tiles="Stamen Terrain"
     )
 
     # Add marker cluster and fullscreen plugin to the map.
@@ -37,24 +38,24 @@ def make_map(lakes):
 
     # Iterate through the lakes and add markers to the map.
     for lake in lakes:
-      if lake["latitude"] != 0.0:
+      if lake.latitude != 0.0:
         html = f'''
-                <h5 >{lake["lake"]}</h5>
-                <p style="color:red">Date Stocked: {lake["date"]}</p>
-                <p style="color:green">Stocked Amount: {lake["stocked_fish"]}</p>
-                <p style="color:cyan">Species: {lake["species"]}</p>
-                <p style="color:orange">Hatchery: {lake["hatchery"]}</p>
-                <a style="color:blue" href="{lake["directions"]}" target="_blank">Directions via Googlemaps </a>
+                <h5 >{lake.lake}</h5>
+                <p style="color:red">Date Stocked: {lake.date}</p>
+                <p style="color:green">Stocked Amount: {lake.stocked_fish}</p>
+                <p style="color:cyan">Species: {lake.species}</p>
+                <p style="color:orange">Hatchery: {lake.hatchery}</p>
+                <a style="color:blue" href="{lake.directions}" target="_blank">Directions via Googlemaps </a>
             '''
 
         popup = Popup(html, max_width=400, lazy=True)
-        location = (lake["latitude"], lake["longitude"])
+        location = (lake.latitude, lake.longitude)
 
-        if lake["derby_participant"]:
-          marker = Marker(location=location, tooltip=lake["lake"], popup=popup,
+        if lake.derby_participant:
+          marker = Marker(location=location, tooltip=lake.lake, popup=popup,
                           icon=Icon(color='red', icon='trophy', prefix='fa'))
         else:
-          marker = Marker(location=location, tooltip=lake["lake"], popup=popup,
+          marker = Marker(location=location, tooltip=lake.lake, popup=popup,
                           icon=Icon(color='blue', icon='info', prefix='fa'))
 
         # Add the marker to the map.
@@ -62,7 +63,7 @@ def make_map(lakes):
 
     # Add OpenStreetMap layer and LayerControl to the map.
     raster_layers.TileLayer('OpenStreetMap').add_to(folium_map)
-    LayerControl().add_to(folium_map)
+    # LayerControl().add_to(folium_map)
 
     return folium_map._repr_html_()
   else:

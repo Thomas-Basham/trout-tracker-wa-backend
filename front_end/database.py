@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, func, text, desc
 from datetime import datetime, timedelta
 import os
 
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy import Column, Integer, String, Boolean, Date, Float, func
 
 # Create a SQLAlchemy base
@@ -46,6 +46,7 @@ class DataBase:
     if os.getenv("SQLALCHEMY_DATABASE_URI"):
       self.engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
     else:
+      print("USING SQLITE DB")
       self.engine = create_engine('sqlite:///front_end/sqlite.db', connect_args={"check_same_thread": False},)
 
     self.conn = self.engine.connect()
@@ -66,7 +67,15 @@ class DataBase:
       ORDER BY date
       """
       
-      stocked_lakes = self.conn.execute(text(query), start_date=start_date, end_date=self.end_date).fetchall()
+      # stocked_lakes = self.conn.execute(text(query), parameters=dict(start_date=start_date, end_date=self.end_date)).fetchall()
+
+    # Query the StockedLake model
+      stocked_lakes = self.session.query(StockedLakes) \
+        .filter(StockedLakes.date.between(start_date, self.end_date)) \
+        .order_by(StockedLakes.date) \
+        .all()
+
+      # self.session.close()
       return stocked_lakes
   
 
@@ -81,7 +90,7 @@ class DataBase:
       ORDER BY sum_1 DESC
       """
       
-      hatchery_totals = self.conn.execute(text(query), start_date=start_date, end_date=self.end_date).fetchall()
+      hatchery_totals = self.conn.execute(text(query),  parameters=dict(start_date=start_date, end_date=self.end_date)).fetchall()
       return hatchery_totals
 
   def get_derby_lakes_data(self):
@@ -100,7 +109,7 @@ class DataBase:
     ORDER BY date
     """
     
-    total_stocked_by_date = self.conn.execute(text(query), start_date=start_date, end_date=self.end_date).fetchall()
+    total_stocked_by_date = self.conn.execute(text(query),  parameters=dict(start_date=start_date, end_date=self.end_date)).fetchall()
     
     # 
     if str(self.engine) == "Engine(sqlite:///front_end/sqlite.db)":
