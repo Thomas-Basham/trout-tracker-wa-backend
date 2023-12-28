@@ -18,37 +18,56 @@ CORS(app)
 CORS(app, resources={r"/*": {"origins": "*"}})  # Allows all domains
 db = DataBase()
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index_view():
-  days = 60
-
-  if request.method == 'POST':
-    form = request.form
-    days = int(form['days'])
-
-  # DATA QUERIES
-  try:
-    with db.session.begin():
-        # Your database operations here
-        filtered_lakes_by_days = db.get_stocked_lakes_data(days=days)
-        filtered_total_stocked_by_date = db.get_total_stocked_by_date_data(days=days)
-        filtered_total_stocked_by_hatchery = db.get_hatchery_totals(days=days)
-        date_data_updated = db.get_date_data_updated()
-        derby_lakes_data = db.get_derby_lakes_data()
-  except Exception as e:
-    db.session.rollback()
-    raise e
-
-  # MAP AND CHARTS
-  folium_map = make_map(filtered_lakes_by_days)
-  total_stocked_by_date_chart = show_total_stocked_by_date_chart(filtered_total_stocked_by_date)
-  total_stocked_by_hatchery_chart = show_total_stocked_by_hatchery_chart(filtered_total_stocked_by_hatchery)
-  most_recent_stocked = filtered_lakes_by_days
-
-  return render_template('index.html', folium_map=folium_map, total_stocked_by_date_chart=total_stocked_by_date_chart,
-                         total_stocked_by_hatchery_chart=total_stocked_by_hatchery_chart,
-                         derby_lakes=derby_lakes_data, most_recent_stocked=most_recent_stocked, days=days,
-                         date_data_updated=date_data_updated)
+    api_info = {
+        "message": "Welcome to the FishTrack WA API",
+        "routes": {
+            "/": "API Information",
+            "/stocked_lakes_data": "Retrieve data for stocked lakes",
+            "/total_stocked_by_date_data": "Retrieve total number of fish stocked by date",
+            "/hatchery_totals": "Retrieve hatchery totals",
+            "/derby_lakes_data": "Retrieve derby lakes data",
+            "/date_data_updated": "Retrieve the date when data was last updated"
+        },
+        "usage": {
+            "/stocked_lakes_data": {
+                "method": "GET",
+                "params": {
+                    "start_date": "Start date for data (optional, default: 7 days ago)",
+                    "end_date": "End date for data (optional, default: current date)"
+                },
+                "example": "/stocked_lakes_data?start_date=2023-01-01&end_date=2023-01-07"
+            },
+            "/total_stocked_by_date_data": {
+                "method": "GET",
+                "params": {
+                    "start_date": "Start date for data (optional, default: 7 days ago)",
+                    "end_date": "End date for data (optional, default: current date)"
+                },
+                "example": "/total_stocked_by_date_data?start_date=2023-01-01&end_date=2023-01-07"
+            },
+            "/hatchery_totals": {
+                "method": "GET",
+                "params": {
+                    "start_date": "Start date for data (optional, default: 7 days ago)",
+                    "end_date": "End date for data (optional, default: current date)"
+                },
+                "example": "/hatchery_totals?start_date=2023-01-01&end_date=2023-01-07"
+            },
+            "/derby_lakes_data": {
+                "method": "GET",
+                "description": "Retrieve data for derby lakes",
+                "example": "/derby_lakes_data"
+            },
+            "/date_data_updated": {
+                "method": "GET",
+                "description": "Retrieve the date when the data was last updated",
+                "example": "/date_data_updated"
+            }
+        }
+    }
+    return jsonify(api_info)
 
 # Route for retrieving stocked lakes data
 @app.route('/stocked_lakes_data', methods=['GET'])
@@ -107,22 +126,3 @@ def get_date_data_updated():
     last_updated = str(last_updated)
     return jsonify(last_updated)
 
-@app.route('/cache-me')
-def cache():
-	return "nginx will cache this response"
-
-@app.route('/info')
-def info():
-
-	resp = {
-		'connecting_ip': request.headers['X-Real-IP'],
-		'proxy_ip': request.headers['X-Forwarded-For'],
-		'host': request.headers['Host'],
-		'user-agent': request.headers['User-Agent']
-	}
-
-	return jsonify(resp)
-
-@app.route('/flask-health-check')
-def flask_health_check():
-	return "success"
