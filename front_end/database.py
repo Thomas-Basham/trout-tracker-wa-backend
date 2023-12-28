@@ -1,3 +1,4 @@
+# database.py
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, func, text, desc
 from datetime import datetime, timedelta
@@ -24,6 +25,20 @@ class StockedLakes(Base):
   longitude = Column(Float)
   directions = Column(String)
   derby_participant = Column(Boolean)
+
+  def to_dict(self):
+      return {
+          "date": self.date,
+          "lake": self.lake,
+          "stocked_fish": self.stocked_fish,
+          "species": self.species,
+          "hatchery": self.hatchery,
+          "weight": self.weight,
+          "latitude": self.latitude,
+          "longitude": self.longitude,
+          "directions": self.directions,
+          "derby_participant": self.derby_participant
+      }
 
 
 # Create the derby_lakes_table class
@@ -53,12 +68,9 @@ class DataBase:
     self.Session = sessionmaker(bind=self.engine)
     self.session = self.Session()
 
-    self.end_date = datetime.now()
     self.insert_counter = 0
 
-
-  def get_stocked_lakes_data(self, days=365):
-      start_date = self.end_date - timedelta(days=days)
+  def get_stocked_lakes_data(self, end_date = datetime.now(), start_date = datetime.now() - timedelta(days=7) ):
       
       query = """
       SELECT date, lake, stocked_fish, species, hatchery, weight, latitude, longitude, directions, derby_participant
@@ -67,20 +79,19 @@ class DataBase:
       ORDER BY date
       """
       
-      # stocked_lakes = self.conn.execute(text(query), parameters=dict(start_date=start_date, end_date=self.end_date)).fetchall()
+      # stocked_lakes = self.conn.execute(text(query), parameters=dict(start_date=start_date, end_date=end_date)).fetchall()
 
     # Query the StockedLake model
       stocked_lakes = self.session.query(StockedLakes) \
-        .filter(StockedLakes.date.between(start_date, self.end_date)) \
-        .order_by(StockedLakes.date) \
+        .filter(StockedLakes.date.between(start_date, end_date)) \
+        .order_by(StockedLakes.date.desc()) \
         .all()
 
       # self.session.close()
       return stocked_lakes
   
 
-  def get_hatchery_totals(self, days=365):
-      start_date = self.end_date - timedelta(days=days)
+  def get_hatchery_totals(self, end_date = datetime.now(), start_date = datetime.now() - timedelta(days=7)):
       
       query = """
       SELECT hatchery, SUM(stocked_fish) AS sum_1
@@ -90,16 +101,11 @@ class DataBase:
       ORDER BY sum_1 DESC
       """
       
-      hatchery_totals = self.conn.execute(text(query),  start_date=start_date, end_date=self.end_date).fetchall()
+      hatchery_totals = self.conn.execute(text(query),  start_date=start_date, end_date=end_date).fetchall()
+      print("hatchery_totals", hatchery_totals)
       return hatchery_totals
 
-  def get_derby_lakes_data(self):
-    query = "SELECT * FROM derby_lakes_table"
-    derby_lakes = self.conn.execute(text(query)).fetchall()
-    return derby_lakes
-
-  def get_total_stocked_by_date_data(self, days=365):
-    start_date = self.end_date - timedelta(days=days)
+  def get_total_stocked_by_date_data(self,  end_date = datetime.now(), start_date = datetime.now() - timedelta(days=7)):
     
     query = """
     SELECT date, SUM(stocked_fish) AS sum_1
@@ -109,12 +115,17 @@ class DataBase:
     ORDER BY date
     """
     
-    total_stocked_by_date = self.conn.execute(text(query),  start_date= start_date, end_date= self.end_date).fetchall()
-    
+    total_stocked_by_date = self.conn.execute(text(query),  start_date= start_date, end_date= end_date).fetchall()
+
     if str(self.engine) == "Engine(sqlite:///front_end/sqlite.db)":
       total_stocked_by_date = [(datetime.strptime(date_str, "%Y-%m-%d"), stocked_fish) for date_str, stocked_fish in total_stocked_by_date]
     
     return total_stocked_by_date
+
+  def get_derby_lakes_data(self):
+    query = "SELECT * FROM derby_lakes_table"
+    derby_lakes = self.conn.execute(text(query)).fetchall()
+    return derby_lakes
 
   def get_date_data_updated(self):
     query = "SELECT updated FROM utility_table ORDER BY id DESC LIMIT 1"
