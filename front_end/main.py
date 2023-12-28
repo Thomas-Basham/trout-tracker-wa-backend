@@ -14,7 +14,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # Initialize CORS with your app
 CORS(app)
 CORS(app, origins="*")
-# CORS(app, origins=["http://allowed-origin.com"])
+CORS(app, origins=["http://localhost:3000"])
 db = DataBase()
 
 @app.route('/', methods=['GET', 'POST'])
