@@ -13,6 +13,8 @@ app.app_context().push()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # Initialize CORS with your app
 CORS(app)
+# CORS(app, origins="*")
+# CORS(app, origins=["http://localhost:3000"])
 CORS(app, resources={r"/*": {"origins": "*"}})  # Allows all domains
 db = DataBase()
 
