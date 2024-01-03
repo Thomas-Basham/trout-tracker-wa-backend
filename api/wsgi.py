@@ -1,4 +1,4 @@
-from front_end.main import app
+from api.main import app
 import os
 from werkzeug.serving import run_simple
 

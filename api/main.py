@@ -1,19 +1,17 @@
 # main.py
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, jsonify
+from flask import Flask,request, jsonify
 from flask_cors import CORS
-from front_end.database import DataBase
-from front_end.map_and_charts import make_map, show_total_stocked_by_date_chart, show_total_stocked_by_hatchery_chart
-from time import time
+from api.database import DataBase
 from datetime import datetime, timedelta
 from dateutil import parser
+
 load_dotenv()
 app = Flask(__name__.split('.')[0])
 app.app_context().push()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # Initialize CORS with your app
 CORS(app)
-# CORS(app, origins="*")
 # CORS(app, origins=["http://localhost:3000"])
 CORS(app, resources={r"/*": {"origins": "*"}})  # Allows all domains
 db = DataBase()
@@ -21,7 +19,7 @@ db = DataBase()
 @app.route('/', methods=['GET'])
 def index_view():
     api_info = {
-        "message": "Welcome to the FishTrack WA API",
+        "message": "Welcome to the TroutTracker WA API",
         "routes": {
             "/": "API Information",
             "/stocked_lakes_data": "Retrieve data for stocked lakes",

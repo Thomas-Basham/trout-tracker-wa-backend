@@ -1,9 +1,9 @@
 services:
   nginx-proxy:
-    build: front_end/nginx
+    build: api/nginx
     restart: always
     volumes:
-      - ./front_end/nginx/default.conf:/tmp/default.conf
+      - ./api/nginx/default.conf:/tmp/default.conf
     environment: 
       - FLASK_SERVER_ADDR=flask-app:8000
     ports:
@@ -17,7 +17,7 @@ services:
       retries: 3
     command: /app/start.sh
   flask-app:
-    build: front_end
+    build: api
     restart: always
     ports: 
       - '8000:8000'

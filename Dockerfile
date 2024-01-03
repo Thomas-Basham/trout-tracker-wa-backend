@@ -6,8 +6,8 @@ RUN pip install --upgrade pip
 RUN apk update
 
 WORKDIR /
-COPY front_end /front_end
-COPY back_end /back_end
+COPY api /api
+COPY web_scraper /web_scraper
 COPY .env /
 
 # venv
@@ -19,7 +19,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # upgrade pip
 RUN /${VIRTUAL_ENV}/bin/python -m pip install --upgrade pip
-RUN pip install -r back_end/requirements.txt
+RUN pip install -r web_scraper/requirements.txt
 
 
-CMD python -m back_end.scraper
+CMD python -m web_scraper.scraper

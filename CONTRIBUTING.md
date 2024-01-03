@@ -22,9 +22,9 @@
 
 - ### Install packages
 
-            pip install -r back_end/requirements.txt
+            pip install -r web_scraper/requirements.txt
 
-            pip install -r front_end/requirements.txt
+            pip install -r api/requirements.txt
 
 - ### To run tests
 
@@ -37,11 +37,11 @@
   - Update the environmental variable `GV3_API_KEY` with your API Key
   - Then run:
 
-          python -m back_end.scraper
+          python -m web_scraper.scraper
 
 - ### To run development server (Flask)
 
-            python -m front_end.wsgi
+            python -m api.wsgi
 
 ## Or with Docker
 

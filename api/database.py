@@ -62,7 +62,7 @@ class DataBase:
       self.engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
     else:
       print("USING SQLITE DB")
-      self.engine = create_engine('sqlite:///front_end/sqlite.db', connect_args={"check_same_thread": False},)
+      self.engine = create_engine('sqlite:///api/sqlite.db', connect_args={"check_same_thread": False},)
 
     self.conn = self.engine.connect()
     self.Session = sessionmaker(bind=self.engine)
@@ -117,7 +117,7 @@ class DataBase:
     
     total_stocked_by_date = self.conn.execute(text(query),  start_date= start_date, end_date= end_date).fetchall()
 
-    if str(self.engine) == "Engine(sqlite:///front_end/sqlite.db)":
+    if str(self.engine) == "Engine(sqlite:///api/sqlite.db)":
       total_stocked_by_date = [(datetime.strptime(date_str, "%Y-%m-%d"), stocked_fish) for date_str, stocked_fish in total_stocked_by_date]
     
     return total_stocked_by_date
@@ -133,7 +133,7 @@ class DataBase:
     return last_updated
   
   def write_data(self, scraper):
-    if str(self.engine) == "Engine(sqlite:///front_end/sqlite.db)":
+    if str(self.engine) == "Engine(sqlite:///api/sqlite.db)":
         Base.metadata.drop_all(self.engine)
         Base.metadata.create_all(self.engine)
         
@@ -181,8 +181,8 @@ class DataBase:
   def back_up_database(self):
     all_stocked_lakes = self.session.query(StockedLakes).all()
 
-    backup_file_txt = 'back_end/backup_data.txt'
-    backup_file_sql = 'back_end/backup_data.sql'
+    backup_file_txt = 'web_scraper/backup_data.txt'
+    backup_file_sql = 'web_scraper/backup_data.sql'
 
     if os.path.exists(backup_file_txt):
       os.remove(backup_file_txt)

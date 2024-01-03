@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
-from front_end.database import DataBase
+from api.database import DataBase
 load_dotenv()
 
 

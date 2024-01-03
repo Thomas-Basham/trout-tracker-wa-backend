@@ -18,8 +18,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 pytest
           pip install python-dotenv
-          pip install -r ./back_end/requirements.txt
-          pip install -r ./front_end/requirements.txt
+          pip install -r ./web_scraper/requirements.txt
+          pip install -r ./api/requirements.txt
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
@@ -34,7 +34,7 @@ jobs:
           SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}
           OPEN_ROUTE_API_KEY: ${{ secrets.OPEN_ROUTE_API_KEY }}
       - name: run scraper
-        run: python -m back_end.scraper
+        run: python -m web_scraper.scraper
         env:
           GV3_API_KEY: ${{ secrets.GV3_API_KEY }}
           SQLALCHEMY_DATABASE_URI: ${{ secrets.SQLALCHEMY_DATABASE_URI }}

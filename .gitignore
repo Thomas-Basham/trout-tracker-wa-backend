@@ -126,9 +126,9 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-back_end/.env
+web_scraper/.env
 <<<<<<< HEAD
-front_end/.env
+api/.env
 ./.env
 .env
 =======
