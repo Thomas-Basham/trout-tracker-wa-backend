@@ -2,7 +2,7 @@
 
 **Authors:** Thomas Basham
 
-**Version:** 3.1.2
+**Version:** 4.1.1
 
 [washington-trout-stats-backend.vercel.app/](https://washington-trout-stats-backend.vercel.app/)
 
@@ -87,3 +87,4 @@ python main.py
 [Docker and NGINX](https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask)
 
 [Google Geolocator API](https://developers.google.com/maps/documentation/geolocation/overview)
+
