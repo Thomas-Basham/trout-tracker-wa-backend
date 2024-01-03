@@ -16,7 +16,7 @@
 
 ## Introduction
 
-Trout Tracker WA is a comprehensive web application designed to provide updated information about trout stocking in Washington state. This main folder contains all the essential components of the project, including the Flask backend, the API, and the scraper.
+Trout Tracker WA is a comprehensive web application designed to provide updated information about trout stocking in Washington state. This repository contains all the essential backend components of the project, including database management, a Flask API and a web scraper.
 
 ### Getting Started
 
