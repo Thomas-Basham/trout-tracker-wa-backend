@@ -7,8 +7,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from geopy import GoogleV3
 from dotenv import load_dotenv
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine
+
 
 from api.database import DataBase
 load_dotenv()
