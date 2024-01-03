@@ -1,10 +1,10 @@
-# Washington Trout Stats
+# Trout Tracker WA Backend
 
 **Authors:** Thomas Basham
 
 **Version:** 3.1.2
 
-[washington-trout-stats.vercel.app](https://washington-trout-stats.vercel.app)
+[washington-trout-stats-backend.vercel.app/](https://washington-trout-stats-backend.vercel.app/)
 
 ![Flask](https://img.shields.io/badge/Flask-23daaf?style=for-the-badge&logo=flask&logoColor=white)
 ![Postgresql](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
@@ -14,15 +14,49 @@
 
 [![daily-cron](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml/badge.svg)](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml)
 
-**A web application used for displaying the most recent lakes that were stocked with trout in Washington State on an interactive map and charts.**
+## Introduction
 
-## Problem Domain
+Trout Tracker WA is a comprehensive web application designed to provide updated information about trout stocking in Washington state. This main folder contains all the essential components of the project, including the Flask backend, the API, and the scraper.
 
-The [Washington Department of Fish and Wildlife Trout Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants) is excellent if you want to view data from clunky tables with endless amounts of pages to click through. That equates to one request for each page click, multiplied by an unanticipated amount of users, creates an unnecessary amount of web traffic that inevitably costs we the taxpayers more money. What if we had all of this data in one place, where a single computer could connect to the [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants) each day and provide all of the data they need in one convenient page, offloading the WDFW's bandwidth at the same time?
+### Getting Started
 
-That's why I created Washington Trout Stats, to make this public data that anglers pay for by buying fishing licenses more easily accessible. All of the data that you see in the WDFW stock reports page gets scraped and stored in a cloud database. This app also functions as an API that serves the data in JSON format, creating endless opportunities for mobile and desktop apps in the future.
+- [With WebScraper](./web_scraper/README.md)
+- [With API](./api/README.md)
 
-## Tech Used
+### Features
+
+- Flask backend for server and API management.
+- Data scraping tool for fetching real-time data.
+- Comprehensive API for data retrieval.
+
+### Configuration
+
+- Set environment variables in a `.env` file as required.
+- Configure the database settings in the respective configuration files.
+
+### Running the Application
+
+Start the Flask server:
+
+```bash
+python main.py
+```
+
+### Contributions
+
+- [Get started Contributing](./CONTRIBUTING.md)
+
+#### License
+
+- MIT License
+
+### Contact
+
+- Developer: Thomas Basham
+- Email: bashamtg@gmail.com
+- Project Link: [github.com/Thomas-Basham/washington-trout-stats](https://github.com/Thomas-Basham/washington-trout-stats)
+
+### Tech Used
 
 - Flask
 
@@ -40,8 +74,6 @@ That's why I created Washington Trout Stats, to make this public data that angle
 
 - Docker
 
-## [Get started Contributing](./CONTRIBUTING.md)
-
 ## Resources
 
 [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants)
@@ -55,5 +87,3 @@ That's why I created Washington Trout Stats, to make this public data that angle
 [Docker and NGINX](https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask)
 
 [Google Geolocator API](https://developers.google.com/maps/documentation/geolocation/overview)
-
-![Washington Trout Stats Screenshot](screenshot.webp)
