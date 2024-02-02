@@ -102,6 +102,7 @@ def get_total_stocked_by_date_data():
 
 @app.route('/hatchery_totals', methods=['GET'])
 def get_hatchery_totals():
+
     now = datetime.now()
 
     end_date = request.args.get('end_date', default=now)
