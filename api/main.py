@@ -9,7 +9,6 @@ load_dotenv()
 app = Flask(__name__.split('.')[0])
 app.app_context().push()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-# Initialize CORS with your app
 CORS(app, resources={r"/*": {"origins": "*"}})  # Allows all domains
 db = DataBase()
 
