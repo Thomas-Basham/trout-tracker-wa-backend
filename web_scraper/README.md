@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Scraper folder houses the scripts responsible for scraping data from the WDFW website and transforming it for use in Trout Tracker WA.
+The Scraper folder houses the scripts responsible for scraping data from the WDFW website and transforming it for use.
 
 ### Getting Started
 

@@ -48,16 +48,6 @@ python main.py
 
 - [Get started Contributing](./CONTRIBUTING.md)
 
-#### License
-
-- MIT License
-
-### Contact
-
-- Developer: Thomas Basham
-- Email: bashamtg@gmail.com
-- Project Link: [github.com/Thomas-Basham/washington-trout-stats](https://github.com/Thomas-Basham/washington-trout-stats)
-
 ### Tech Used
 
 - Flask
@@ -89,3 +79,8 @@ python main.py
 [Docker and NGINX](https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask)
 
 [Google Geolocator API](https://developers.google.com/maps/documentation/geolocation/overview)
+
+### Contact
+
+- Developer: Thomas Basham
+- Email: bashamtg@gmail.com
