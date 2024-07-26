@@ -34,7 +34,7 @@ The Scraper folder houses the scripts responsible for scraping data from the WDF
 
 ### Data Handling
 
-- Instructions on how the scraped data is processed and stored.
+- Instructions on how the scraped data is processed and stored
 
 #### Contributions
 
