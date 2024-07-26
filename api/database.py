@@ -59,7 +59,13 @@ class DataBase:
     def __init__(self):
         # Load Database
         if os.getenv("SQLALCHEMY_DATABASE_URI"):
-            self.engine = create_engine(os.getenv("SQLALCHEMY_DATABASE_URI"))
+            self.engine = create_engine(
+                os.getenv("SQLALCHEMY_DATABASE_URI"),
+                pool_pre_ping=True,
+                pool_recycle=1800,  # Recycle connections after 30 minutes
+                # Set a connection timeout of 10 seconds)
+                connect_args={"connect_timeout": 10}
+            )
         else:
             print("USING SQLITE DB")
             self.engine = create_engine(
@@ -72,8 +78,6 @@ class DataBase:
         self.insert_counter = 0
 
     def get_stocked_lakes_data(self, end_date=datetime.now(), start_date=datetime.now() - timedelta(days=7)):
-
-
 
         # Query the StockedLake model
         stocked_lakes = self.session.query(StockedLakes) \
@@ -155,7 +159,8 @@ class DataBase:
             # If there are no derby lakes, clear all derby participants from Stocked Lake table, delete all derby table entries
             self.session.query(DerbyLake).delete()
 
-            lakes_to_update = self.session.query(StockedLakes).filter_by(derby_participant=True)
+            lakes_to_update = self.session.query(
+                StockedLakes).filter_by(derby_participant=True)
             for lake in lakes_to_update:
                 lake.derby_participant = False
 
