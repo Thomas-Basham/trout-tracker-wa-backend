@@ -54,8 +54,6 @@ python main.py
 
 - Beautiful Soup (Data scraped from [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants))
 
-- Folium
-
 - SQLAlchemy
 
 - PostgreSQL Database
