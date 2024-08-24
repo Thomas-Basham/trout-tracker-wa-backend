@@ -15,6 +15,7 @@ The Scraper folder houses the scripts responsible for scraping data from the WDF
 - Data transformation into a structured format.
 - API for sending data across multiple resources
 - Manual backups for extra durability
+- CI/CD testing with Pytest and GitHub actions
 
 ### Running the web scraper
 
