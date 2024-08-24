@@ -12,7 +12,7 @@
 ![Postgresql](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=Vercel&logoColor=white)
 
-[![Python application](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/python-app.yml/badge.svg)](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/python-app.yml)
+[![Python application](https://github.com/Thomas-Basham/trout-tracker-wa-backend/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/Thomas-Basham/trout-tracker-wa-backend/actions/workflows/python-app.yml)
 
 [![daily-cron](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml/badge.svg)](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml)
 
