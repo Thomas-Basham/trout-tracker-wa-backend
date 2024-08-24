@@ -13,6 +13,7 @@ The Scraper folder houses the scripts responsible for scraping data from the WDF
 
 - Automated data scraping from the WDFW website.
 - Data transformation into a structured format.
+- API for sending data across multiple resources
 
 ### Running the web scraper
 
