@@ -128,3 +128,9 @@ def get_date_data_updated():
     last_updated = db.get_date_data_updated()
     last_updated = str(last_updated)
     return jsonify(last_updated)
+
+
+@app.route('/hatchery_names', methods=['GET'])
+def get_unique_hatcheries():
+    unique_hatcheries = db.get_unique_hatcheries()
+    return jsonify(unique_hatcheries)

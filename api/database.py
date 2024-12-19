@@ -127,6 +127,12 @@ class DataBase:
         derby_lakes = self.conn.execute(text(query)).fetchall()
         return derby_lakes
 
+    def get_unique_hatcheries(self):
+        query = "SELECT DISTINCT hatchery FROM stocked_lakes_table ORDER BY hatchery"
+        unique_hatcheries = self.conn.execute(text(query)).fetchall()
+        print(unique_hatcheries)
+        return [row[0] for row in unique_hatcheries]
+
     def get_date_data_updated(self):
         query = "SELECT updated FROM utility_table ORDER BY id DESC LIMIT 1"
         last_updated = self.conn.execute(text(query)).scalar()
