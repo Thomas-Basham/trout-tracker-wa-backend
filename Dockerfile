@@ -1,9 +1,16 @@
-FROM python:3-alpine
+FROM python:3.11-alpine
 
 RUN pip install --upgrade pip
 
 
 RUN apk update
+RUN apk add --no-cache \
+    gcc \
+    musl-dev \
+    postgresql-dev \
+    libffi-dev \
+    python3-dev \
+    build-base
 
 WORKDIR /
 COPY api /api
