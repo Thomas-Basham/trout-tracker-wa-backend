@@ -1,84 +1,105 @@
-# Trout Tracker WA Backend
+# 🐟 Troutlytics Backend
 
-**Authors:** Thomas Basham
+## Scraper
 
-**Version:** 4.1.1
+**Troutlytics** is a data-driven Python application that scrapes and stores trout stocking data for Washington State lakes. It runs on a scheduled AWS Fargate task and stores results in an Aurora PostgreSQL database for use in dashboards, maps, and analysis tools.
 
-[trout-tracker-wa-backend.vercel.app](https://trout-tracker-wa-backend.vercel.app/)
 
-[Front End Code](https://github.com/Thomas-Basham/trout-tracker-wa)
+---
 
-![Flask](https://img.shields.io/badge/Flask-23daaf?style=for-the-badge&logo=flask&logoColor=white)
-![Postgresql](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-000?style=for-the-badge&logo=Vercel&logoColor=white)
-
-[![Python application](https://github.com/Thomas-Basham/trout-tracker-wa-backend/actions/workflows/python-app.yml/badge.svg?branch=main)](https://github.com/Thomas-Basham/trout-tracker-wa-backend/actions/workflows/python-app.yml)
-
-[![daily-cron](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml/badge.svg)](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml)
-
-## Introduction
-
-Trout Tracker WA is a comprehensive web application designed to provide updated information about trout stocking in Washington state. This repository contains all the essential backend components of the project, including database management, a Flask API and a web scraper.
-
-### Getting Started
-
-- [With WebScraper](./web_scraper/README.md)
-- [With API](./api/README.md)
-
-### Features
-
-- Flask backend for server and API management.
-- Data scraping tool for fetching real-time data.
-- Comprehensive API for data retrieval.
-
-### Configuration
-
-- Set environment variables in a `.env` file as required.
-- Configure the database settings in the respective configuration files.
-
-### Running the Application
-
-Start the Flask server:
+## 📦 Project Structure
 
 ```bash
-python main.py
+.
+├── web_scraper/           # Main scraping logic
+│   ├── scraper.py         # Entry point for scraping
+│   ├── requirements.txt   # Python dependencies
+│   └── tests/             # Pytest unit tests
+├── api/                   # Optional API backend (future expansion)
+│   ├── main.py
+│   └── Dockerfile
+├── Dockerfile             # Base Dockerfile for scraper container
+├── scraper.yaml           # Docker Compose config for local development
+├── fargate-rds-secrets.yaml # CloudFormation for Fargate + RDS deployment
+└── github_oidc_ecr_access.yaml # CloudFormation for GitHub OIDC + ECR deploy access
+
+
+
+⸻
+
+🚀 Deployment Overview
+
+AWS Infrastructure:
+	•	Fargate runs the scraper every 10 minutes via EventBridge.
+	•	Secrets Manager securely stores DB credentials.
+	•	Aurora PostgreSQL stores structured stocking data.
+	•	CloudWatch Logs tracks runtime output for visibility.
+
+GitHub → ECR Workflow:
+	•	Automatically builds and pushes Docker image on main branch updates.
+	•	Uses secure OIDC GitHub Actions role to push to ECR.
+
+⸻
+
+📋 Prerequisites
+	•	AWS CLI configured with appropriate permissions
+	•	Docker installed (for local dev builds)
+	•	Python 3.11+
+
+⸻
+
+🧪 Run Locally
+
+docker-compose -f scraper.yaml build
+docker-compose -f scraper.yaml up
+
+Edit environment variables via sample.env or inject them via Docker secrets.
+
+⸻
+
+🛠️ Cloud Setup
+
+Deploy the CloudFormation Stack:
+
+aws cloudformation deploy \
+  --template-file fargate-rds-secrets.yaml \
+  --stack-name troutlytics-scraper \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --parameter-overrides \
+    ECRImageUri=<your-ecr-image-uri> \
+    VpcId=<your-vpc-id> \
+    SubnetIds=subnet-xxxx,subnet-yyyy \
+    SecurityGroupId=sg-xxxxxx \
+    SecretArn=arn:aws:secretsmanager:us-west-2:xxx:secret:troutlytics-db
+
+
+
+⸻
+
+🔐 GitHub → ECR Deploy (CI/CD)
+
+To enable GitHub Actions auto-deploy:
+	1.	Deploy the github_oidc_ecr_access.yaml CloudFormation template.
+	2.	Add the output IAM Role ARN to your GitHub Actions secrets or workflows.
+	3.	Push to main — your image builds and publishes to ECR automatically.
+
+⸻
+
+📈 Roadmap Ideas
+	•	Add support for weather/streamflow overlays
+	•	Enable historical trend analysis by lake
+	•	Integrate public stocking alerts
+	•	Expand scraper coverage to other regions or species
+
+⸻
+
+🧠 Credits
+
+Created by @thomas-basham — U.S. Army veteran, full-stack developer, and passionate angler 🎣
+
+⸻
+
+License
+
+MIT
 ```
-
-### Contributions
-
-- [Get started Contributing](./CONTRIBUTING.md)
-
-### Tech Used
-
-- Flask
-
-- Beautiful Soup (Data scraped from [WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants))
-
-- SQLAlchemy
-
-- PostgreSQL Database
-
-- [GitHub Cron Job](https://github.com/Thomas-Basham/washington-trout-stats/actions/workflows/cron.yaml) (To schedule webscraping daily)
-
-- Google Geolocation API (To get lat/lon of lakes)
-
-- Docker
-
-## Resources
-
-[WDFW Stock Report](https://wdfw.wa.gov/fishing/reports/stocking/trout-plants)
-
-[Flask](https://flask.palletsprojects.com/)
-
-[Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
-
-[SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/quickstart/)
-
-[Docker and NGINX](https://github.com/docker/awesome-compose/tree/master/nginx-wsgi-flask)
-
-[Google Geolocator API](https://developers.google.com/maps/documentation/geolocation/overview)
-
-### Contact
-
-- Developer: Thomas Basham
-- Email: bashamtg@gmail.com
