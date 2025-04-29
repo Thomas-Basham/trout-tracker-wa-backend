@@ -1,4 +1,0 @@
-services:
-  web-scraper:
-    build: ./
-    image: scraper:latest
