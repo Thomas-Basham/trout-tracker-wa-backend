@@ -6,6 +6,7 @@ import os
 
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy import Column, Integer, String, Boolean, Date, Float, func
+from sqlalchemy import exists
 
 # Create a SQLAlchemy base
 Base = declarative_base()
@@ -58,6 +59,12 @@ class Utility(Base):
 class DataBase:
     def __init__(self):
         # Load Database
+        db_user = os.getenv("POSTGRES_USER")
+        db_password = os.getenv("POSTGRES_PASSWORD")
+        db_name = os.getenv("POSTGRES_DB")
+        db_host = os.getenv("POSTGRES_HOST")
+        db_port = os.getenv("POSTGRES_PORT", "5432")  # Default Postgres port
+
         if os.getenv("SQLALCHEMY_DATABASE_URI"):
             self.engine = create_engine(
                 os.getenv("SQLALCHEMY_DATABASE_URI"),
@@ -66,6 +73,15 @@ class DataBase:
                 # Set a connection timeout of 10 seconds)
                 connect_args={"connect_timeout": 10}
             )
+        # if db_user and db_password and db_name and db_host:
+        #     database_url = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
+
+        #     self.engine = create_engine(
+        #         database_url,
+        #         pool_pre_ping=True,
+        #         pool_recycle=1800,
+        #         connect_args={"connect_timeout": 10}
+        #     )
         else:
             print("USING SQLITE DB")
             self.engine = create_engine(
@@ -170,15 +186,26 @@ class DataBase:
             for lake in lakes_to_update:
                 lake.derby_participant = False
 
+    def record_exists(self, model, **kwargs):
+        """Efficiently check if a record exists in the database."""
+        return self.session.query(exists().where(
+            *(getattr(model, key) == value for key, value in kwargs.items())
+        )).scalar()
+
+    # TODO: This feel super eneficient. Optimize!
     def write_lake_data(self, scraper):
         for lake_data in scraper.df:
             # check if entry already exists in the table
-            existing_lake = self.session.query(StockedLakes).filter_by(lake=lake_data['lake'],
-                                                                       stocked_fish=lake_data['stocked_fish'],
-                                                                       date=lake_data['date']).first()
-            if existing_lake:
-                continue  # skip if the lake already exists in the table
-
+            # existing_lake = self.session.query(StockedLakes).filter_by(lake=lake_data['lake'],
+            #                                                            stocked_fish=lake_data['stocked_fish'],
+            #                                                            date=lake_data['date']).first()
+            # if existing_lake:
+            #     continue  # skip if the lake already exists in the table
+            if self.record_exists(StockedLakes, lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date']):
+                print(
+                    f'Skipped in db. already added {lake_data["lake"]} {lake_data["stocked_fish"]} {lake_data["date"]}')
+                continue  # Skip if exists
+            
             # add the lake to the table if it doesn't exist
             lake = StockedLakes(lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date'],
                                 latitude=lake_data['latitude'], longitude=lake_data['longitude'],
@@ -198,8 +225,8 @@ class DataBase:
     def back_up_database(self):
         all_stocked_lakes = self.session.query(StockedLakes).all()
 
-        backup_file_txt = 'web_scraper/backup_data.txt'
-        backup_file_sql = 'web_scraper/backup_data.sql'
+        backup_file_txt = 'backup_data.txt'
+        backup_file_sql = 'backup_data.sql'
 
         if os.path.exists(backup_file_txt):
             os.remove(backup_file_txt)
