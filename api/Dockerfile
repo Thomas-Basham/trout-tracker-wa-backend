@@ -1,42 +1,29 @@
-FROM python:3-alpine
+# API Dockerfile
+FROM python:3.11-alpine
 
-RUN pip install --upgrade pip
+# Set working directory
+WORKDIR /app
 
+# Install system dependencies needed for numpy and scientific libraries
+RUN apk add --no-cache \
+    gcc \
+    g++ \
+    musl-dev \
+    libffi-dev \
+    openblas-dev \
+    lapack-dev \
+    build-base \
+    linux-headers \
+    python3-dev \
+    py3-pip
 
-RUN apk update
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy the application code
+COPY . .
 
-# get curl for healthchecks
-RUN apk add curl
-
-RUN echo "http://dl-8.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories
-RUN apk --no-cache --update-cache add gcc gfortran build-base wget freetype-dev libpng-dev openblas-dev
-RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
-# permissions and nonroot user for tightened security
-RUN adduser -D nonroot
-RUN mkdir /home/app/ && chown -R nonroot:nonroot /home/app
-RUN mkdir -p /var/log/flask-app && touch /var/log/flask-app/flask-app.err.log && touch /var/log/flask-app/flask-app.out.log
-RUN chown -R nonroot:nonroot /var/log/flask-app
-WORKDIR /home/app
-USER nonroot
-
-# copy all the files to the container
-COPY --chown=nonroot:nonroot . .
-
-# venv
-ENV VIRTUAL_ENV=/home/app/venv
-
-# python setup
-RUN python -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-RUN export FLASK_APP=main.py
-# upgrade pip
-RUN /home/app/venv/bin/python -m pip install --upgrade pip
-RUN pip install setuptools
-RUN pip install gunicorn
-RUN pip install -r requirements.txt
-
-# define the port number the container should expose
-EXPOSE 5000
-
-CMD ["python", "main.py"]
+# Command to run API server
+# CMD ["python", "main.py"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
