@@ -8,8 +8,8 @@ from bs4 import BeautifulSoup
 from geopy import GoogleV3
 from dotenv import load_dotenv
 
+from api.database import DataBase, StockedLakes
 
-from api.database import DataBase
 load_dotenv()
 
 
@@ -183,6 +183,12 @@ class Scraper:
                  'weight': weights[i], "hatchery": hatcheries[i],
                  'latitude': "", 'longitude': "",
                  'directions': "", "derby_participant": False})
+        original_count = len(data)
+        data = [lake for lake in data if not data_base.record_exists(
+            StockedLakes, lake=lake['lake'], stocked_fish=lake['stocked_fish'], date=lake['date']
+        )]
+        removed_count = original_count - len(data)
+        print(f"Removed {removed_count} already-existing lake entries from scraper results.")
 
         data = self.get_lat_lon(data)  # ? side effect
 
@@ -194,18 +200,24 @@ class Scraper:
         locator = GoogleV3(api_key=os.getenv('GV3_API_KEY'))
 
         for i in range(len(data)):
-            lake = data[i]['lake']
+            lake = data[i]
             if lake:
-                geocode = locator.geocode(lake + ' washington state')
-                if geocode:
-                    data[i]['latitude'] = float(geocode.point[0])
-                    data[i]['longitude'] = float(geocode.point[1])
+                if data_base.record_exists(StockedLakes, lake=lake['lake'], stocked_fish=lake['stocked_fish'], date=lake['date']):
+                    print(
+                        f'Skipped In the scraper. already added {lake["lake"]} {lake["stocked_fish"]} {lake["date"]}')
+                    continue
                 else:
-                    data[i]['latitude'] = float(0.0)
-                    data[i]['longitude'] = float(0.0)
+                    geocode = locator.geocode(lake["lake"] + ' washington state')
+                    if geocode:
+                        print(f'Geocoding {lake["lake"]}')
+                        lake['latitude'] = float(geocode.point[0])
+                        lake['longitude'] = float(geocode.point[1])
+                    else:
+                        lake['latitude'] = float(0.0)
+                        lake['longitude'] = float(0.0)
 
-                data[i][
-                    'directions'] = f"https://www.google.com/maps/search/?api=1&query={lake}"
+                    lake[
+                        'directions'] = f"https://www.google.com/maps/search/?api=1&query={lake}"
         # print(data)
         return data
 
