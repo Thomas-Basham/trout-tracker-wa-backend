@@ -77,25 +77,7 @@ def get_stocked_lakes_data():
     stocked_lakes = db.get_stocked_lakes_data(
         end_date=end_date, start_date=start_date)
 
-    result = []
-    for sl in stocked_lakes:
-        # Build a plain dict
-        rec = {
-            "date": sl.date.isoformat() if sl.date else None,
-            "lake": sl.lake,
-            "stocked_fish": sl.stocked_fish,
-            "species": sl.species,
-            "hatchery": sl.hatchery,
-            "weight": sl.weight,
-            "derby_participant": sl.derby_participant,
-            "water_location_id": sl.water_location_id,
-            "latitude": sl.water_location.latitude if sl.water_location else None,
-            "longitude": sl.water_location.longitude if sl.water_location else None,
-            "directions": sl.water_location.directions if sl.water_location else None,
-        }
-        result.append(rec)
-
-    return jsonify(result)
+    return jsonify(stocked_lakes)
 
 
 @app.route('/total_stocked_by_date_data', methods=['GET', 'OPTIONS'])

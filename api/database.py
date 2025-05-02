@@ -105,18 +105,42 @@ class DataBase:
         start_date: datetime = datetime.now() - timedelta(days=7)
     ):
         """
-        Return all StockedLakes between start_date and end_date,
-        eagerly loading the related WaterLocations via the foreign key.
+        Return all stocked lake records between start_date and end_date,
+        but join from water_locations so we can pull the cleaned name and
+        location info first.
         """
-        stocked_lakes = (
+        # Query WaterLocations → join → StockedLakes
+        rows = (
             self.session
-                .query(StockedLakes)
-                .options(joinedload(StockedLakes.water_location))
-                .filter(StockedLakes.date.between(start_date, end_date))
-                .order_by(StockedLakes.date.desc())
-                .all()
+                .query(WaterLocations, StockedLakes)
+                .join(
+                    StockedLakes,
+                    StockedLakes.water_location_id == WaterLocations.id
+                )
+            .filter(StockedLakes.date.between(start_date, end_date))
+            .order_by(StockedLakes.date.desc())
+            .all()
         )
-        return stocked_lakes
+
+        # Flatten into identical dicts your front-end expects
+        result = []
+        for water_loc, stocked in rows:
+            rec = {
+                "date": stocked.date.isoformat() if stocked.date else None,
+                "lake": water_loc.water_name_cleaned,
+                "stocked_fish": stocked.stocked_fish,
+                "species": stocked.species,
+                "hatchery": stocked.hatchery,
+                "weight": stocked.weight,
+                "derby_participant": water_loc.derby_participant,
+                "water_location_id": water_loc.id,
+                "latitude": water_loc.latitude,
+                "longitude": water_loc.longitude,
+                "directions": water_loc.directions,
+            }
+            result.append(rec)
+
+        return result
 
     def get_hatchery_totals(self, end_date=datetime.now(), start_date=datetime.now() - timedelta(days=7)):
 
