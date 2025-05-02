@@ -10,8 +10,6 @@ from dotenv import load_dotenv
 
 from api.database import DataBase, StockedLakes
 
-load_dotenv()
-
 
 class Scraper:
     """
@@ -24,23 +22,31 @@ class Scraper:
     3. Make the data into a list of dictionaries
     """
 
-    def __init__(self, lake_url):
+    def __init__(self, lake_url=""):
         self.lake_url = lake_url
+        self.response = {}
+        self.soup = {}
+        self.lake_names = []  # List[Tuple[str, str]]
+        self.stock_counts = []  # List[int]
+        self.dates = []  # List[datetime.date]
+        self.species = []  # List[str]
+        self.weights = []  # List[float]
+        self.hatcheries = []  # List[str]
+        self.derby_lake_names = []  # List[str]
+        self.df = []  # List[Dict[str, Any]]
+
+    def set_scraper_config(self, url=""):
+        if not self.lake_url:
+            self.lake_url = url
         self.response = get(self.lake_url)
         if self.response.status_code != 200:
             print("Error fetching page")
             exit()
         self.soup = BeautifulSoup(self.response.content, "html.parser")
-        self.lake_names = self.scrape_lake_names()
-        self.stock_counts = self.scrape_stock_count()
-        self.dates = self.scrape_date()
-        self.species = self.scrape_species()
-        self.weights = self.scrape_weights()
-        self.hatcheries = self.scrape_hatcheries()
-        self.derby_lake_names = self.scrape_derby_names()
-        self.df = self.make_df()
 
     def scrape_lake_names(self):
+        found_text = self.soup.select('.views-field-lake-stocked')
+
         ABBREVIATIONS = {
             "LK": "Lake",
             "PD": "Pond",
@@ -49,16 +55,22 @@ class Scraper:
             "CO": "County"
         }
 
-        found_text = self.soup.select('.views-field-lake-stocked')
-
         # Clean up the names
-        text_list = [re.sub(r"\(.*?\)|[^\w\s\d]|(?<!\w)(\d+)(?!\w)|\b(" + "|".join(ABBREVIATIONS.keys()) + r")\b",
-                            lambda match: "" if match.group(
-                                1) else ABBREVIATIONS.get(match.group(2), ""),
-                            i.text.strip() + " County").strip().replace("\n", "").replace(" Region ", '').replace("  ",
-                                                                                                                  " ").title()
-                     for i in found_text]
-        return text_list[1:]
+        # Makes a tuple with 2 values
+        # first is the cleaned up name
+        # second is the OG name
+        text_list = [
+            (
+                re.sub(r"\(.*?\)|[^\w\s\d]|(?<!\w)(\d+)(?!\w)|\b(" + "|".join(ABBREVIATIONS.keys()) + r")\b",
+                       lambda match: "" if match.group(
+                    1) else ABBREVIATIONS.get(match.group(2), ""),
+                    i.text.strip() + " County").strip().replace("\n", "").replace(" Region ", '').replace("  ",
+                                                                                                          " ").title(),
+                i.text
+            )
+            for i in found_text]
+
+        self.lake_names = text_list[1:]
 
     # return list of Stock Counts
     def scrape_stock_count(self):
@@ -77,7 +89,7 @@ class Scraper:
                 print(f"Error: {i} is not a valid number")
                 continue
 
-        return stock_count_int_list[1:]
+        self.stock_counts = stock_count_int_list[1:]
 
     # return list of Species
     def scrape_species(self):
@@ -87,7 +99,7 @@ class Scraper:
         species_text_list = [i.text.strip() for i in found_text]
 
         # print("SPECIES", species_text_list)
-        return species_text_list[1:]
+        self.species = species_text_list[1:]
 
     # return list of Weights
     def scrape_weights(self):
@@ -102,7 +114,7 @@ class Scraper:
             except ValueError:
                 # handle the error here, such as skipping the value or setting it to a default value
                 print(f"Could not convert {i.text.strip()} to float")
-        return weights_float_list
+        self.weights = weights_float_list
 
     # return list of Weights
     def scrape_hatcheries(self):
@@ -112,7 +124,7 @@ class Scraper:
         hatcheries_text_list = [i.text.strip().title() for i in found_text]
 
         # print("HATCHERIES", hatcheries_text_list)
-        return hatcheries_text_list[1:]
+        self.hatcheries = hatcheries_text_list[1:]
 
     # Return list of Scraped Dates
     def scrape_date(self):
@@ -131,7 +143,7 @@ class Scraper:
                 print(f"Error: {i} is not a valid date")
                 continue
 
-        return date_list[1:]
+        self.dates = date_list[1:]
 
     # Return a list of names of lakes that are in the state trout derby
     def scrape_derby_names(self):
@@ -161,10 +173,10 @@ class Scraper:
                     text_lst_trimmed.append(i.replace("\n", ""))
                 text_lst_trimmed = [
                     re.sub(r"\(.*?\)", '', text).title() for text in text_lst_trimmed]
-                return text_lst_trimmed
+                self.derby_lake_names = text_lst_trimmed
             else:
-
-                return []
+                print("No derby lake names")
+                return
 
     def make_df(self):
         lake_names = self.lake_names
@@ -178,38 +190,52 @@ class Scraper:
         # Create a list of dictionaries
         data = []
         for i in range(amount_scraped - 1):
+            print("OG LAKE NAME: ", lake_names[i][1])
             data.append(
-                {'lake': lake_names[i], 'stocked_fish': stock_count[i], 'date': dates[i], 'species': species[i],
+                {'lake': lake_names[i][0], 'original_html_name': lake_names[i][1], 'stocked_fish': stock_count[i], 'date': dates[i], 'species': species[i],
                  'weight': weights[i], "hatchery": hatcheries[i],
                  'latitude': "", 'longitude': "",
                  'directions': "", "derby_participant": False})
+
         original_count = len(data)
         data = [lake for lake in data if not data_base.record_exists(
-            StockedLakes, lake=lake['lake'], stocked_fish=lake['stocked_fish'], date=lake['date']
+            StockedLakes, lake=lake['lake'][0], stocked_fish=lake['stocked_fish'], date=lake['date']
         )]
         removed_count = original_count - len(data)
-        print(f"Removed {removed_count} already-existing lake entries from scraper results.")
+        print(
+            f"Removed {removed_count} already-existing lake entries from scraper results.")
 
         data = self.get_lat_lon(data)  # ? side effect
 
         return data
 
-    # Get the latitude and longitude of the lake names and update the df
+    def run_all_scrapes(self):
+        self.lake_names = self.scrape_lake_names()
+        self.stock_counts = self.scrape_stock_count()
+        self.dates = self.scrape_date()
+        self.species = self.scrape_species()
+        self.weights = self.scrape_weights()
+        self.hatcheries = self.scrape_hatcheries()
+        self.derby_lake_names = self.scrape_derby_names()
+        self.df = self.make_df()
+
     @staticmethod
     def get_lat_lon(data):
+        # Get the latitude and longitude of the lake names and update the df
         locator = GoogleV3(api_key=os.getenv('GV3_API_KEY'))
 
         for i in range(len(data)):
             lake = data[i]
             if lake:
-                if data_base.record_exists(StockedLakes, lake=lake['lake'], stocked_fish=lake['stocked_fish'], date=lake['date']):
+                if data_base.record_exists(StockedLakes, lake=lake['lake'][0], stocked_fish=lake['stocked_fish'], date=lake['date']):
                     print(
-                        f'Skipped In the scraper. already added {lake["lake"]} {lake["stocked_fish"]} {lake["date"]}')
+                        f'Skipped In the scraper. already added {lake["lake"][1]} {lake["stocked_fish"]} {lake["date"]}')
                     continue
                 else:
-                    geocode = locator.geocode(lake["lake"] + ' washington state')
+                    geocode = locator.geocode(
+                        lake["lake"][0] + ' washington state')
                     if geocode:
-                        print(f'Geocoding {lake["lake"]}')
+                        print(f'Geocoding {lake["lake"][0]}')
                         lake['latitude'] = float(geocode.point[0])
                         lake['longitude'] = float(geocode.point[1])
                     else:
@@ -217,33 +243,48 @@ class Scraper:
                         lake['longitude'] = float(0.0)
 
                     lake[
-                        'directions'] = f"https://www.google.com/maps/search/?api=1&query={lake}"
+                        'directions'] = f"https://www.google.com/maps/search/?api=1&query={lake[0]}"
         # print(data)
         return data
 
 
 # ran only in a dev environment, used to get all the wdfw trout plant archives
 def write_archived_data():
-    for i in range(2022, 2015, -1):  # data goes back to 2015
-        for j in range(7):  # there are at most 7 pages to scrape
-            data_base.write_data(scraper=Scraper(
-                lake_url=f'https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/archive/{i}?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250&page={j}'))
-            print(f'updated year {i}, page {j}')
+    # data_base = DataBase()
+    print("archiving....")
+    scraper = Scraper()
+    # for i in range(2015, 2024):  # data goes back to 2015
+    for j in range(8):  # there are at most 7 pages to scrape
+
+        # print("scraping....year {i}, page {j}")
+        scraper.set_scraper_config(
+            f"https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/archive/2020?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250&page={j}"
+            # f'https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/archive/{i}?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250&page={j}'
+            # f'https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250&page={j}'
+        )
+        scraper.scrape_lake_names()
+        [data_base.insert_water_location(
+            original_html_name=lake_name[1], water_name_cleaned=lake_name[0], latitude=0.0, longitude=0.0, directions="", derby_participant=False) for lake_name in scraper.lake_names]
+        # print(f'updated year {i}, page {j}')
 
 
 # Run Once Every day
 if __name__ == "__main__":
+    load_dotenv()
     start_time = time()
-
     data_base = DataBase()
-    scraper = Scraper(
-        lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250"
-    )
+    write_archived_data()
+    data_base.backfill_water_location_fields()
+    data_base.backfill_water_location_ids()
 
-    data_base.write_data(scraper=scraper)
+    # scraper = Scraper(
+    #     lake_url="https://wdfw.wa.gov/fishing/reports/stocking/trout-plants/all?lake_stocked=&county=&species=&hatchery=&region=&items_per_page=250")
+    # scraper.set_scraper_config()
+    # scraper.run_all_scrapes()
+    # data_base.write_data(scraper=scraper)
 
-    if os.getenv('ENVIRONMENT') and os.getenv('ENVIRONMENT') == 'testing':
-        data_base.back_up_database()
+    # if os.getenv('ENVIRONMENT') and os.getenv('ENVIRONMENT') == 'testing':
+    #     data_base.back_up_database()
 
     end_time = time()
     print(f"It took {end_time - start_time:.2f} seconds to compute")
