@@ -1,36 +1,19 @@
 services:
   api:
-    build: ./api
+    build:
+      context: .
+      dockerfile: api/Dockerfile
     image: api:latest
     ports:
       - "8000:8000"
     env_file:
       - .env
-    depends_on:
-      - db
 
   web-scraper:
+    platform: linux/amd64 # AWS ECS default
     build:
       context: .
       dockerfile: web_scraper/Dockerfile
     image: scraper:latest
     env_file:
       - .env
-    depends_on:
-      - db
-
-  db:
-    image: postgres:14
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_HOST: ${POSTGRES_HOST}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-
-volumes:  
-  postgres-data:
-    driver: local

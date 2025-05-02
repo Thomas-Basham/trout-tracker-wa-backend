@@ -18,12 +18,12 @@ RUN apk add --no-cache \
     py3-pip
 
 # Install Python dependencies
-COPY requirements.txt .
+COPY ./api/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the application code
-COPY . .
+# # Copy the application code
+COPY ./api/ .
 
 # Command to run API server
-# CMD ["python", "main.py"]
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "wsgi.py"]
+# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

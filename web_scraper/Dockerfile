@@ -9,15 +9,15 @@ RUN apk add --no-cache gcc musl-dev libffi-dev build-base
 
 # Install Python dependencies
 # Install Python dependencies
-COPY web_scraper/requirements.txt .
+COPY ./web_scraper/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 
 # Copy scraper code
-COPY web_scraper/ .
+COPY ./web_scraper/ .
 
 # Also copy API code into the image so it can be imported
-COPY api/ ./api
+COPY ./api/ ./api
 
 # Command to run the scraper
 CMD ["python", "scraper.py"]
