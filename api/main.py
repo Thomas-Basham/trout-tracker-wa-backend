@@ -10,7 +10,7 @@ load_dotenv()
 db = DataBase()
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}},
-     origins="http://localhost:3000", supports_credentials=True)
+     origins=["http://localhost:3000", "https://trout-tracker-wa.vercel.app"], supports_credentials=True)
 app.app_context().push()
 
 
