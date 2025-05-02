@@ -12,3 +12,4 @@ if __name__ == "__main__":
     else:
         print('PROD ENVIRONMENT')
         app.run(debug=False)
+
