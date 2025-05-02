@@ -1,31 +1,42 @@
 # database.py
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, func, text, desc
+from sqlalchemy.orm import sessionmaker, declarative_base, relationship, joinedload
+from sqlalchemy import create_engine, Column, Integer, String, Boolean, Date, Float, TIMESTAMP, exists, ForeignKey, text  # text???
 from datetime import datetime, timedelta
 import os
-
-from sqlalchemy.orm import declarative_base, sessionmaker
-from sqlalchemy import Column, Integer, String, Boolean, Date, Float, func
-from sqlalchemy import exists
 
 # Create a SQLAlchemy base
 Base = declarative_base()
 
 
+class WaterLocations(Base):
+    __tablename__ = 'water_locations'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    original_html_name = Column(String, unique=True)  # what wdfw named
+    water_name_cleaned = Column(String)  # the cleaned name after scraping
+    latitude = Column(Float)
+    longitude = Column(Float)
+    directions = Column(String)
+    created_at = Column(TIMESTAMP)
+    derby_participant = Column(Boolean)
 # Create the stocked_lakes_table class
+
+
 class StockedLakes(Base):
     __tablename__ = 'stocked_lakes_table'
     id = Column(Integer, primary_key=True)
-    lake = Column(String)
+    lake = Column(String)  # plans to move to FK
     stocked_fish = Column(Integer)
     species = Column(String)
     weight = Column(Float)
     hatchery = Column(String)
     date = Column(Date)
-    latitude = Column(Float)
-    longitude = Column(Float)
-    directions = Column(String)
-    derby_participant = Column(Boolean)
+    latitude = Column(Float)  # plans to move to FK
+    longitude = Column(Float)  # plans to move to FK
+    directions = Column(String)  # plans to move to FK
+    derby_participant = Column(Boolean)  # plans to move to FK
+    # Replace raw lat/lng/directions with FK
+    water_location_id = Column(Integer, ForeignKey('water_locations.id'))
+    water_location = relationship("WaterLocations")
 
     def to_dict(self):
         return {
@@ -35,14 +46,17 @@ class StockedLakes(Base):
             "species": self.species,
             "hatchery": self.hatchery,
             "weight": self.weight,
-            "latitude": self.latitude,
-            "longitude": self.longitude,
-            "directions": self.directions,
-            "derby_participant": self.derby_participant
+            "derby_participant": self.derby_participant,
+            "latitude": self.water_location.latitude if self.water_location else None,
+            "longitude": self.water_location.longitude if self.water_location else None,
+            "directions": self.water_location.directions if self.water_location else None,
+            "water_location_id": self.water_location_id,
+            "water_location": self.water_location
         }
 
-
 # Create the derby_lakes_table class
+
+
 class DerbyLake(Base):
     __tablename__ = 'derby_lakes_table'
     id = Column(Integer, primary_key=True)
@@ -65,23 +79,15 @@ class DataBase:
         db_host = os.getenv("POSTGRES_HOST")
         db_port = os.getenv("POSTGRES_PORT", "5432")  # Default Postgres port
 
-        if os.getenv("SQLALCHEMY_DATABASE_URI"):
+        if db_user and db_password and db_name and db_host:
+            database_url = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
+
             self.engine = create_engine(
-                os.getenv("SQLALCHEMY_DATABASE_URI"),
+                database_url,
                 pool_pre_ping=True,
-                pool_recycle=1800,  # Recycle connections after 30 minutes
-                # Set a connection timeout of 10 seconds)
+                pool_recycle=1800,
                 connect_args={"connect_timeout": 10}
             )
-        # if db_user and db_password and db_name and db_host:
-        #     database_url = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
-
-        #     self.engine = create_engine(
-        #         database_url,
-        #         pool_pre_ping=True,
-        #         pool_recycle=1800,
-        #         connect_args={"connect_timeout": 10}
-        #     )
         else:
             print("USING SQLITE DB")
             self.engine = create_engine(
@@ -93,15 +99,23 @@ class DataBase:
 
         self.insert_counter = 0
 
-    def get_stocked_lakes_data(self, end_date=datetime.now(), start_date=datetime.now() - timedelta(days=7)):
-
-        # Query the StockedLake model
-        stocked_lakes = self.session.query(StockedLakes) \
-            .filter(StockedLakes.date.between(start_date, end_date)) \
-            .order_by(StockedLakes.date.desc()) \
-            .all()
-
-        # self.session.close()
+    def get_stocked_lakes_data(
+        self,
+        end_date: datetime = datetime.now(),
+        start_date: datetime = datetime.now() - timedelta(days=7)
+    ):
+        """
+        Return all StockedLakes between start_date and end_date,
+        eagerly loading the related WaterLocations via the foreign key.
+        """
+        stocked_lakes = (
+            self.session
+                .query(StockedLakes)
+                .options(joinedload(StockedLakes.water_location))
+                .filter(StockedLakes.date.between(start_date, end_date))
+                .order_by(StockedLakes.date.desc())
+                .all()
+        )
         return stocked_lakes
 
     def get_hatchery_totals(self, end_date=datetime.now(), start_date=datetime.now() - timedelta(days=7)):
@@ -154,22 +168,29 @@ class DataBase:
         last_updated = self.conn.execute(text(query)).scalar()
         return last_updated
 
-    def write_data(self, scraper):
+    def get_water_location(self, original_html_name):
+        water_location = self.session.query(WaterLocations).filter(
+            WaterLocations.original_html_name.ilike(
+                original_html_name)
+        ).first()
+        return water_location
+
+    def write_data(self, data):
         if str(self.engine) == "Engine(sqlite:///api/sqlite.db)":
             Base.metadata.drop_all(self.engine)
             Base.metadata.create_all(self.engine)
 
-        self.write_derby_data(scraper)
-        self.write_lake_data(scraper)
+        # self.write_derby_data(data)
+        self.write_lake_data(data)
         self.write_utility_data()
         self.session.commit()
         self.session.close()
 
-    def write_derby_data(self, scraper):
-        derby_lakes = scraper.derby_lake_names
+    def write_derby_data(self, data):
+        derby_lakes = data.derby_lake_names
         if derby_lakes:
             for lake in derby_lakes:
-                for item in scraper.df:
+                for item in data:
                     if lake.capitalize() in item['lake'].capitalize():
                         item['derby_participant'] = True
                         existing_lake = self.session.query(
@@ -192,25 +213,65 @@ class DataBase:
             *(getattr(model, key) == value for key, value in kwargs.items())
         )).scalar()
 
-    # TODO: This feel super eneficient. Optimize!
-    def write_lake_data(self, scraper):
-        for lake_data in scraper.df:
+    def insert_water_location(self, original_html_name, water_name_cleaned, latitude, longitude, directions, derby_participant):
+        """Insert a new water location unless it already exists by original_html_name."""
+        # existing_location = self.session.query(WaterLocations).filter_by(
+        #     original_html_name=original_html_name).first()
+        if self.record_exists(WaterLocations, original_html_name=original_html_name):
+            print(
+                f"Skipping insert — Water location '{original_html_name}' already exists.")
+            return
+        new_location = WaterLocations(
+            original_html_name=original_html_name,
+            water_name_cleaned=water_name_cleaned,
+            latitude=latitude,
+            longitude=longitude,
+            directions=directions,
+            derby_participant=derby_participant,
+            created_at=datetime.now()
+        )
+        self.session.add(new_location)
+        self.session.commit()
+        print(f"✅ Inserted new water location: {original_html_name}")
+
+    def write_lake_data(self, data):
+        for lake_data in data:
+            # Try to find matching water location
+            water_location = self.get_water_location(
+                lake_data['original_html_name'])
+
+            if not water_location:
+                # Insert new water location if missing
+                water_location = WaterLocations(
+                    original_html_name=lake_data['original_html_name'],
+                    water_name_cleaned=lake_data['lake'],
+                    latitude=lake_data['latitude'],
+                    longitude=lake_data['longitude'],
+                    directions=lake_data['directions'],
+                    created_at=datetime.now(),
+                    derby_participant=lake_data.get('derby_participant', False)
+                )
+                self.session.add(water_location)
+                self.session.flush()  # assign new id
+                print(
+                    f"✅ Added new water location '{lake_data['lake']}' with id {water_location.id}")
+            # Create stocked lake with FK reference
+            lake = StockedLakes(
+                lake=lake_data['lake'],
+                stocked_fish=lake_data['stocked_fish'],
+                date=lake_data['date'],
+                derby_participant=lake_data['derby_participant'],
+                weight=lake_data['weight'],
+                species=lake_data['species'],
+                hatchery=lake_data['hatchery'],
+                water_location_id=water_location.id
+            )
+
             # check if entry already exists in the table
-            # existing_lake = self.session.query(StockedLakes).filter_by(lake=lake_data['lake'],
-            #                                                            stocked_fish=lake_data['stocked_fish'],
-            #                                                            date=lake_data['date']).first()
-            # if existing_lake:
-            #     continue  # skip if the lake already exists in the table
             if self.record_exists(StockedLakes, lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date']):
                 print(
                     f'Skipped in db. already added {lake_data["lake"]} {lake_data["stocked_fish"]} {lake_data["date"]}')
                 continue  # Skip if exists
-            
-            # add the lake to the table if it doesn't exist
-            lake = StockedLakes(lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date'],
-                                latitude=lake_data['latitude'], longitude=lake_data['longitude'],
-                                directions=lake_data['directions'], derby_participant=lake_data['derby_participant'],
-                                weight=lake_data['weight'], species=lake_data['species'], hatchery=lake_data['hatchery'])
 
             self.session.add(lake)
 
@@ -246,3 +307,62 @@ class DataBase:
                     f"INSERT INTO stocked_lakes_table (id, lake, stocked_fish, species, weight, hatchery, date, latitude, longitude, directions, derby_participant) VALUES ({row.id}, '{row.lake}', {row.stocked_fish}, '{row.species}', {row.weight}, '{row.hatchery}', '{row.date}', '{row.latitude}', '{row.longitude}', '{row.directions}', {row.derby_participant});\n")
 
         print(f"Database backed up to {backup_file_txt} and {backup_file_sql}")
+
+    # def backfill_water_location_fields(self):
+        print("🔄 Backfilling latitude, longitude, and directions from stocked_lakes into water_locations...")
+        updated_count = 0
+
+        # Fetch all water locations
+        water_locations = self.session.query(WaterLocations).filter_by(
+            latitude=0).all()
+
+        for wl in water_locations:
+            # Try to find a stocked lake with matching cleaned name
+            stocked = self.session.query(StockedLakes).filter_by(
+                lake=wl.water_name_cleaned).first()
+            if stocked and (stocked.latitude or stocked.longitude or stocked.directions):
+                # Update fields if not already set
+                changed = False
+                if wl.latitude != stocked.latitude:
+                    wl.latitude = stocked.latitude
+                    changed = True
+                if wl.longitude != stocked.longitude:
+                    wl.longitude = stocked.longitude
+                    changed = True
+                if wl.directions != stocked.directions:
+                    wl.directions = stocked.directions
+                    changed = True
+
+                if changed:
+                    updated_count += 1
+                    print(
+                        f"✅ Updated {wl.water_name_cleaned} with lat/lon/directions")
+
+        self.session.commit()
+        print(f"Done. Updated {updated_count} water location entries.")
+
+    # def backfill_water_location_ids(self):
+        print("Backfilling water_location_id in stocked_lakes...")
+        updated_count = 0
+
+        stocked_lakes = self.session.query(StockedLakes).filter_by(
+            water_location_id=None).all()
+
+        for sl in stocked_lakes:
+            if sl.water_location_id:
+                continue  # already linked
+
+            match = self.session.query(WaterLocations).filter_by(
+                water_name_cleaned=sl.lake).first()
+            if match:
+                sl.water_location_id = match.id
+                updated_count += 1
+                print(
+                    f"✅ Linked lake '{sl.lake}' to water_location_id {match.id}")
+            else:
+                print(f"❌ No match found for lake '{sl.lake}'")
+
+        self.session.commit()
+        self.session.close()
+
+        print(f"🎉 Done. Backfilled {updated_count} stocked lake entries.")

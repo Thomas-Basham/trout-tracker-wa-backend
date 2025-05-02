@@ -4,16 +4,17 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from api.database import DataBase
 from datetime import datetime, timedelta
+from flask_cors import cross_origin
 
 load_dotenv()
-app = Flask(__name__.split('.')[0])
-app.app_context().push()
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-CORS(app, resources={r"/*": {"origins": "*"}})  # Allows all domains
 db = DataBase()
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}},
+     origins="http://localhost:3000", supports_credentials=True)
+app.app_context().push()
 
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'OPTIONS'])
 def index_view():
     api_info = {
         "message": "Welcome to the TroutTracker WA API",
@@ -65,23 +66,39 @@ def index_view():
     return jsonify(api_info)
 
 
-@app.route('/stocked_lakes_data', methods=['GET'])
+@app.route('/stocked_lakes_data', methods=['GET', 'OPTIONS'])
 def get_stocked_lakes_data():
     now = datetime.now()
-
     end_date = request.args.get('end_date', default=now)
-
     start_date = request.args.get(
         'start_date', default=now - timedelta(days=7))
 
-    stocked_lakes = db.get_stocked_lakes_data(start_date, end_date)
-    stocked_lakes_dicts = [stocked_lake.to_dict()
-                           for stocked_lake in stocked_lakes]
+    # Load with joined FK so water_location is eager-loaded
+    stocked_lakes = db.get_stocked_lakes_data(
+        end_date=end_date, start_date=start_date)
 
-    return jsonify(stocked_lakes_dicts)
+    result = []
+    for sl in stocked_lakes:
+        # Build a plain dict
+        rec = {
+            "date": sl.date.isoformat() if sl.date else None,
+            "lake": sl.lake,
+            "stocked_fish": sl.stocked_fish,
+            "species": sl.species,
+            "hatchery": sl.hatchery,
+            "weight": sl.weight,
+            "derby_participant": sl.derby_participant,
+            "water_location_id": sl.water_location_id,
+            "latitude": sl.water_location.latitude if sl.water_location else None,
+            "longitude": sl.water_location.longitude if sl.water_location else None,
+            "directions": sl.water_location.directions if sl.water_location else None,
+        }
+        result.append(rec)
+
+    return jsonify(result)
 
 
-@app.route('/total_stocked_by_date_data', methods=['GET'])
+@app.route('/total_stocked_by_date_data', methods=['GET', 'OPTIONS'])
 def get_total_stocked_by_date_data():
     now = datetime.now()
 
@@ -91,7 +108,7 @@ def get_total_stocked_by_date_data():
         'start_date', default=now - timedelta(days=7))
 
     total_stocked_by_date = db.get_total_stocked_by_date_data(
-        start_date, end_date)
+        start_date=start_date, end_date=end_date)
 
     # Convert to a list of dictionaries
     total_stocked_by_date = [{"date": str(date), "stocked_fish": stocked_fish}
@@ -100,7 +117,7 @@ def get_total_stocked_by_date_data():
     return jsonify(total_stocked_by_date)
 
 
-@app.route('/hatchery_totals', methods=['GET'])
+@app.route('/hatchery_totals', methods=['GET', 'OPTIONS'])
 def get_hatchery_totals():
 
     now = datetime.now()
@@ -110,27 +127,28 @@ def get_hatchery_totals():
     start_date = request.args.get(
         'start_date', default=now - timedelta(days=7))
 
-    hatchery_totals = db.get_hatchery_totals(start_date, end_date)
+    hatchery_totals = db.get_hatchery_totals(
+        start_date=start_date, end_date=end_date)
     hatchery_totals = [{'hatchery': row[0], 'sum_1': row[1]}
                        for row in hatchery_totals]
     return jsonify(hatchery_totals)
 
 
-@app.route('/derby_lakes_data', methods=['GET'])
+@app.route('/derby_lakes_data', methods=['GET', 'OPTIONS'])
 def get_derby_lakes_data():
     derby_lakes = db.get_derby_lakes_data()
     derby_lakes = [dict(row) for row in derby_lakes]
     return jsonify(derby_lakes)
 
 
-@app.route('/date_data_updated', methods=['GET'])
+@app.route('/date_data_updated', methods=['GET', 'OPTIONS'])
 def get_date_data_updated():
     last_updated = db.get_date_data_updated()
     last_updated = str(last_updated)
     return jsonify(last_updated)
 
 
-@app.route('/hatchery_names', methods=['GET'])
+@app.route('/hatchery_names', methods=['GET', 'OPTIONS'])
 def get_unique_hatcheries():
     unique_hatcheries = db.get_unique_hatcheries()
     return jsonify(unique_hatcheries)
