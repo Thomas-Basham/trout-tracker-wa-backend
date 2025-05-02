@@ -10,17 +10,37 @@
 
 ```bash
 .
-├── web_scraper/           # Main scraping logic
-│   ├── scraper.py         # Entry point for scraping
-│   ├── requirements.txt   # Python dependencies
-│   └── tests/             # Pytest unit tests
-├── api/                   # Optional API backend (future expansion)
-│   ├── main.py
-│   └── Dockerfile
-├── Dockerfile             # Base Dockerfile for scraper container
-├── scraper.yaml           # Docker Compose config for local development
-├── fargate-rds-secrets.yaml # CloudFormation for Fargate + RDS deployment
-└── github_oidc_ecr_access.yaml # CloudFormation for GitHub OIDC + ECR deploy access
+├── api/                   # API backend (Flask/Werkzeug or WSGI-based)
+│   ├── main.py            # API entry point
+│   ├── wsgi.py            # WSGI server config
+│   ├── config.py          # Environment + DB config
+│   ├── database.py        # SQLAlchemy or DB layer
+│   ├── requirements.txt   # API Python dependencies
+│   ├── Dockerfile         # API container
+│   ├── Procfile           # For deployment (e.g., Heroku-style)
+│   ├── nginx/             # Custom NGINX config (for reverse proxying)
+│   └── sqlite.db          # Local dev/test DB
+│
+├── web_scraper/           # Python scraper + data processing
+│   ├── scraper.py         # Main scraper logic
+│   ├── lake_names.txt     # List of lakes to scrape
+│   ├── backup_data.sql    # Optional dump of scraped data
+│   ├── requirements.txt   # Scraper Python dependencies
+│   ├── Dockerfile         # Scraper container
+│   ├── Procfile           # Optional process spec
+│   ├── tests/             # Unit tests for scraper
+│   └── google_cloud_billing.py # (Optional utility for GCP cost tracking?)
+│
+├── docker-compose.yml     # Local orchestration for API + scraper
+├── fargate-rds-secrets.yaml     # CloudFormation for scheduled scraper + RDS
+├── configure-aws-credentials-latest.yml # GitHub Actions AWS auth config
+├── sample.env             # Example environment variables
+├── pyproject.toml         # Optional global Python project config
+├── vercel.json            # Vercel config (if frontend served there)
+├── README.md              # You are here 📘
+├── LICENSE
+├── CODE_OF_CONDUCT.md
+└── CONTRIBUTING.md
 ```
 
 ⸻
