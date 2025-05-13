@@ -1,29 +1,16 @@
-# API Dockerfile
-FROM python:3.11-alpine
+FROM python:3.13-slim
 
-# Set working directory
+# Set workdir
 WORKDIR /app
 
-# Install system dependencies needed for numpy and scientific libraries
-RUN apk add --no-cache \
-    gcc \
-    g++ \
-    musl-dev \
-    libffi-dev \
-    openblas-dev \
-    lapack-dev \
-    build-base \
-    linux-headers \
-    python3-dev \
-    py3-pip
-
-# Install Python dependencies
-COPY ./api/requirements.txt .
+# Install dependencies
+COPY api/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# # Copy the application code
-COPY ./api/ .
+# Copy app files
+COPY api .
 
-# Command to run API server
-CMD ["python", "wsgi.py"]
-# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+COPY ./data/ ./data
+
+# Run the app with Uvicorn
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5050"]
