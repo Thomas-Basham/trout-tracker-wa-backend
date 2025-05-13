@@ -1,21 +1,44 @@
-# main.py
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
+import os
+import json
 from dotenv import load_dotenv
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from api.database import DataBase
 from datetime import datetime, timedelta
-from flask_cors import cross_origin
+from data.database import DataBase
 
 load_dotenv()
 db = DataBase()
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}},
-     origins=["http://localhost:3000", "https://trout-tracker-wa.vercel.app"], supports_credentials=True)
-app.app_context().push()
+app = FastAPI()
+def parse_query_dates(request: Request):
+    now = datetime.now()
+    end_date_str = request.query_params.get("end_date")
+    start_date_str = request.query_params.get("start_date")
+
+    try:
+        end_date = datetime.fromisoformat(end_date_str) if end_date_str else now
+    except ValueError:
+        end_date = now
+
+    try:
+        start_date = datetime.fromisoformat(start_date_str) if start_date_str else (now - timedelta(days=7))
+    except ValueError:
+        start_date = now - timedelta(days=7)
+
+    return start_date, end_date
 
 
-@app.route('/', methods=['GET', 'OPTIONS'])
-def index_view():
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "https://trout-tracker-wa.vercel.app"],
+    allow_credentials=True,
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
+
+
+@app.get("/")
+async def index_view():
     api_info = {
         "message": "Welcome to the TroutTracker WA API",
         "routes": {
@@ -63,74 +86,62 @@ def index_view():
             }
         }
     }
-    return jsonify(api_info)
+    return api_info
 
 
-@app.route('/stocked_lakes_data', methods=['GET', 'OPTIONS'])
-def get_stocked_lakes_data():
-    now = datetime.now()
-    end_date = request.args.get('end_date', default=now)
-    start_date = request.args.get(
-        'start_date', default=now - timedelta(days=7))
+@app.get("/stocked_lakes_data")
+async def get_stocked_lakes_data(request: Request):
+    start_date, end_date =  parse_query_dates(request)
+    if start_date and end_date:
+        stocked_lakes = db.get_stocked_lakes_data(
+            end_date=end_date, start_date=start_date)
 
-    # Load with joined FK so water_location is eager-loaded
-    stocked_lakes = db.get_stocked_lakes_data(
-        end_date=end_date, start_date=start_date)
-
-    return jsonify(stocked_lakes)
+        return stocked_lakes
 
 
-@app.route('/total_stocked_by_date_data', methods=['GET', 'OPTIONS'])
-def get_total_stocked_by_date_data():
-    now = datetime.now()
+@app.get("/total_stocked_by_date_data")
+async def get_total_stocked_by_date_data(request: Request):
+    start_date, end_date =  parse_query_dates(request)
+    if start_date and end_date:
+        total_stocked_by_date = db.get_total_stocked_by_date_data(
+            start_date=start_date, end_date=end_date)
 
-    end_date = request.args.get('end_date', default=now)
+        total_stocked_by_date = [{"date": str(date), "stocked_fish": stocked_fish}
+                                for date, stocked_fish in total_stocked_by_date]
 
-    start_date = request.args.get(
-        'start_date', default=now - timedelta(days=7))
-
-    total_stocked_by_date = db.get_total_stocked_by_date_data(
-        start_date=start_date, end_date=end_date)
-
-    # Convert to a list of dictionaries
-    total_stocked_by_date = [{"date": str(date), "stocked_fish": stocked_fish}
-                             for date, stocked_fish in total_stocked_by_date]
-
-    return jsonify(total_stocked_by_date)
+        return total_stocked_by_date
 
 
-@app.route('/hatchery_totals', methods=['GET', 'OPTIONS'])
-def get_hatchery_totals():
-
-    now = datetime.now()
-
-    end_date = request.args.get('end_date', default=now)
-
-    start_date = request.args.get(
-        'start_date', default=now - timedelta(days=7))
-
-    hatchery_totals = db.get_hatchery_totals(
-        start_date=start_date, end_date=end_date)
-    hatchery_totals = [{'hatchery': row[0], 'sum_1': row[1]}
-                       for row in hatchery_totals]
-    return jsonify(hatchery_totals)
+@app.get("/hatchery_totals")
+async def get_hatchery_totals(request: Request):
+    start_date, end_date = parse_query_dates(request)
+    if start_date and end_date:
+        print("START AND FUCKING END DATE!!!!",start_date,end_date)
+        hatchery_totals = db.get_hatchery_totals(
+            start_date=start_date, end_date=end_date)
+        hatchery_totals = [{'hatchery': row[0], 'sum_1': row[1]}
+                        for row in hatchery_totals]
+        return hatchery_totals
 
 
-@app.route('/derby_lakes_data', methods=['GET', 'OPTIONS'])
-def get_derby_lakes_data():
+@app.get("/derby_lakes_data")
+async def get_derby_lakes_data():
     derby_lakes = db.get_derby_lakes_data()
     derby_lakes = [dict(row) for row in derby_lakes]
-    return jsonify(derby_lakes)
+    return derby_lakes
 
 
-@app.route('/date_data_updated', methods=['GET', 'OPTIONS'])
-def get_date_data_updated():
+@app.get("/date_data_updated")
+async def get_date_data_updated():
     last_updated = db.get_date_data_updated()
     last_updated = str(last_updated)
-    return jsonify(last_updated)
+    return last_updated
 
 
-@app.route('/hatchery_names', methods=['GET', 'OPTIONS'])
-def get_unique_hatcheries():
+@app.get("/hatchery_names")
+async def get_unique_hatcheries():
     unique_hatcheries = db.get_unique_hatcheries()
-    return jsonify(unique_hatcheries)
+    return unique_hatcheries
+
+
+handler = Mangum(app)
