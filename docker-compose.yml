@@ -5,7 +5,7 @@ services:
       dockerfile: api/Dockerfile
     image: api:latest
     ports:
-      - "8000:8000"
+      - "5050:5050"
     env_file:
       - .env
 
