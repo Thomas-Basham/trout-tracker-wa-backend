@@ -3,14 +3,14 @@
   "devCommand": "uvicorn api/main:app --host 0.0.0.0 --port 8000",
   "builds": [
     {
-      "src": "wsgi.py",
+      "src": "api/main.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "wsgi.py"
+      "dest": "api/main.py"
     }
   ]
 }

@@ -5,7 +5,7 @@ import os
 import json
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-from data.database import DataBase
+from database import DataBase
 import uvicorn
 
 load_dotenv()
