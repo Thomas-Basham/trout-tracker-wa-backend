@@ -3,8 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from data.database import DataBase
-# from mangum import Mangum
-# import uvicorn
+from mangum import Mangum
+import uvicorn
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger()
+
 
 load_dotenv()
 db = DataBase()
@@ -91,13 +96,14 @@ async def index_view():
 
 @app.get("/stocked_lakes_data")
 async def get_stocked_lakes_data(request: Request):
-    start_date, end_date =  parse_query_dates(request)
-    if start_date and end_date:
+    try:
+        start_date, end_date = parse_query_dates(request)
         stocked_lakes = db.get_stocked_lakes_data(
             end_date=end_date, start_date=start_date)
-
         return stocked_lakes
-
+    except Exception as e:
+        logger.exception("Failed to fetch stocked lakes data")
+        return {"error": str(e)}
 
 @app.get("/total_stocked_by_date_data")
 async def get_total_stocked_by_date_data(request: Request):
@@ -144,7 +150,7 @@ async def get_unique_hatcheries():
     return unique_hatcheries
 
 
-# handler = Mangum(app) 
+handler = Mangum(app) 
 
 # if __name__ == "__main__":
-#   uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+#   uvicorn.run(app, host="0.0.0.0", port=8080)

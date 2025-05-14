@@ -1,12 +1,17 @@
-FROM public.ecr.aws/lambda/python:3.11
+FROM public.ecr.aws/lambda/python:3.12
 
+# Set working directory to the Lambda task root
 WORKDIR ${LAMBDA_TASK_ROOT}
 
-COPY api/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy Python files
+COPY ./api/index.py .
 
-COPY api .
-COPY ./data/ ./data
+# Copy the data directory into the task root so Python can import it
+COPY ./data ./data
 
-RUN chmod +x ./dockerfiles/prod/lambda_entry_script.sh
-ENTRYPOINT [ "./dockerfiles/prod/lambda_entry_script.sh","main.handler" ]
+# Install dependencies
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+# Lambda handler entry point
+CMD [ "index.handler" ]

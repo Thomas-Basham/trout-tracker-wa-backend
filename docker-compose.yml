@@ -1,21 +1,23 @@
 services:
   api-dev:
+    platform: linux/amd64 # AWS ECS default
     build:
       context: .
       dockerfile: api/dockerfiles/dev/Dockerfile
-    image: api:latest
+    image: dev-api:latest
     ports:
-      - "3000:8080"
+      - "8080:8080"
     env_file:
       - .env
 
   api-prod:
+    platform: linux/amd64 # AWS ECS default
     build:
       context: .
       dockerfile: api/dockerfiles/prod/Dockerfile
     image: api:latest
     ports:
-      - "5050:5050"
+      - "8080:8080"
     env_file:
       - .env
 

@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from geopy import GoogleV3
 from dotenv import load_dotenv
 
-from api.database import DataBase, StockedLakes, WaterLocations
+from data.database import DataBase, StockedLakes, WaterLocations
 
 
 class Scraper:

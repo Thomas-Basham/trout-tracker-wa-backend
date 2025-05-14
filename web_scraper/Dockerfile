@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ./web_scraper/ .
 
 # Also copy API code into the image so it can be imported
-COPY ./api/ ./api
+COPY ./data ./data
 
 # Command to run the scraper
 CMD ["python", "scraper.py"]
