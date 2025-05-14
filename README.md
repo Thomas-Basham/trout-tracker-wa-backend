@@ -49,7 +49,7 @@
 
 AWS Infrastructure:
 
-- Fargate runs the scraper every 10 minutes via EventBridge.
+- Fargate runs the scraper every 24 hours via EventBridge.
 - Secrets Manager securely stores DB credentials.
 - Aurora PostgreSQL stores structured stocking data.
 - CloudWatch Logs tracks runtime output for visibility.
@@ -73,22 +73,25 @@ GitHub → ECR Workflow:
 
 ## 🚀 Docker Compose Commands Cheat Sheet
 
-| Action                           | Command                            | Notes                                          |
-| :------------------------------- | :--------------------------------- | :--------------------------------------------- |
-| **Build everything**             | `docker compose build`             | Build API, Scraper, and DB images              |
-| **Start everything**             | `docker compose up`                | Start API, Scraper, and DB                     |
-| **Start everything and rebuild** | `docker compose up --build`        | Force rebuild before starting                  |
-| **Start only API**               | `docker compose up api`            | Starts API (and DB if not already running)     |
-| **Start only Scraper**           | `docker compose up web-scraper`    | Starts Scraper (and DB if not already running) |
-| **Stop all services**            | `docker compose down`              | Stop and remove containers and networks        |
-| **Rebuild only API**             | `docker compose build api`         | Rebuild only the API image                     |
-| **Rebuild only Scraper**         | `docker compose build web-scraper` | Rebuild only the Scraper image                 |
-| **View running containers**      | `docker compose ps`                | Show status of all services                    |
-| **View logs**                    | `docker compose logs`              | See logs from all services                     |
-| **Follow logs live**             | `docker compose logs -f`           | Real-time log streaming                        |
-| **Stop just API**                | `docker compose stop api`          | Only stops API container                       |
-| **Stop just Scraper**            | `docker compose stop web-scraper`  | Only stops Scraper container                   |
-| **Restart everything**           | `docker compose restart`           | Restart all containers                         |
+| Action                           | Command                                      | Notes                                                    |
+| :------------------------------- | :------------------------------------------- | :-------------------------------------------------------- |
+| **Build all services**           | `docker compose build`                       | Build all images                                          |
+| **Start all services**           | `docker compose up`                          | Start API(s), Scraper                                     |
+| **Start all + rebuild**          | `docker compose up --build`                  | Force rebuild before starting                             |
+| **Start dev API only**           | `docker compose up api-dev`                  | Starts API Dev service                                    |
+| **Start prod API only**          | `docker compose up api-prod`                 | Starts API Prod service                                   |
+| **Start scraper only**           | `docker compose up web-scraper`              | Starts Scraper                                            |
+| **Stop all services**            | `docker compose down`                        | Stops and removes all containers and networks             |
+| **Rebuild dev API only**         | `docker compose build api-dev`               | Rebuild only the dev API image                            |
+| **Rebuild prod API only**        | `docker compose build api-prod`              | Rebuild only the prod API image                           |
+| **Rebuild scraper only**         | `docker compose build web-scraper`           | Rebuild only the scraper image                            |
+| **View running containers**      | `docker compose ps`                          | Show status of all services                               |
+| **View logs (all services)**     | `docker compose logs`                        | View logs for all services                                |
+| **Follow logs live**             | `docker compose logs -f`                     | Stream logs in real time                                  |
+| **Stop dev API**                 | `docker compose stop api-dev`                | Stop only the dev API container                           |
+| **Stop prod API**                | `docker compose stop api-prod`               | Stop only the prod API container                          |
+| **Stop scraper**                 | `docker compose stop web-scraper`            | Stop only the scraper container                           |
+| **Restart all containers**       | `docker compose restart`                     | Restart all running services                              |
 
 ---
 
@@ -105,7 +108,7 @@ Deploy the CloudFormation Stack:
 
 ```bash
 aws cloudformation deploy \
- --template-file fargate-rds-secrets.yaml \
+ --template-file aws_config/fargate-rds-secrets.yaml \
  --stack-name troutlytics-scraper \
  --capabilities CAPABILITY_NAMED_IAM \
  --parameter-overrides \
