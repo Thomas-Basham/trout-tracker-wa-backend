@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from mangum import Mangum
+# from mangum import Mangum
 import os
 import json
 from dotenv import load_dotenv
@@ -146,7 +146,7 @@ async def get_unique_hatcheries():
     return unique_hatcheries
 
 
-handler = Mangum(app)
+# handler = Mangum(app) 
 
 # if __name__ == "__main__":
 #   uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
