@@ -1,12 +1,10 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-# from mangum import Mangum
-import os
-import json
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-from api.database import DataBase
-import uvicorn
+from data.database import DataBase
+# from mangum import Mangum
+# import uvicorn
 
 load_dotenv()
 db = DataBase()
