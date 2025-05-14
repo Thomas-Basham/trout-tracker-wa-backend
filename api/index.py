@@ -5,7 +5,7 @@ import os
 import json
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-from database import DataBase
+from api.database import DataBase
 import uvicorn
 
 load_dotenv()
@@ -148,5 +148,5 @@ async def get_unique_hatcheries():
 
 handler = Mangum(app)
 
-if __name__ == "__main__":
-  uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+# if __name__ == "__main__":
+#   uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
