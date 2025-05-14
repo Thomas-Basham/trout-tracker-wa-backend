@@ -5,7 +5,8 @@ import os
 import json
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
-from data.database import DataBase
+from database import DataBase
+import uvicorn
 
 load_dotenv()
 db = DataBase()
@@ -30,7 +31,8 @@ def parse_query_dates(request: Request):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://trout-tracker-wa.vercel.app"],
+    # allow_origins=["http://localhost:3000", "https://trout-tracker-wa.vercel.app"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["GET"],
     allow_headers=["*"],
@@ -145,3 +147,7 @@ async def get_unique_hatcheries():
 
 
 handler = Mangum(app)
+
+
+if __name__ == "__main__":
+  uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
