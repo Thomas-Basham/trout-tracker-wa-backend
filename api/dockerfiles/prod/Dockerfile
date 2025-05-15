@@ -10,7 +10,7 @@ COPY ./api/index.py .
 COPY ./data ./data
 
 # Install dependencies
-COPY requirements.txt .
+COPY ./api/requirements.txt .
 RUN pip3 install -r requirements.txt
 
 # Lambda handler entry point

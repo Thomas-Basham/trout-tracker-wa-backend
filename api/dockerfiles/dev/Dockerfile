@@ -4,7 +4,7 @@ FROM python:3.13-slim
 WORKDIR /app
 
 # Install dependencies
-COPY requirements.txt .
+COPY ./api/requirements.txt .
 
 # Copy app files
 COPY ./api/index.py .

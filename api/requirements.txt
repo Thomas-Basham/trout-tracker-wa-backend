@@ -1,0 +1,10 @@
+# FOR ./api
+numpy
+psycopg2-binary
+pytest
+sqlalchemy
+uvicorn[standard]
+python-dotenv
+mangum
+fastapi
+awslambdaric
