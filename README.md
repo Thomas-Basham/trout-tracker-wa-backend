@@ -73,25 +73,27 @@ GitHub → ECR Workflow:
 
 ## 🚀 Docker Compose Commands Cheat Sheet
 
-| Action                           | Command                                      | Notes                                                    |
-| :------------------------------- | :------------------------------------------- | :-------------------------------------------------------- |
-| **Build all services**           | `docker compose build`                       | Build all images                                          |
-| **Start all services**           | `docker compose up`                          | Start API(s), Scraper                                     |
-| **Start all + rebuild**          | `docker compose up --build`                  | Force rebuild before starting                             |
-| **Start dev API only**           | `docker compose up api-dev`                  | Starts API Dev service                                    |
-| **Start prod API only**          | `docker compose up api-prod`                 | Starts API Prod service                                   |
-| **Start scraper only**           | `docker compose up web-scraper`              | Starts Scraper                                            |
-| **Stop all services**            | `docker compose down`                        | Stops and removes all containers and networks             |
-| **Rebuild dev API only**         | `docker compose build api-dev`               | Rebuild only the dev API image                            |
-| **Rebuild prod API only**        | `docker compose build api-prod`              | Rebuild only the prod API image                           |
-| **Rebuild scraper only**         | `docker compose build web-scraper`           | Rebuild only the scraper image                            |
-| **View running containers**      | `docker compose ps`                          | Show status of all services                               |
-| **View logs (all services)**     | `docker compose logs`                        | View logs for all services                                |
-| **Follow logs live**             | `docker compose logs -f`                     | Stream logs in real time                                  |
-| **Stop dev API**                 | `docker compose stop api-dev`                | Stop only the dev API container                           |
-| **Stop prod API**                | `docker compose stop api-prod`               | Stop only the prod API container                          |
-| **Stop scraper**                 | `docker compose stop web-scraper`            | Stop only the scraper container                           |
-| **Restart all containers**       | `docker compose restart`                     | Restart all running services                              |
+Everything is ran from the root repo folder
+
+| Action                       | Command                            | Notes                                         |
+| :--------------------------- | :--------------------------------- | :-------------------------------------------- |
+| **Build all services**       | `docker compose build`             | Build all images                              |
+| **Start all services**       | `docker compose up`                | Start API(s), Scraper                         |
+| **Start all + rebuild**      | `docker compose up --build`        | Force rebuild before starting                 |
+| **Start dev API only**       | `docker compose up api-dev`        | Starts API Dev service                        |
+| **Start prod API only**      | `docker compose up api-prod`       | Starts API Prod service                       |
+| **Start scraper only**       | `docker compose up web-scraper`    | Starts Scraper                                |
+| **Stop all services**        | `docker compose down`              | Stops and removes all containers and networks |
+| **Rebuild dev API only**     | `docker compose build api-dev`     | Rebuild only the dev API image                |
+| **Rebuild prod API only**    | `docker compose build api-prod`    | Rebuild only the prod API image               |
+| **Rebuild scraper only**     | `docker compose build web-scraper` | Rebuild only the scraper image                |
+| **View running containers**  | `docker compose ps`                | Show status of all services                   |
+| **View logs (all services)** | `docker compose logs`              | View logs for all services                    |
+| **Follow logs live**         | `docker compose logs -f`           | Stream logs in real time                      |
+| **Stop dev API**             | `docker compose stop api-dev`      | Stop only the dev API container               |
+| **Stop prod API**            | `docker compose stop api-prod`     | Stop only the prod API container              |
+| **Stop scraper**             | `docker compose stop web-scraper`  | Stop only the scraper container               |
+| **Restart all containers**   | `docker compose restart`           | Restart all running services                  |
 
 ---
 
