@@ -69,8 +69,9 @@ GitHub → ECR Workflow:
 
 📋 Prerequisites
 
+- An AWS Account configured with appropriate permissions
 - AWS CLI configured with appropriate permissions
-- Docker installed (for local dev builds)
+- Docker installed (for local and prod builds)
 - Python 3.11+
 
 ⸻
@@ -109,15 +110,15 @@ Deploy the CloudFormation Stack:
 
 ```bash
 aws cloudformation deploy \
- --template-file aws_config/fargate-rds-secrets.yaml \
- --stack-name troutlytics-scraper \
- --capabilities CAPABILITY_NAMED_IAM \
- --parameter-overrides \
- ECRImageUri=<your-ecr-image-uri> \
- VpcId=<your-vpc-id> \
- SubnetIds=subnet-xxxx,subnet-yyyy \
- SecurityGroupId=sg-xxxxxx \
- SecretArn=arn:aws:secretsmanager:us-west-2:xxx:secret:troutlytics-db
+  --template-file aws_config/configure-aws-credentials-latest.yml \
+  --stack-name troutlytics-stack \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --parameter-overrides \
+    ECRImageUriScraper=123456789012.dkr.ecr.us-west-2.amazonaws.com/scraper:latest \
+    ECRImageUriAPI=123456789012.dkr.ecr.us-west-2.amazonaws.com/api:latest \
+    VpcId=vpc-xxxxxxxx \
+    SubnetIds=subnet-aaaa,subnet-bbbb \
+    SecurityGroupId=sg-xxxxxxxx
 ```
 
 ⸻
