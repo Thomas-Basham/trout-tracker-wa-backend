@@ -1,6 +1,6 @@
 # database.py
-from sqlalchemy.orm import sessionmaker, declarative_base, relationship, joinedload
-from sqlalchemy import create_engine, Column, Integer, String, Boolean, Date, Float, TIMESTAMP, exists, ForeignKey, text  # text???
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, Base
 from datetime import datetime, timedelta
 import os
 from data.models import WaterLocations, StockedLakes, DerbyLake, Utility
