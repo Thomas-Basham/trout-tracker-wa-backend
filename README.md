@@ -1,5 +1,7 @@
 # 🐟 Troutlytics Backend
 
+[![Python application](https://github.com/troutlytics/troutlytics-backend/actions/workflows/python-app.yml/badge.svg)](https://github.com/troutlytics/troutlytics-backend/actions/workflows/python-app.yml)
+
 ## Description
 
 **Troutlytics** is a data-driven Python application that scrapes and stores trout stocking data for Washington State lakes. It runs on a scheduled AWS Fargate task and stores results in an Aurora PostgreSQL database for use in dashboards, maps, and analysis tools.
@@ -10,37 +12,40 @@
 
 ```bash
 .
-├── api/                   # API backend (Flask/Werkzeug or WSGI-based)
-│   ├── main.py            # API entry point
-│   ├── wsgi.py            # WSGI server config
-│   ├── config.py          # Environment + DB config
-│   ├── database.py        # SQLAlchemy or DB layer
-│   ├── requirements.txt   # API Python dependencies
-│   ├── Dockerfile         # API container
-│   ├── Procfile           # For deployment (e.g., Heroku-style)
-│   ├── nginx/             # Custom NGINX config (for reverse proxying)
-│   └── sqlite.db          # Local dev/test DB
-│
-├── web_scraper/           # Python scraper + data processing
-│   ├── scraper.py         # Main scraper logic
-│   ├── lake_names.txt     # List of lakes to scrape
-│   ├── backup_data.sql    # Optional dump of scraped data
-│   ├── requirements.txt   # Scraper Python dependencies
-│   ├── Dockerfile         # Scraper container
-│   ├── Procfile           # Optional process spec
-│   ├── tests/             # Unit tests for scraper
-│   └── google_cloud_billing.py # (Optional utility for GCP cost tracking?)
-│
-├── docker-compose.yml     # Local orchestration for API + scraper
-├── fargate-rds-secrets.yaml     # CloudFormation for scheduled scraper + RDS
-├── configure-aws-credentials-latest.yml # GitHub Actions AWS auth config
-├── sample.env             # Example environment variables
-├── pyproject.toml         # Optional global Python project config
-├── vercel.json            # Vercel config (if frontend served there)
+├── api/                          # 🎯 Main application API
+│   ├── __init__.py              # API package initializer
+│   ├── index.py                 # API entrypoint (routes/controllers)
+│   ├── requirements.txt         # API dependencies
+│   ├── dockerfiles/
+│   │   ├── dev/Dockerfile       # Dev Dockerfile
+│   │   └── prod/                # Production Dockerfile (Lambda-ready)
+│   │       ├── Dockerfile
+│   │       └── lambda_entry_script.sh
+│   └── README.md                # API-specific usage docs
+
+├── web_scraper/                 # 🕸️ Web scraping service
+│   ├── __init__.py
+│   ├── scraper.py              # Main script for collecting trout/creel data
+│   ├── Dockerfile              # Docker setup for scraper
+│   ├── Makefile                # Shortcuts for common dev tasks
+│   ├── requirements.txt
+│   ├── README.md
+│   └── tests/                  # 🔬 Pytest-based tests
+│       ├── __init__.py
+│       └── test_scraper.py
+
+├── data/                        # 🗃️ Database models and storage
+│   ├── __init__.py
+│   ├── database.py             # SQLAlchemy engine and session config
+│   ├── models.py               # ORM models for tables
+│   ├── backup_data.sql         # SQL dump for backup or restore
+│   ├── backup_data.txt         # Raw text backup
+│   └── sqlite.db               # Local development database
+
+├── aws_config/                 # ☁️ AWS deployment and secrets setup
+│   ├── configure-aws-credentials-latest.yml  # GitHub Actions for AWS login
+│   └── fargate-rds-secrets.yaml              # Fargate setup with RDS and Secrets Manager served there)
 ├── README.md              # You are here 📘
-├── LICENSE
-├── CODE_OF_CONDUCT.md
-└── CONTRIBUTING.md
 ```
 
 ⸻
@@ -53,6 +58,7 @@ AWS Infrastructure:
 - Secrets Manager securely stores DB credentials.
 - Aurora PostgreSQL stores structured stocking data.
 - CloudWatch Logs tracks runtime output for visibility.
+- API hosted with API Gateway and Lambda
 
 GitHub → ECR Workflow:
 
