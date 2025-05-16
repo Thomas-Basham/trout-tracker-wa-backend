@@ -103,14 +103,7 @@ Everything is ran from the root repo folder
 
 ---
 
-✅ After renaming your config to `docker-compose.yml`, you no longer need `-f` flags!  
-✅ `docker compose` (no hyphen) is the new modern standard.
-
-Edit environment variables via sample.env or inject them via Docker secrets.
-
-⸻
-
-🛠️ Cloud Setup
+## 🛠️ Cloud Setup
 
 Deploy the CloudFormation Stack:
 
