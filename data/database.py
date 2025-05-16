@@ -1,9 +1,9 @@
-# database.py
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, Base
+from sqlalchemy import create_engine, Base, exists, text
 from datetime import datetime, timedelta
 import os
 from data.models import WaterLocations, StockedLakes, DerbyLake, Utility
+
 
 class DataBase:
     def __init__(self):
@@ -87,7 +87,8 @@ class DataBase:
       ORDER BY sum_1 DESC
       """
 
-        hatchery_totals = self.conn.execute(text(query), {"start_date":start_date, "end_date":end_date}).fetchall()
+        hatchery_totals = self.conn.execute(
+            text(query), {"start_date": start_date, "end_date": end_date}).fetchall()
         print("hatchery_totals", hatchery_totals)
         return hatchery_totals
 
@@ -102,7 +103,7 @@ class DataBase:
         """
 
         total_stocked_by_date = self.conn.execute(
-            text(query),  {"start_date":start_date, "end_date":end_date}).fetchall()
+            text(query),  {"start_date": start_date, "end_date": end_date}).fetchall()
 
         if str(self.engine) == "Engine(sqlite:///data/sqlite.db)":
             total_stocked_by_date = [(datetime.strptime(date_str, "%Y-%m-%d"), stocked_fish)
