@@ -89,7 +89,7 @@ class DataBase:
 
         hatchery_totals = self.conn.execute(
             text(query), {"start_date": start_date, "end_date": end_date}).fetchall()
-        print("hatchery_totals", hatchery_totals)
+        # print("hatchery_totals", hatchery_totals)
         return hatchery_totals
 
     def get_total_stocked_by_date_data(self,  end_date=datetime.now(), start_date=datetime.now() - timedelta(days=7)):
@@ -119,7 +119,7 @@ class DataBase:
     def get_unique_hatcheries(self):
         query = "SELECT DISTINCT hatchery FROM stocking_report ORDER BY hatchery"
         unique_hatcheries = self.conn.execute(text(query)).fetchall()
-        print(unique_hatcheries)
+        # print(unique_hatcheries)
         return [row[0] for row in unique_hatcheries]
 
     def get_date_data_updated(self):
@@ -145,26 +145,27 @@ class DataBase:
         self.session.commit()
         self.session.close()
 
-    def write_derby_data(self, data):
-        derby_lakes = data.derby_lake_names
-        if derby_lakes:
-            for lake in derby_lakes:
-                for item in data:
-                    if lake.capitalize() in item['lake'].capitalize():
-                        item['derby_participant'] = True
-                        existing_lake = self.session.query(
-                            DerbyParticipant).filter_by(lake=lake).first()
-                        if existing_lake:
-                            continue  # skip if the lake already exists in the table
-                        self.session.add(DerbyParticipant(lake=lake))
-        else:
-            # If there are no derby lakes, clear all derby participants from Stocked Lake table, delete all derby table entries
-            self.session.query(DerbyParticipant).delete()
+    # TODO: Needs to be updated. Will be a paid service
+    # def write_derby_data(self, data):
+    #     derby_lakes = data.derby_lake_names
+    #     if derby_lakes:
+    #         for lake in derby_lakes:
+    #             for item in data:
+    #                 if lake.capitalize() in item['lake'].capitalize():
+    #                     item['derby_participant'] = True
+    #                     existing_lake = self.session.query(
+    #                         DerbyParticipant).filter_by(lake=lake).first()
+    #                     if existing_lake:
+    #                         continue  # skip if the lake already exists in the table
+    #                     self.session.add(DerbyParticipant(lake=lake))
+    #     else:
+    #         # If there are no derby lakes, clear all derby participants from Stocked Lake table, delete all derby table entries
+    #         self.session.query(DerbyParticipant).delete()
 
-            lakes_to_update = self.session.query(
-                StockingReport).filter_by(derby_participant=True)
-            for lake in lakes_to_update:
-                lake.derby_participant = False
+    #         lakes_to_update = self.session.query(
+    #             StockingReport).filter_by(derby_participant=True)
+    #         for lake in lakes_to_update:
+    #             lake.derby_participant = False
 
     def record_exists(self, model, **kwargs):
         """Efficiently check if a record exists in the database."""
@@ -203,7 +204,7 @@ class DataBase:
                 # Insert new water location if missing
                 water_location = WaterLocation(
                     original_html_name=lake_data['original_html_name'],
-                    water_name_cleaned=lake_data['lake'],
+                    water_name_cleaned=lake_data['water_name_cleaned'],
                     latitude=lake_data['latitude'],
                     longitude=lake_data['longitude'],
                     directions=lake_data['directions'],
@@ -216,10 +217,8 @@ class DataBase:
                     f"✅ Added new water location '{lake_data['lake']}' with id {water_location.id}")
             # Create stocked lake with FK reference
             lake = StockingReport(
-                lake=lake_data['lake'],
                 stocked_fish=lake_data['stocked_fish'],
                 date=lake_data['date'],
-                derby_participant=lake_data['derby_participant'],
                 weight=lake_data['weight'],
                 species=lake_data['species'],
                 hatchery=lake_data['hatchery'],
@@ -227,9 +226,9 @@ class DataBase:
             )
 
             # check if entry already exists in the table
-            if self.record_exists(StockingReport, lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date']):
+            if self.record_exists(StockingReport, stocked_fish=lake_data['stocked_fish'], date=lake_data['date'], water_location_id=water_location.id):
                 print(
-                    f'Skipped in db. already added {lake_data["lake"]} {lake_data["stocked_fish"]} {lake_data["date"]}')
+                    f'Skipped in db. already added {lake_data["water_name_cleaned"]} {lake_data["stocked_fish"]} {lake_data["date"]}')
                 continue  # Skip if exists
 
             self.session.add(lake)
@@ -242,27 +241,28 @@ class DataBase:
     def write_utility_data(self):
         self.session.add(Utility(updated=datetime.now().date()))
 
-    def back_up_database(self):
-        all_stocked_lakes = self.session.query(StockingReport).all()
+    # NOT WORKING... using other backup techniques with less overhead. 
+    # def back_up_database(self): 
+    #     all_stocked_lakes = self.session.query(StockingReport).all()
 
-        backup_file_txt = 'data/backup_data.txt'
-        backup_file_sql = 'data/backup_data.sql'
+    #     backup_file_txt = 'data/backup_data.txt'
+    #     backup_file_sql = 'data/backup_data.sql'
 
-        if os.path.exists(backup_file_txt):
-            os.remove(backup_file_txt)
-        if os.path.exists(backup_file_sql):
-            os.remove(backup_file_sql)
+    #     if os.path.exists(backup_file_txt):
+    #         os.remove(backup_file_txt)
+    #     if os.path.exists(backup_file_sql):
+    #         os.remove(backup_file_sql)
 
-        with open(backup_file_txt, 'w') as f:
-            for row in all_stocked_lakes:
-                # Write each column value separated by a comma
-                f.write(
-                    f"{row.id},{row.lake},{row.stocked_fish},{row.species},{row.weight},{row.hatchery},{row.date},{row.latitude},{row.longitude},{row.directions},{row.derby_participant}\n")
+    #     with open(backup_file_txt, 'w') as f:
+    #         for row in all_stocked_lakes:
+    #             # Write each column value separated by a comma
+    #             f.write(
+    #                 f"{row.id},{row.lake},{row.stocked_fish},{row.species},{row.weight},{row.hatchery},{row.date},{row.latitude},{row.longitude},{row.directions},{row.derby_participant}\n")
 
-        with open(backup_file_sql, 'w') as f:
-            for row in all_stocked_lakes:
-                # Write an INSERT INTO statement for each row
-                f.write(
-                    f"INSERT INTO stocking_report (id, lake, stocked_fish, species, weight, hatchery, date, latitude, longitude, directions, derby_participant) VALUES ({row.id}, '{row.lake}', {row.stocked_fish}, '{row.species}', {row.weight}, '{row.hatchery}', '{row.date}', '{row.latitude}', '{row.longitude}', '{row.directions}', {row.derby_participant});\n")
+    #     with open(backup_file_sql, 'w') as f:
+    #         for row in all_stocked_lakes:
+    #             # Write an INSERT INTO statement for each row
+    #             f.write(
+    #                 f"INSERT INTO stocking_report (id, lake, stocked_fish, species, weight, hatchery, date, latitude, longitude, directions, derby_participant) VALUES ({row.id}, '{row.lake}', {row.stocked_fish}, '{row.species}', {row.weight}, '{row.hatchery}', '{row.date}', '{row.latitude}', '{row.longitude}', '{row.directions}', {row.derby_participant});\n")
 
-        print(f"Database backed up to {backup_file_txt} and {backup_file_sql}")
+    #     print(f"Database backed up to {backup_file_txt} and {backup_file_sql}")
