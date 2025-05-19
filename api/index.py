@@ -122,7 +122,6 @@ async def get_total_stocked_by_date_data(request: Request):
 async def get_hatchery_totals(request: Request):
     start_date, end_date = parse_query_dates(request)
     if start_date and end_date:
-        print("START AND FUCKING END DATE!!!!",start_date,end_date)
         hatchery_totals = db.get_hatchery_totals(
             start_date=start_date, end_date=end_date)
         hatchery_totals = [{'hatchery': row[0], 'sum_1': row[1]}

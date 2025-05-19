@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from geopy import GoogleV3
 from dotenv import load_dotenv
 
-from data.database import DataBase, StockedLakes, WaterLocations
+from data.database import DataBase, StockingReport, WaterLocation
 
 
 class Scraper:
@@ -60,7 +60,7 @@ class Scraper:
         # Initialize df with placeholders
         self.df = [
             {
-                "lake": clean,
+                "water_name_cleaned": clean,
                 "original_html_name": orig,
                 "stocked_fish": None,
                 "date": None,
@@ -161,7 +161,7 @@ class Scraper:
                 self.df[i]['date'] = d
 
     # Return a list of names of lakes that are in the state trout derby
-    # TODO: Update this. Not working at the moment
+    # TODO: Update this. Not working at the moment. Will be a paid feature
     def scrape_derby_names(self):
 
         # The trout derby doesn't start until april 22. don't scrape names unless the derby is running
@@ -206,23 +206,23 @@ class Scraper:
             )
 
             if water_location and data_base.record_exists(
-                StockedLakes,
+                StockingReport,
                 water_location_id=water_location.id,
                 stocked_fish=stock_report_object['stocked_fish'],
                 date=stock_report_object['date']
             ):
                 print(
-                    f"Skipped In the scraper. already added {stock_report_object['original_html_name']} "
+                    f"Skipped In the scraper. water_location already added: {stock_report_object['original_html_name']} "
                     f"{stock_report_object['stocked_fish']} {stock_report_object['date']}"
                 )
                 continue
 
             # Geocode and update in place
             geocode = locator.geocode(
-                stock_report_object["lake"] + " washington state"
+                stock_report_object["water_name_cleaned"] + " washington state"
             )
             if geocode:
-                print(f"Geocoding {stock_report_object['lake']}")
+                print(f"Geocoding {stock_report_object['water_name_cleaned']}")
                 stock_report_object['latitude'] = float(geocode.point[0])
                 stock_report_object['longitude'] = float(geocode.point[1])
             else:
@@ -230,7 +230,7 @@ class Scraper:
                 stock_report_object['longitude'] = 0.0
 
             stock_report_object['directions'] = (
-                f"https://www.google.com/maps/search/?api=1&query={stock_report_object['lake']}"
+                f"https://www.google.com/maps/search/?api=1&query={stock_report_object['water_name_cleaned']}"
             )
 
     def run_all_scrapes(self):
@@ -268,6 +268,7 @@ def write_archived_data():
 
 # Run Once Every day
 if __name__ == "__main__":
+    print("starting Processes for Troutlytics web scraper")
     load_dotenv()
     start_time = time()
     data_base = DataBase()
