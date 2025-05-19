@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timedelta
 from sqlalchemy import create_engine, exists, text
 from sqlalchemy.orm import sessionmaker
-from data.models import WaterLocations, StockedLakes, DerbyLake, Utility, Base
+from data.models import WaterLocation, StockingReport, DerbyParticipant, Utility, Base
 
 
 class DataBase:
@@ -44,16 +44,16 @@ class DataBase:
         but join from water_locations so we can pull the cleaned name and
         location info first.
         """
-        # Query WaterLocations → join → StockedLakes
+        # Query WaterLocation → join → StockingReport
         rows = (
             self.session
-                .query(WaterLocations, StockedLakes)
+                .query(WaterLocation, StockingReport)
                 .join(
-                    StockedLakes,
-                    StockedLakes.water_location_id == WaterLocations.id
+                    StockingReport,
+                    StockingReport.water_location_id == WaterLocation.id
                 )
-            .filter(StockedLakes.date.between(start_date, end_date))
-            .order_by(StockedLakes.date.desc())
+            .filter(StockingReport.date.between(start_date, end_date))
+            .order_by(StockingReport.date.desc())
             .all()
         )
 
@@ -62,7 +62,7 @@ class DataBase:
         for water_loc, stocked in rows:
             rec = {
                 "date": stocked.date.isoformat() if stocked.date else None,
-                "lake": water_loc.water_name_cleaned,
+                "water_name_cleaned": water_loc.water_name_cleaned,
                 "stocked_fish": stocked.stocked_fish,
                 "species": stocked.species,
                 "hatchery": stocked.hatchery,
@@ -81,7 +81,7 @@ class DataBase:
 
         query = """
       SELECT hatchery, SUM(stocked_fish) AS sum_1
-      FROM stocked_lakes_table
+      FROM stocking_report
       WHERE date BETWEEN :start_date AND :end_date
       GROUP BY hatchery
       ORDER BY sum_1 DESC
@@ -96,7 +96,7 @@ class DataBase:
 
         query = """
         SELECT date, SUM(stocked_fish) AS sum_1
-        FROM stocked_lakes_table
+        FROM stocking_report
         WHERE date BETWEEN :start_date AND :end_date
         GROUP BY date
         ORDER BY date
@@ -112,24 +112,24 @@ class DataBase:
         return total_stocked_by_date
 
     def get_derby_lakes_data(self):
-        query = "SELECT * FROM derby_lakes_table"
+        query = "SELECT * FROM derby_participant"
         derby_lakes = self.conn.execute(text(query)).fetchall()
         return derby_lakes
 
     def get_unique_hatcheries(self):
-        query = "SELECT DISTINCT hatchery FROM stocked_lakes_table ORDER BY hatchery"
+        query = "SELECT DISTINCT hatchery FROM stocking_report ORDER BY hatchery"
         unique_hatcheries = self.conn.execute(text(query)).fetchall()
         print(unique_hatcheries)
         return [row[0] for row in unique_hatcheries]
 
     def get_date_data_updated(self):
-        query = "SELECT updated FROM utility_table ORDER BY id DESC LIMIT 1"
+        query = "SELECT updated FROM utility ORDER BY id DESC LIMIT 1"
         last_updated = self.conn.execute(text(query)).scalar()
         return last_updated
 
     def get_water_location(self, original_html_name):
-        water_location = self.session.query(WaterLocations).filter(
-            WaterLocations.original_html_name.ilike(
+        water_location = self.session.query(WaterLocation).filter(
+            WaterLocation.original_html_name.ilike(
                 original_html_name)
         ).first()
         return water_location
@@ -153,16 +153,16 @@ class DataBase:
                     if lake.capitalize() in item['lake'].capitalize():
                         item['derby_participant'] = True
                         existing_lake = self.session.query(
-                            DerbyLake).filter_by(lake=lake).first()
+                            DerbyParticipant).filter_by(lake=lake).first()
                         if existing_lake:
                             continue  # skip if the lake already exists in the table
-                        self.session.add(DerbyLake(lake=lake))
+                        self.session.add(DerbyParticipant(lake=lake))
         else:
             # If there are no derby lakes, clear all derby participants from Stocked Lake table, delete all derby table entries
-            self.session.query(DerbyLake).delete()
+            self.session.query(DerbyParticipant).delete()
 
             lakes_to_update = self.session.query(
-                StockedLakes).filter_by(derby_participant=True)
+                StockingReport).filter_by(derby_participant=True)
             for lake in lakes_to_update:
                 lake.derby_participant = False
 
@@ -174,13 +174,13 @@ class DataBase:
 
     def insert_water_location(self, original_html_name, water_name_cleaned, latitude, longitude, directions, derby_participant):
         """Insert a new water location unless it already exists by original_html_name."""
-        # existing_location = self.session.query(WaterLocations).filter_by(
+        # existing_location = self.session.query(WaterLocation).filter_by(
         #     original_html_name=original_html_name).first()
-        if self.record_exists(WaterLocations, original_html_name=original_html_name):
+        if self.record_exists(WaterLocation, original_html_name=original_html_name):
             print(
                 f"Skipping insert — Water location '{original_html_name}' already exists.")
             return
-        new_location = WaterLocations(
+        new_location = WaterLocation(
             original_html_name=original_html_name,
             water_name_cleaned=water_name_cleaned,
             latitude=latitude,
@@ -201,7 +201,7 @@ class DataBase:
 
             if not water_location:
                 # Insert new water location if missing
-                water_location = WaterLocations(
+                water_location = WaterLocation(
                     original_html_name=lake_data['original_html_name'],
                     water_name_cleaned=lake_data['lake'],
                     latitude=lake_data['latitude'],
@@ -215,7 +215,7 @@ class DataBase:
                 print(
                     f"✅ Added new water location '{lake_data['lake']}' with id {water_location.id}")
             # Create stocked lake with FK reference
-            lake = StockedLakes(
+            lake = StockingReport(
                 lake=lake_data['lake'],
                 stocked_fish=lake_data['stocked_fish'],
                 date=lake_data['date'],
@@ -227,7 +227,7 @@ class DataBase:
             )
 
             # check if entry already exists in the table
-            if self.record_exists(StockedLakes, lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date']):
+            if self.record_exists(StockingReport, lake=lake_data['lake'], stocked_fish=lake_data['stocked_fish'], date=lake_data['date']):
                 print(
                     f'Skipped in db. already added {lake_data["lake"]} {lake_data["stocked_fish"]} {lake_data["date"]}')
                 continue  # Skip if exists
@@ -237,13 +237,13 @@ class DataBase:
             self.insert_counter += 1
 
         print(
-            f'There were {self.insert_counter} entries added to {str(StockedLakes.__tablename__)}')
+            f'There were {self.insert_counter} entries added to {str(StockingReport.__tablename__)}')
 
     def write_utility_data(self):
         self.session.add(Utility(updated=datetime.now().date()))
 
     def back_up_database(self):
-        all_stocked_lakes = self.session.query(StockedLakes).all()
+        all_stocked_lakes = self.session.query(StockingReport).all()
 
         backup_file_txt = 'data/backup_data.txt'
         backup_file_sql = 'data/backup_data.sql'
@@ -263,6 +263,6 @@ class DataBase:
             for row in all_stocked_lakes:
                 # Write an INSERT INTO statement for each row
                 f.write(
-                    f"INSERT INTO stocked_lakes_table (id, lake, stocked_fish, species, weight, hatchery, date, latitude, longitude, directions, derby_participant) VALUES ({row.id}, '{row.lake}', {row.stocked_fish}, '{row.species}', {row.weight}, '{row.hatchery}', '{row.date}', '{row.latitude}', '{row.longitude}', '{row.directions}', {row.derby_participant});\n")
+                    f"INSERT INTO stocking_report (id, lake, stocked_fish, species, weight, hatchery, date, latitude, longitude, directions, derby_participant) VALUES ({row.id}, '{row.lake}', {row.stocked_fish}, '{row.species}', {row.weight}, '{row.hatchery}', '{row.date}', '{row.latitude}', '{row.longitude}', '{row.directions}', {row.derby_participant});\n")
 
         print(f"Database backed up to {backup_file_txt} and {backup_file_sql}")

@@ -1,11 +1,12 @@
-from sqlalchemy.orm import  declarative_base, relationship
-from sqlalchemy import  Column, Integer, String, Boolean, Date, Float, TIMESTAMP, ForeignKey
+from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy import Column, Integer, String, Boolean, Date, Float, TIMESTAMP, ForeignKey
 
 # Create a SQLAlchemy base
 Base = declarative_base()
 
-class WaterLocations(Base):
-    __tablename__ = 'water_locations'
+
+class WaterLocation(Base):
+    __tablename__ = 'water_location'
     id = Column(Integer, primary_key=True, autoincrement=True)
     original_html_name = Column(String, unique=True)  # what wdfw named
     water_name_cleaned = Column(String)  # the cleaned name after scraping
@@ -14,29 +15,24 @@ class WaterLocations(Base):
     directions = Column(String)
     created_at = Column(TIMESTAMP)
     derby_participant = Column(Boolean)
-    
-# Create the stocked_lakes_table class
-class StockedLakes(Base):
-    __tablename__ = 'stocked_lakes_table'
+
+
+
+class StockingReport(Base):
+    __tablename__ = 'stocking_report'
     id = Column(Integer, primary_key=True)
-    lake = Column(String)  # plans to move to FK
     stocked_fish = Column(Integer)
     species = Column(String)
     weight = Column(Float)
     hatchery = Column(String)
     date = Column(Date)
-    latitude = Column(Float)  # plans to move to FK
-    longitude = Column(Float)  # plans to move to FK
-    directions = Column(String)  # plans to move to FK
-    derby_participant = Column(Boolean)  # plans to move to FK
-    # Replace raw lat/lng/directions with FK
-    water_location_id = Column(Integer, ForeignKey('water_locations.id'))
-    water_location = relationship("WaterLocations")
+    water_location_id = Column(Integer, ForeignKey('water_location.id'))
+    water_location = relationship("WaterLocation")
 
     def to_dict(self):
         return {
             "date": self.date,
-            "lake": self.lake,
+            "water_name_cleaned": self.water_location.water_name_cleaned if self.water_location else None,
             "stocked_fish": self.stocked_fish,
             "species": self.species,
             "hatchery": self.hatchery,
@@ -49,15 +45,14 @@ class StockedLakes(Base):
             "water_location": self.water_location
         }
 
-# Create the derby_lakes_table class
-class DerbyLake(Base):
-    __tablename__ = 'derby_lakes_table'
+
+class DerbyParticipant(Base):
+    __tablename__ = 'derby_participant'
     id = Column(Integer, primary_key=True)
     lake = Column(String)
 
-# Create the derby_lakes_table class
+
 class Utility(Base):
-    __tablename__ = 'utility_table'
+    __tablename__ = 'utility'
     id = Column(Integer, primary_key=True)
     updated = Column(Date)
-
