@@ -8,11 +8,10 @@ WORKDIR /app
 RUN apk add --no-cache gcc musl-dev libffi-dev build-base
 
 # Install Python dependencies
-# Install Python dependencies
 COPY ./web_scraper/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-
+COPY .env . 
 # Copy scraper code
 COPY ./web_scraper/ .
 

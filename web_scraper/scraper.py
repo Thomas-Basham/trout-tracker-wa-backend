@@ -1,4 +1,3 @@
-# from geopy.geocoders import Nominatim
 import os
 import re
 from time import time
@@ -8,7 +7,7 @@ from bs4 import BeautifulSoup
 from geopy import GoogleV3
 from dotenv import load_dotenv
 
-from data.database import DataBase, StockingReport, WaterLocation
+from data.database import DataBase, StockingReport
 
 
 class Scraper:
@@ -205,15 +204,9 @@ class Scraper:
                 stock_report_object['original_html_name']
             )
 
-            if water_location and data_base.record_exists(
-                StockingReport,
-                water_location_id=water_location.id,
-                stocked_fish=stock_report_object['stocked_fish'],
-                date=stock_report_object['date']
-            ):
+            if water_location:
                 print(
                     f"Skipped In the scraper. water_location already added: {stock_report_object['original_html_name']} "
-                    f"{stock_report_object['stocked_fish']} {stock_report_object['date']}"
                 )
                 continue
 
