@@ -214,7 +214,7 @@ class DataBase:
                 self.session.add(water_location)
                 self.session.flush()  # assign new id
                 print(
-                    f"✅ Added new water location '{lake_data['lake']}' with id {water_location.id}")
+                    f"✅ Added new water location '{water_location['original_html_name']}' with id {water_location.id}")
             # Create stocked lake with FK reference
             lake = StockingReport(
                 stocked_fish=lake_data['stocked_fish'],
