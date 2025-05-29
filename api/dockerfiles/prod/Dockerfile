@@ -6,6 +6,8 @@ WORKDIR ${LAMBDA_TASK_ROOT}
 # Copy Python files
 COPY ./api/index.py .
 
+COPY .env . 
+
 # Copy the data directory into the task root so Python can import it
 COPY ./data ./data
 

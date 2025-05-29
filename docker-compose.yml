@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: api/dockerfiles/dev/Dockerfile
-    image: dev-api:latest
+    image: api-dev:latest
     ports:
       - "8080:8080"
     env_file:

@@ -3,6 +3,8 @@ FROM python:3.13-slim
 # Set workdir
 WORKDIR /app
 
+COPY .env . 
+
 # Install dependencies
 COPY ./api/requirements.txt .
 
